@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Epilepsy Care — Monitoring Wearable | Neuro Mates</title>
+  <meta name="description" content="The Neuro Mates epilepsy monitoring system continuously observes brain activity and connects abnormal EEG activity with immediate family alerts, emergency response and continued monitoring.">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <style>
+    :root {
+      --prod-accent: #2BB58A;
+      --prod-accent-dark: #0E7A5A;
+      --prod-accent-light: #5BE7C4;
+      --prod-tint: #DDF6EC;
+    }
+
+    .prod-hero {
+      padding-top: clamp(110px, 15vw, 160px);
+      padding-bottom: clamp(40px, 6vw, 70px);
+    }
+    .prod-hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: clamp(36px, 6vw, 64px);
+      align-items: center;
+    }
+    .prod-hero-img-wrap {
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(14,59,67,0.12);
+      border: 1px solid rgba(14,59,67,0.08);
+      background: #FFFFFF;
+    }
+    .prod-hero-img-wrap img {
+      width: 100%;
+      height: clamp(300px, 38vw, 440px);
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Purpose & Tech Badges */
+    .chip-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 24px 0;
+    }
+    .chip-pill {
+      font-family: var(--fb);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 99px;
+      background: var(--prod-tint);
+      color: var(--prod-accent-dark);
+      border: 1px solid rgba(43,181,138,0.25);
+    }
+
+    .band-pills {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .band-pill {
+      font-family: var(--fb);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 99px;
+      background: #FFFFFF;
+      color: var(--ink);
+      border: 1.5px solid rgba(14,59,67,0.1);
+      box-shadow: 0 2px 6px rgba(14,59,67,0.04);
+    }
+
+    /* How It Works (5 Step Process) */
+    .e-story-section {
+      background: linear-gradient(160deg, #0B3A44, #0B5260);
+      color: #FFFFFF;
+      padding: clamp(64px, 10vw, 110px) 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .e-story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: clamp(36px, 6vw, 64px);
+      align-items: center;
+    }
+    .step-dots-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .step-dot-btn {
+      padding: 7px 16px;
+      border-radius: 99px;
+      background: rgba(255,255,255,0.1);
+      font-family: var(--fb);
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #FFFFFF;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 1px solid transparent;
+    }
+    .step-dot-btn.on {
+      background: var(--prod-accent-light);
+      color: #04161C;
+      box-shadow: 0 0 16px rgba(91,231,196,0.6);
+    }
+    .e-step-title {
+      font-family: var(--fd);
+      font-size: clamp(2rem, 4.2vw, 3rem);
+      color: #FFFFFF;
+      margin: 0 0 12px;
+      min-height: 1.2em;
+    }
+    .e-step-desc {
+      font-size: 1.15rem;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.88);
+      max-width: 42ch;
+      min-height: 4em;
+      margin: 0 0 24px;
+    }
+
+    /* Live 2D EEG Wave Canvas */
+    .eeg-canvas-box {
+      background: #08242A;
+      border: 1px solid rgba(127,214,208,0.25);
+      border-radius: 24px;
+      padding: 24px;
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+    .eeg-channels-tag {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--aq);
+    }
+    #eeg-wave-canvas {
+      width: 100%;
+      height: 260px;
+      display: block;
+    }
+
+    /* Alert / Confirmation Pill */
+    .status-alert-pill {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px;
+      border-radius: 14px;
+      background: rgba(255, 122, 107, 0.2);
+      border: 1.5px solid var(--co);
+      color: #FFB5AC;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-top: 18px;
+    }
+    .status-alert-pill.on {
+      display: inline-flex;
+    }
+    .status-alert-pill.okc {
+      background: rgba(43, 181, 138, 0.2);
+      border-color: #2BB58A;
+      color: #9AF2DB;
+    }
+
+    /* Everyday Support & Reminders */
+    .reminders-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .reminder-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(14,59,67,0.08);
+      border-radius: 22px;
+      padding: 28px 24px;
+      box-shadow: 0 10px 28px rgba(14,59,67,0.03);
+    }
+    .reminder-card h3 {
+      color: var(--ink);
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+    }
+    .reminder-card p {
+      color: var(--mu);
+      font-size: 0.98rem;
+      margin: 0;
+      line-height: 1.55;
+    }
+
+    /* Safety & Responsible Wording Banner */
+    .safety-disclaimer-box {
+      background: rgba(43, 181, 138, 0.06);
+      border-left: 4px solid var(--prod-accent);
+      border-radius: 0 18px 18px 0;
+      padding: 24px 28px;
+      margin-top: 36px;
+    }
+    .safety-disclaimer-box p {
+      margin: 0;
+      font-size: 1.05rem;
+      color: var(--ink);
+      line-height: 1.6;
+    }
+    .safety-disclaimer-box b {
+      color: var(--prod-accent-dark);
+    }
+
+    /* Four Portals Table */
+    .portals-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 12px;
+      margin-top: 28px;
+    }
+    .portals-table tr {
+      background: #FFFFFF;
+      border-radius: 16px;
+      box-shadow: 0 4px 18px rgba(14,59,67,0.03);
+    }
+    .portals-table td {
+      padding: 18px 24px;
+      border-top: 1px solid rgba(14,59,67,0.06);
+      border-bottom: 1px solid rgba(14,59,67,0.06);
+    }
+    .portals-table td:first-child {
+      border-left: 1px solid rgba(14,59,67,0.06);
+      border-top-left-radius: 16px;
+      border-bottom-left-radius: 16px;
+      font-weight: 700;
+      color: var(--ink);
+      width: 28%;
+    }
+    .portals-table td:last-child {
+      border-right: 1px solid rgba(14,59,67,0.06);
+      border-top-right-radius: 16px;
+      border-bottom-right-radius: 16px;
+      color: var(--mu);
+    }
+
+    @media (max-width: 900px) {
+      .prod-hero-grid, .e-story-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .reminders-grid {
+        grid-template-columns: 1fr;
+      }
+      .portals-table td:first-child {
+        width: 35%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="care"></div>
+  <nav id="nav"></nav>
+
+  <main id="main-content">
+    <!-- Hero Section -->
+    <header class="hero prod-hero">
+      <div class="w prod-hero-grid">
+        <div>
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="../index.html">Home</a>
+            <span class="sep">/</span>
+            <a href="../neuromates-products.html#overview">Products</a>
+            <span class="sep">/</span>
+            <span class="current">Epilepsy Care</span>
+          </nav>
+          <span class="ey" style="color:var(--prod-accent-dark);">EPILEPSY CARE</span>
+          <h1>Helping families stay connected during <em>epilepsy monitoring</em>.</h1>
+          <p class="lead">The Neuro Mates epilepsy monitoring system continuously observes brain activity and connects abnormal EEG activity with immediate family alerts, emergency response and continued monitoring.</p>
+          
+          <div class="bt-group">
+            <a class="btn" href="../register-demo.html">Register for a demo &rarr;</a>
+            <a class="b2" href="#e-story">See how it works &darr;</a>
+          </div>
+        </div>
+
+        <div class="prod-hero-img-wrap">
+          <img src="../assets/images/page_15_Image-8784015711.jpg" alt="Neuro Mates epilepsy monitoring headband worn comfortably by a young woman">
+        </div>
+      </div>
+    </header>
+
+    <!-- Continuous Monitoring Section -->
+    <section style="background:#FFFFFF;border-top:1px solid rgba(14,59,67,0.06);padding:clamp(60px, 9vw, 96px) 0;">
+      <div class="w">
+        <span class="ey">CONTINUOUS MONITORING</span>
+        <h2>Continuous monitoring</h2>
+        <p class="body-text" style="font-size:1.15rem;max-width:54ch;">A lightweight headband with a brain-signal sensor continuously monitors the patient’s brain activity. A reference electrode sits behind the ear. The EEG view can show Alpha, Beta, Gamma, Delta and Theta waves.</p>
+
+        <div class="chip-pills">
+          <span class="chip-pill">EEG monitoring</span>
+          <span class="chip-pill">Real-time alerts</span>
+          <span class="chip-pill">Lightweight design</span>
+          <span class="chip-pill">Safe and comfortable</span>
+        </div>
+
+        <div style="margin-top:18px;">
+          <strong style="font-size:0.85rem;color:var(--mu);text-transform:uppercase;letter-spacing:0.08em;display:block;">Monitored Wave Bands:</strong>
+          <div class="band-pills">
+            <span class="band-pill">Alpha</span>
+            <span class="band-pill">Beta</span>
+            <span class="band-pill">Gamma</span>
+            <span class="band-pill">Delta</span>
+            <span class="band-pill">Theta</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Responds (Interactive 5-Step EEG Demonstration) -->
+    <section class="e-story-section" id="e-story" aria-label="Interactive demonstration of the 5-step epilepsy response sequence">
+      <div class="w e-story-grid">
+        <div>
+          <span class="demo-tag" style="background:rgba(255,255,255,0.12);color:var(--aq);margin-bottom:16px;">ILLUSTRATION &bull; NOT REAL PATIENT DATA</span>
+          <p class="ey" style="color:var(--prod-accent-light);margin-bottom:14px;">HOW IT RESPONDS</p>
+
+          <div class="step-dots-row" role="tablist">
+            <button class="step-dot-btn on" data-step="0">1. Monitor</button>
+            <button class="step-dot-btn" data-step="1">2. Detect</button>
+            <button class="step-dot-btn" data-step="2">3. Alert</button>
+            <button class="step-dot-btn" data-step="3">4. Respond</button>
+            <button class="step-dot-btn" data-step="4">5. Recover</button>
+          </div>
+
+          <h3 class="e-step-title" id="step-title">Monitor</h3>
+          <p class="e-step-desc" id="step-desc">The epilepsy monitoring system continuously monitors the patient’s brain activity.</p>
+
+          <div class="status-alert-pill" id="status-pill">
+            <span id="pill-text">EMERGENCY ALERT: Abnormal EEG signals that may indicate a seizure.</span>
+          </div>
+        </div>
+
+        <div class="eeg-canvas-box">
+          <div class="eeg-channels-tag">
+            <span>Channel 1</span>
+            <span>&bull;</span>
+            <span>Channel 2</span>
+            <span>&bull;</span>
+            <span>Channel 3</span>
+          </div>
+          <canvas id="eeg-wave-canvas" aria-label="EEG brain-wave simulation"></canvas>
+          <div style="font-size:0.75rem;color:rgba(255,255,255,0.5);margin-top:12px;text-align:right;">
+            Live EEG Waveform Simulation &bull; 3 Channels
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Support Beyond The Alert -->
+    <section style="background:#FFFFFF;padding:clamp(60px, 9vw, 96px) 0;">
+      <div class="w">
+        <span class="ey">EVERYDAY SUPPORT</span>
+        <h2>Support beyond the alert.</h2>
+
+        <div class="reminders-grid">
+          <div class="reminder-card">
+            <h3>Medication Reminder</h3>
+            <p>Supports awareness of scheduled medication.</p>
+          </div>
+          <div class="reminder-card">
+            <h3>Appointment Reminder</h3>
+            <p>Helps patients keep track of scheduled clinical appointments.</p>
+          </div>
+        </div>
+
+        <!-- Strict Safety & Responsible Wording -->
+        <div class="safety-disclaimer-box">
+          <p><b>Responsible wording.</b> Neuro Mates monitors for abnormal EEG signals that may indicate a seizure. It does not diagnose, predict or prevent seizures, and detection cannot be guaranteed.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Four Portals, One Product -->
+    <section style="padding:clamp(60px, 9vw, 96px) 0;">
+      <div class="w">
+        <span class="ey">WHO SEES WHAT</span>
+        <h2>Four portals, one product.</h2>
+        <p class="lead">Technology: EEG monitoring, connected communication, WhatsApp alerts, emergency speaker/siren and continuous monitoring.</p>
+
+        <table class="portals-table">
+          <tbody>
+            <tr>
+              <td>Patient Portal</td>
+              <td>Medication reminders, appointment reminders and relevant monitoring/status information.</td>
+            </tr>
+            <tr>
+              <td>Caretaker Portal</td>
+              <td>WhatsApp emergency alert, emergency status and normal-state confirmation.</td>
+            </tr>
+            <tr>
+              <td>Doctor Portal</td>
+              <td>Monitoring/care information and reports.</td>
+            </tr>
+            <tr>
+              <td>Admin Portal</td>
+              <td>Relevant patient/device/communication configuration and operational environment.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;">
+          <a href="../neuromates-products.html#overview" class="b2">&larr; Back to Products Overview</a>
+          <a href="../neuromates-products.html#paralysis-care" class="btn" style="background:#F5A623;color:#000;">Next: Paralysis Care &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page-Ending CTA -->
+    <section class="cta" id="global-cta"></section>
+  </main>
+
+  <footer id="global-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="../assets/js/shared.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Navbar, CTA, Footer
+      document.getElementById('nav').innerHTML = window.NeuroShared.getNavHTML('products');
+      document.getElementById('global-cta').innerHTML = window.NeuroShared.getCTAHTML();
+      document.getElementById('global-footer').innerHTML = window.NeuroShared.getFooterHTML();
+
+      // 2. Interactive 5-Step Story
+      const steps = [
+        {
+          title: "Monitor",
+          desc: "The epilepsy monitoring system continuously monitors the patient’s brain activity.",
+          alert: false,
+          irr: false
+        },
+        {
+          title: "Detect",
+          desc: "If abnormal EEG signals that may indicate a seizure are detected, the system responds immediately.",
+          alert: false,
+          irr: true,
+          spike: 2.2
+        },
+        {
+          title: "Alert",
+          desc: "A WhatsApp alert is sent to the patient’s family member and an emergency siren is activated through the speaker.",
+          alert: true,
+          alertType: 'emergency',
+          text: "EMERGENCY ALERT: Abnormal EEG signals that may indicate a seizure.",
+          irr: true,
+          spike: 3.4
+        },
+        {
+          title: "Respond",
+          desc: "The system then continues monitoring the patient’s condition.",
+          alert: true,
+          alertType: 'emergency',
+          text: "CONTINUED MONITORING: Observation active during recovery.",
+          irr: true,
+          spike: 1.8
+        },
+        {
+          title: "Recover",
+          desc: "Once brain activity returns to normal, a confirmation message is sent to the family member and continuous monitoring resumes.",
+          alert: true,
+          alertType: 'ok',
+          text: "NORMAL-STATE CONFIRMATION: The patient is in a normal state. Monitoring has resumed.",
+          irr: false
+        }
+      ];
+
+      let currentStep = 0;
+      const stepBtns = document.querySelectorAll('.step-dot-btn');
+      const stepTitle = document.getElementById('step-title');
+      const stepDesc = document.getElementById('step-desc');
+      const statusPill = document.getElementById('status-pill');
+      const pillText = document.getElementById('pill-text');
+
+      function setStep(idx) {
+        currentStep = idx;
+        stepBtns.forEach((b, i) => b.classList.toggle('on', i === idx));
+        const s = steps[idx];
+        stepTitle.textContent = (idx + 1) + ". " + s.title;
+        stepDesc.textContent = s.desc;
+
+        if (s.alert) {
+          statusPill.classList.add('on');
+          statusPill.classList.toggle('okc', s.alertType === 'ok');
+          pillText.textContent = s.text;
+        } else {
+          statusPill.classList.remove('on');
+        }
+      }
+
+      stepBtns.forEach((btn, idx) => {
+        btn.addEventListener('click', () => setStep(idx));
+      });
+
+      // 3. Live 2D EEG Waveform Canvas
+      const cvs = document.getElementById('eeg-wave-canvas');
+      if (cvs) {
+        const ctx = cvs.getContext('2d');
+        let isRunning = true;
+        let t = 0;
+
+        function resize() {
+          cvs.width = cvs.offsetWidth;
+          cvs.height = cvs.offsetHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawWave(channelIdx, amp, col) {
+          const w = cvs.width;
+          const h = cvs.height;
+          const b = h / 3;
+          const cy = b * (channelIdx + 0.5);
+          const a = b * 0.3;
+
+          if (channelIdx === 0) {
+            ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+            ctx.lineWidth = 1;
+            [b, 2 * b].forEach(y => {
+              ctx.beginPath();
+              ctx.moveTo(0, y);
+              ctx.lineTo(w, y);
+              ctx.stroke();
+            });
+          }
+
+          ctx.strokeStyle = col;
+          ctx.lineWidth = 2.2;
+          ctx.beginPath();
+
+          for (let x = 0; x <= w; x += 3) {
+            let y = Math.sin(x * 0.022 + t * (2 + channelIdx * 0.6) + channelIdx) * a * 0.5 * Math.min(amp, 1.6)
+                  + Math.sin(x * 0.07 + t * 5 + channelIdx) * a * 0.2;
+            
+            if (amp > 1) {
+              y += Math.sin(x * 0.31 + t * 17 + channelIdx * 3) * Math.sin(x * 0.013 + t * 3) * a * 0.55 * (amp - 1) / 2.4;
+            }
+            y = Math.max(-b * 0.46, Math.min(b * 0.46, y));
+
+            if (x === 0) ctx.moveTo(x, cy + y);
+            else ctx.lineTo(x, cy + y);
+          }
+          ctx.stroke();
+        }
+
+        function loop() {
+          if (!isRunning) return;
+          t += 0.025;
+          ctx.clearRect(0, 0, cvs.width, cvs.height);
+
+          const s = steps[currentStep];
+          const isIrr = s.irr;
+          const spikeAmp = s.spike || 0.6;
+          const col = isIrr ? '#FF8F7E' : '#5BE7C4';
+
+          [0, 1, 2].forEach(k => {
+            drawWave(k, isIrr ? spikeAmp : 0.6, col);
+          });
+
+          requestAnimationFrame(loop);
+        }
+
+        const io = new IntersectionObserver(entries => {
+          entries.forEach(e => {
+            isRunning = e.isIntersecting;
+            if (isRunning) requestAnimationFrame(loop);
+          });
+        }, { threshold: 0.1 });
+        io.observe(cvs);
+
+        requestAnimationFrame(loop);
+      }
+    });
+  </script>
+</body>
+</html>
+

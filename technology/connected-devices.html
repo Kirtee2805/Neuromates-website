@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Connected Devices | Neuro Mates</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <style>
+    .device-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(36px, 6vw, 72px);
+      align-items: center;
+      padding: clamp(48px, 8vw, 96px) 0;
+      border-bottom: 1px solid rgba(14,59,67,0.08);
+      position: relative;
+    }
+    .device-row:last-of-type {
+      border-bottom: none;
+    }
+    .device-visual-col {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .device-media-card {
+      width: 100%;
+      border-radius: 28px;
+      background: #FFFFFF;
+      border: 1px solid rgba(14,59,67,0.08);
+      box-shadow: 0 18px 48px rgba(14,59,67,0.08);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.4s var(--e), box-shadow 0.4s var(--e), border-color 0.4s var(--e);
+    }
+    .device-media-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 60px rgba(14,59,67,0.12);
+      border-color: rgba(11,122,124,0.3);
+    }
+    .device-media-card img {
+      width: 100%;
+      height: 310px;
+      object-fit: cover;
+      display: block;
+      background: #F4F6F6;
+    }
+    .device-card-caption {
+      padding: 16px 22px;
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(14,59,67,0.06);
+    }
+    .device-card-caption span {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: 0.01em;
+    }
+    .device-card-badge {
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 12px;
+      border-radius: 99px;
+      background: rgba(11,122,124,0.1);
+      color: #0B7A7C;
+    }
+
+    /* Dark Panel Geofence Interactive Demo */
+    .geofence-section {
+      background: var(--dark-teal-grad);
+      color: #FFFFFF;
+      padding: clamp(80px, 10vw, 130px) 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .geofence-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: clamp(32px, 6vw, 64px);
+      align-items: center;
+    }
+    .geofence-demo-panel {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      max-height: 480px;
+      background: #08282F;
+      border: 1px solid rgba(127,214,208,0.25);
+      border-radius: 32px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      overflow: hidden;
+      user-select: none;
+      touch-action: none;
+    }
+    /* Grid lines */
+    .map-grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(127,214,208,0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(127,214,208,0.06) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    /* Safe zone ring (radius 1 km concept) */
+    .safe-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60%;
+      height: 60%;
+      border-radius: 50%;
+      border: 2px dashed #2BB58A;
+      background: rgba(43,181,138,0.08);
+      transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+      pointer-events: none;
+    }
+    .safe-ring.alert {
+      border-color: var(--co);
+      background: rgba(255,122,107,0.12);
+      box-shadow: 0 0 30px rgba(255,122,107,0.25);
+    }
+    .center-point {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #2BB58A;
+      box-shadow: 0 0 12px #2BB58A;
+      pointer-events: none;
+    }
+    .center-label {
+      position: absolute;
+      top: calc(50% + 14px);
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: rgba(255,255,255,0.6);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    /* Draggable patient dot */
+    .patient-dot {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #5BE7C4;
+      border: 3px solid #FFFFFF;
+      box-shadow: 0 0 16px rgba(91,231,196,0.8);
+      cursor: grab;
+      z-index: 10;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .patient-dot:active {
+      cursor: grabbing;
+    }
+    .patient-dot.alert {
+      background: var(--co);
+      box-shadow: 0 0 20px rgba(255,122,107,0.9);
+    }
+    .alert-banner {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      background: rgba(14,59,67,0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,122,107,0.5);
+      border-radius: 16px;
+      padding: 12px 18px;
+      font-size: 0.88rem;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      animation: pop 0.3s var(--sp);
+      z-index: 20;
+    }
+    .alert-banner.active {
+      display: flex;
+    }
+
+    @media(max-width: 900px) {
+      .device-row {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .geofence-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="care"></div>
+  <nav id="nav"></nav>
+
+  <main id="main-content">
+    <header class="hero">
+      <div class="w">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="index.html">Technology</a>
+          <span class="sep">/</span>
+          <span class="current">Connected Devices</span>
+        </nav>
+        <span class="ey">CONNECTED DEVICES</span>
+        <h1>Disease-specific devices, <em>one platform</em>.</h1>
+        <p class="lead">Neuro Mates connects disease-specific sensing hardware with the care platform.</p>
+      </div>
+    </header>
+
+    <!-- Four Device Rows with Rotating 3D Primitives -->
+    <section class="devices-list" style="padding-top:0;">
+      <div class="w">
+        <!-- Row 1: Alzheimer's Location Tracker -->
+        <div class="device-row" id="row-alzheimers">
+          <div class="device-visual-col">
+            <div class="device-media-card">
+              <img src="../assets/images/page_10_Image-7888911063.jpg" alt="Alzheimer's Patient Safety Wearable location tracker on patient arm" loading="lazy">
+              <div class="device-card-caption">
+                <span>Patient Safety Wearable &bull; Arm Band</span>
+                <span class="device-card-badge" style="background:rgba(124,108,255,0.12);color:#7C6CFF;">GPS &bull; Safe-Zone</span>
+              </div>
+            </div>
+          </div>
+          <div class="device-info-col">
+            <span class="ey" style="color:var(--alzheimers-1);">ALZHEIMER’S CARE</span>
+            <h2>Location tracker</h2>
+            <p class="body-text">Continuous patient location tracking and safe-zone monitoring.</p>
+            <div class="bt-group">
+              <a class="btn" href="../neuromates-products.html#alzheimers-care">View Alzheimer’s Care &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Parkinson's Motion Sensor -->
+        <div class="device-row" id="row-parkinsons">
+          <div class="device-visual-col">
+            <div class="device-media-card">
+              <img src="../assets/images/page_4_Image-9750469207.jpg" alt="Parkinson's Movement Monitoring Wearable worn on back of hand" loading="lazy">
+              <div class="device-card-caption">
+                <span>Movement Monitoring Wearable &bull; Back of Hand</span>
+                <span class="device-card-badge" style="background:rgba(47,127,224,0.12);color:#2F7FE0;">Tremor &bull; Falls</span>
+              </div>
+            </div>
+          </div>
+          <div class="device-info-col">
+            <span class="ey" style="color:var(--parkinsons-1);">PARKINSON’S CARE</span>
+            <h2>Wearable motion sensor</h2>
+            <p class="body-text">Movement data for tremor and fall monitoring.</p>
+            <div class="bt-group">
+              <a class="btn" href="../neuromates-products.html#parkinsons-care">View Parkinson’s Care &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: Epilepsy Brain-Signal Headband -->
+        <div class="device-row" id="row-epilepsy">
+          <div class="device-visual-col">
+            <div class="device-media-card">
+              <img src="../assets/images/page_15_Image-8784015711.jpg" alt="Epilepsy Monitoring Wearable continuous EEG sensing headband" loading="lazy">
+              <div class="device-card-caption">
+                <span>Epilepsy Monitoring Wearable &bull; Headband</span>
+                <span class="device-card-badge" style="background:rgba(43,181,138,0.12);color:#2BB58A;">Continuous EEG</span>
+              </div>
+            </div>
+          </div>
+          <div class="device-info-col">
+            <span class="ey" style="color:var(--epilepsy-1);">EPILEPSY CARE</span>
+            <h2>Brain-signal (EEG) sensor in a headband</h2>
+            <p class="body-text">Continuous brain-activity monitoring; a heart-rate sensor provides additional data.</p>
+            <div class="bt-group">
+              <a class="btn" href="../neuromates-products.html#epilepsy-care">View Epilepsy Care &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 4: Rehabilitation Muscle-Signal Sensors -->
+        <div class="device-row" id="row-rehab">
+          <div class="device-visual-col">
+            <div class="device-media-card">
+              <img src="../assets/images/page_6_Image-8450180107.jpg" alt="Paralysis rehabilitation physiotherapy setup with BioAmp muscle sensors" loading="lazy">
+              <div class="device-card-caption">
+                <span>Physiotherapy Platform &bull; Muscle-Signal Electrodes</span>
+                <span class="device-card-badge" style="background:rgba(245,166,35,0.12);color:#D48600;">BioAmp EMG</span>
+              </div>
+            </div>
+          </div>
+          <div class="device-info-col">
+            <span class="ey" style="color:var(--paralysis-1);">PARALYSIS REHABILITATION</span>
+            <h2>Muscle-signal sensors and facial-expression input</h2>
+            <p class="body-text">Interactive rehabilitation activities where applicable.</p>
+            <div class="bt-group">
+              <a class="btn" href="../neuromates-products.html#paralysis-care">View Paralysis Care &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Geofence Interactive Demonstration (DOM-Only Map) -->
+    <section class="geofence-section" aria-label="Interactive safe-zone demonstration">
+      <div class="w geofence-grid">
+        <div>
+          <span class="ey" style="color:var(--aq);">LOCATION SAFETY &bull; 1 KM RADIUS CONCEPT</span>
+          <h2 style="color:#FFFFFF;">Safe-zone boundary demonstration</h2>
+          <p style="color:rgba(255,255,255,0.85);font-size:1.0625rem;line-height:1.65;margin:20px 0 28px;">
+            Drag the patient indicator (or use arrow keys) to explore how the care platform monitors location relative to the designated safe zone. Crossing the boundary triggers immediate notification.
+          </p>
+          <div style="display:flex;flex-direction:column;gap:12px;font-size:0.92rem;color:rgba(255,255,255,0.75);">
+            <div>&bull; <strong>Safe zone radius:</strong> 1 km defined boundary</div>
+            <div>&bull; <strong>Status:</strong> <span id="boundary-status-text" style="color:#5BE7C4;font-weight:700;">Within Safe Zone</span></div>
+            <div>&bull; <strong>Distance from boundary:</strong> <span id="boundary-dist-text" style="color:#FFFFFF;font-weight:700;">0.4 km inside</span></div>
+          </div>
+          <div style="margin-top:28px;">
+            <span class="demo-tag" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);">Illustration, not real patient data</span>
+          </div>
+        </div>
+
+        <!-- Draggable DOM Demo -->
+        <div class="geofence-demo-panel" id="geofence-panel" role="region" aria-label="Interactive safe-zone map simulator">
+          <div class="map-grid-lines"></div>
+          <div class="safe-ring" id="safe-ring"></div>
+          <div class="center-point"></div>
+          <div class="center-label">Safe Zone Centre</div>
+
+          <!-- Draggable Patient Marker -->
+          <div 
+            class="patient-dot" 
+            id="patient-dot" 
+            tabindex="0" 
+            role="slider" 
+            aria-label="Patient location" 
+            aria-valuemin="0" 
+            aria-valuemax="2000" 
+            aria-valuenow="400"
+            aria-describedby="boundary-status-text">
+          </div>
+
+          <!-- Alert Notification Banner -->
+          <div class="alert-banner" id="alert-banner" role="alert" aria-live="assertive">
+            <span style="font-size:1.4rem;">⚠️</span>
+            <div>
+              <strong style="color:var(--co);display:block;">Safe-Zone Boundary Crossed</strong>
+              <span id="alert-msg">WhatsApp alert and call sent to the administrator (0.2 km from boundary).</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page-Ending CTA -->
+    <section class="cta" id="global-cta"></section>
+  </main>
+
+  <footer id="global-footer"></footer>
+
+  <!-- Scripts -->
+  <!-- Clean Healthcare Tech Presentation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  
+    <script src="../assets/js/shared.js"></script>
+  
+  <script src="../assets/js/reveal.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Inject Nav & Footer
+      document.getElementById('nav').innerHTML = window.NeuroShared.getNavHTML('technology');
+      document.getElementById('global-cta').innerHTML = window.NeuroShared.getCTAHTML();
+      document.getElementById('global-footer').innerHTML = window.NeuroShared.getFooterHTML();
+
+      // 2. Clean Medical Product Presentation (3D primitives replaced with high-res photography)
+      // 3. Geofence Interactive Drag Simulator (DOM-only, no SVG animation)
+      const panel = document.getElementById('geofence-panel');
+      const dot = document.getElementById('patient-dot');
+      const ring = document.getElementById('safe-ring');
+      const banner = document.getElementById('alert-banner');
+      const statusText = document.getElementById('boundary-status-text');
+      const distText = document.getElementById('boundary-dist-text');
+      const alertMsg = document.getElementById('alert-msg');
+
+      if (panel && dot) {
+        let isDragging = false;
+        let pX = 0.55; // fraction of panel width
+        let pY = 0.45;
+
+        function updatePosition() {
+          const rect = panel.getBoundingClientRect();
+          const dotPxX = pX * rect.width;
+          const dotPxY = pY * rect.height;
+          dot.style.left = `${dotPxX}px`;
+          dot.style.top = `${dotPxY}px`;
+
+          // Distance from center
+          const cX = rect.width / 2;
+          const cY = rect.height / 2;
+          const dx = dotPxX - cX;
+          const dy = dotPxY - cY;
+          const distPx = Math.sqrt(dx * dx + dy * dy);
+          const radiusPx = (rect.width * 0.6) / 2;
+
+          // 1 km scale representation
+          const kmPerPx = 1.0 / radiusPx;
+          const distKm = distPx * kmPerPx;
+          const diffKm = distKm - 1.0;
+
+          if (diffKm > 0) {
+            // Crossed safe-zone boundary
+            dot.classList.add('alert');
+            ring.classList.add('alert');
+            banner.classList.add('active');
+            statusText.textContent = 'Outside Safe Zone';
+            statusText.style.color = 'var(--co)';
+            distText.textContent = `${diffKm.toFixed(2)} km outside`;
+            alertMsg.textContent = `WhatsApp alert and call sent to the administrator (${diffKm.toFixed(2)} km from boundary).`;
+            dot.setAttribute('aria-valuenow', Math.round(distKm * 1000));
+          } else {
+            // Inside safe-zone
+            dot.classList.remove('alert');
+            ring.classList.remove('alert');
+            banner.classList.remove('active');
+            statusText.textContent = 'Within Safe Zone';
+            statusText.style.color = '#5BE7C4';
+            distText.textContent = `${Math.abs(diffKm).toFixed(2)} km inside`;
+            dot.setAttribute('aria-valuenow', Math.round(distKm * 1000));
+          }
+        }
+
+        // Pointer drag events
+        function onPointerMove(e) {
+          if (!isDragging) return;
+          const rect = panel.getBoundingClientRect();
+          const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+          const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+          pX = Math.max(0.08, Math.min(0.92, (clientX - rect.left) / rect.width));
+          pY = Math.max(0.08, Math.min(0.92, (clientY - rect.top) / rect.height));
+          updatePosition();
+        }
+
+        dot.addEventListener('pointerdown', (e) => {
+          isDragging = true;
+          dot.setPointerCapture(e.pointerId);
+        });
+        window.addEventListener('pointermove', onPointerMove);
+        window.addEventListener('pointerup', () => { isDragging = false; });
+        window.addEventListener('pointercancel', () => { isDragging = false; });
+
+        // Keyboard arrow navigation
+        dot.addEventListener('keydown', (e) => {
+          const step = 0.04;
+          if (e.key === 'ArrowUp') { pY = Math.max(0.08, pY - step); e.preventDefault(); }
+          else if (e.key === 'ArrowDown') { pY = Math.min(0.92, pY + step); e.preventDefault(); }
+          else if (e.key === 'ArrowLeft') { pX = Math.max(0.08, pX - step); e.preventDefault(); }
+          else if (e.key === 'ArrowRight') { pX = Math.min(0.92, pX + step); e.preventDefault(); }
+          updatePosition();
+        });
+
+        // Initialize position
+        window.addEventListener('resize', updatePosition);
+        setTimeout(updatePosition, 100);
+      }
+    });
+  </script>
+</body>
+</html>
+

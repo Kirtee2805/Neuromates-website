@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Page Not Found | Neuro Mates</title>
+  <meta name="description" content="The page you are looking for may have moved. Use the menu or return home.">
+  <link rel="stylesheet" href="./assets/css/tokens.css">
+  <style>
+    .not-found-stage {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: clamp(120px, 16vw, 180px) 24px clamp(60px, 8vw, 100px);
+      position: relative;
+    }
+
+    .display-404 {
+      font-family: var(--fd);
+      font-size: clamp(6rem, 16vw, 12rem);
+      line-height: 0.9;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: rgba(14, 59, 67, 0.12);
+      margin: 0;
+      user-select: none;
+    }
+
+    .not-found-h1 {
+      font-family: var(--fd);
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 700;
+      color: var(--ink);
+      margin: -10px 0 16px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .not-found-body {
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      line-height: 1.6;
+      color: var(--mu);
+      max-width: 38ch;
+      margin: 0 auto 36px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* 2D Canvas Flat-line with periodic blip */
+    .monitor-canvas-box {
+      width: 100%;
+      max-width: 540px;
+      height: 90px;
+      margin: 0 auto 40px;
+      position: relative;
+      background: #FFFFFF;
+      border-radius: 20px;
+      border: 1px solid rgba(14,59,67,0.08);
+      box-shadow: 0 10px 30px rgba(14,59,67,0.04);
+      overflow: hidden;
+    }
+    #blip-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .monitor-tag {
+      position: absolute;
+      bottom: 8px;
+      right: 14px;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--te);
+      opacity: 0.7;
+    }
+
+    @media (max-width: 480px) {
+      .display-404 {
+        font-size: clamp(4.5rem, 18vw, 6.5rem);
+      }
+      .not-found-h1 {
+        font-size: clamp(1.6rem, 6.5vw, 2.2rem);
+      }
+      .monitor-canvas-box {
+        height: 75px;
+        margin-bottom: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="care"></div>
+  <nav id="nav"></nav>
+
+  <main id="main-content">
+    <div class="not-found-stage">
+      <div class="w" style="max-width:700px;">
+        <p class="display-404" aria-hidden="true">404</p>
+        <h1 class="not-found-h1">This page is not available.</h1>
+        <p class="not-found-body">The page you are looking for may have moved. Use the menu or return home.</p>
+
+        <!-- Subtle Canvas 2D flat-line trace that blips once every 3 seconds -->
+        <div class="monitor-canvas-box">
+          <canvas id="blip-canvas" aria-label="Cardiac telemetry visualizer showing periodic blip"></canvas>
+          <span class="monitor-tag">TELEMETRY STANDBY</span>
+        </div>
+
+        <div>
+          <a href="./index.html" class="btn" style="padding:16px 36px;font-size:1.05rem;">Back to Home &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page-Ending CTA -->
+    <section class="cta" id="global-cta"></section>
+  </main>
+
+  <footer id="global-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="./assets/js/shared.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('nav').innerHTML = window.NeuroShared.getNavHTML();
+      document.getElementById('global-cta').innerHTML = window.NeuroShared.getCTAHTML();
+      document.getElementById('global-footer').innerHTML = window.NeuroShared.getFooterHTML();
+
+      // Subtle Canvas 2D flat-line trace that blips once every 3 seconds
+      const cvs = document.getElementById('blip-canvas');
+      if (cvs) {
+        const ctx = cvs.getContext('2d');
+        let isRunning = true;
+        let start = null;
+
+        function render(timestamp) {
+          if (!isRunning) return;
+          if (!start) start = timestamp;
+          const elapsed = (timestamp - start) / 1000;
+
+          const w = cvs.width = cvs.offsetWidth;
+          const h = cvs.height = cvs.offsetHeight;
+          ctx.clearRect(0, 0, w, h);
+
+          const midY = h / 2;
+
+          // Background subtle grid lines
+          ctx.strokeStyle = 'rgba(11, 122, 124, 0.05)';
+          ctx.lineWidth = 1;
+          for (let x = 0; x < w; x += 24) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, h);
+            ctx.stroke();
+          }
+
+          // Blip cycle repeats every 3.0 seconds
+          const cycleTime = elapsed % 3.0; // 0 to 3
+          // Pulse beam sweeps across from left to right over 3 seconds
+          const sweepX = (cycleTime / 3.0) * w;
+
+          ctx.strokeStyle = '#0B7A7C';
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+
+          for (let x = 0; x < w; x += 2) {
+            let y = midY;
+
+            // Blip waveform occurs around middle of canvas (x between w*0.42 and w*0.58)
+            const blipCenter = w * 0.5;
+            const distFromBlip = x - blipCenter;
+
+            // Only show blip spike if sweep has passed this point in current cycle
+            if (cycleTime > 1.2 && cycleTime < 2.2) {
+              if (Math.abs(distFromBlip) < 36) {
+                // P-Q-R-S-T wave simulation
+                const norm = distFromBlip / 36; // -1 to 1
+                if (norm > -0.6 && norm < -0.3) {
+                  y = midY - 6; // small P wave
+                } else if (norm >= -0.3 && norm < -0.1) {
+                  y = midY + 8; // Q drop
+                } else if (norm >= -0.1 && norm < 0.15) {
+                  y = midY - 32; // R spike
+                } else if (norm >= 0.15 && norm < 0.35) {
+                  y = midY + 12; // S drop
+                } else if (norm >= 0.35 && norm < 0.7) {
+                  y = midY - 10; // T wave
+                }
+              }
+            }
+
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+
+          // Glowing sweep point dot
+          const sweepY = midY;
+          ctx.fillStyle = '#2BB58A';
+          ctx.beginPath();
+          ctx.arc(sweepX, sweepY, 3.5, 0, Math.PI * 2);
+          ctx.fill();
+
+          requestAnimationFrame(render);
+        }
+
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            isRunning = e.isIntersecting;
+            if (isRunning) requestAnimationFrame(render);
+          });
+        }, { threshold: 0.1 });
+        io.observe(cvs);
+
+        requestAnimationFrame(render);
+      }
+    });
+  </script>
+</body>
+</html>

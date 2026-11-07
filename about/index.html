@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>About Us | Neuro Mates — Advancing Connected Neurological Care</title>
+  <meta name="description" content="Neuro Mates was founded to address the daily challenges faced by patients, families and healthcare providers living with neurological conditions.">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <style>
+    .about-hero {
+      padding-top: clamp(110px, 15vw, 160px);
+      padding-bottom: clamp(40px, 6vw, 72px);
+    }
+
+    /* 3-Photo Subtle Cross-Fade Collage with Ken Burns zoom (CSS-only 8s cycle) */
+    .ken-burns-collage {
+      position: relative;
+      width: 100%;
+      height: clamp(340px, 46vw, 540px);
+      border-radius: 32px;
+      overflow: hidden;
+      margin-top: clamp(32px, 5vw, 48px);
+      box-shadow: 0 24px 60px rgba(14,59,67,0.1);
+      background: #0B3A44;
+    }
+    .kb-slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      animation: kenBurnsCycle 24s infinite linear;
+    }
+    .kb-slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      animation: kenBurnsCycle 24s infinite linear;
+    }
+    .kb-slide:nth-child(1) {
+      animation-delay: 0s;
+    }
+    .kb-slide:nth-child(2) {
+      animation-delay: 8s;
+    }
+    .kb-slide:nth-child(3) {
+      animation-delay: 16s;
+    }
+
+    @keyframes kenBurnsCycle {
+      0% {
+        opacity: 0;
+        transform: scale(1) translate(0, 0);
+      }
+      4% {
+        opacity: 1;
+      }
+      30% {
+        opacity: 1;
+      }
+      34% {
+        opacity: 0;
+        transform: scale(1.08) translate(-1%, -1%);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.08) translate(-1%, -1%);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .kb-slide {
+        animation: none;
+        opacity: 0;
+      }
+      .kb-slide:first-child {
+        opacity: 1;
+      }
+    }
+
+    .collage-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(14,59,67,0.15) 0%, rgba(14,59,67,0.45) 100%);
+      pointer-events: none;
+    }
+    .collage-badge {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      background: rgba(14,59,67,0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: #FFFFFF;
+      padding: 9px 20px;
+      border-radius: 99px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      z-index: 5;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    /* Alternating text and image sections */
+    .alternating-wrap {
+      padding: clamp(48px, 8vw, 96px) 0;
+    }
+    .alternating-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(40px, 7vw, 72px);
+      align-items: center;
+      padding: clamp(44px, 7vw, 80px) 0;
+      border-bottom: 1px solid rgba(14,59,67,0.08);
+    }
+    .alternating-row:last-child {
+      border-bottom: none;
+    }
+    .alternating-row.reverse .alternating-col-text {
+      order: 2;
+    }
+    .alternating-row.reverse .alternating-col-media {
+      order: 1;
+    }
+
+    .about-image-card {
+      position: relative;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 20px 48px rgba(14,59,67,0.08);
+      border: 1px solid rgba(14,59,67,0.08);
+      background: #FFFFFF;
+    }
+    .about-image-card img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.8s var(--e);
+    }
+    .about-image-card:hover img {
+      transform: scale(1.03);
+    }
+
+    /* Relationship Diagram Box */
+    .diagram-panel {
+      background: linear-gradient(180deg, #FFFFFF, #EDF7F5);
+      border-radius: 32px;
+      border: 1px solid rgba(14,59,67,0.08);
+      box-shadow: 0 20px 50px rgba(14,59,67,0.05);
+      padding: clamp(28px, 5vw, 48px);
+      margin-top: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .diagram-canvas-wrap {
+      width: 100%;
+      height: clamp(340px, 50vw, 460px);
+      position: relative;
+    }
+    #relationship-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Medical Professionals List */
+    .physician-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-top: 28px;
+    }
+    .physician-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(14,59,67,0.08);
+      border-radius: 22px;
+      padding: 26px 24px;
+      box-shadow: 0 10px 28px rgba(14,59,67,0.03);
+      position: relative;
+    }
+    .physician-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 24px;
+      right: 24px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--te), var(--aq));
+      border-radius: 0 0 4px 4px;
+    }
+    .physician-name {
+      font-family: var(--fd);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .physician-role {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--te);
+      letter-spacing: 0.04em;
+    }
+
+    /* Four Focused Care Areas */
+    .care-areas-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 36px;
+    }
+    .care-focus-card {
+      background: #FFFFFF;
+      border-radius: 24px;
+      padding: clamp(24px, 4vw, 36px);
+      border: 1px solid rgba(14,59,67,0.08);
+      box-shadow: 0 12px 32px rgba(14,59,67,0.03);
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--dur-ui) var(--sp), box-shadow var(--dur-ui);
+    }
+    .care-focus-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 45px rgba(14,59,67,0.08);
+    }
+    .care-focus-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: var(--care-col, var(--te));
+    }
+    .care-focus-title {
+      font-family: var(--fd);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .alternating-row, .alternating-row.reverse {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding: 40px 0;
+      }
+      .alternating-row.reverse .alternating-col-text {
+        order: 1;
+      }
+      .alternating-row.reverse .alternating-col-media {
+        order: 2;
+      }
+      .about-image-card img {
+        height: 280px;
+      }
+      .care-areas-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="care"></div>
+  <nav id="nav"></nav>
+
+  <main id="main-content">
+    <!-- Hero Section with Breadcrumb & Exact Copy -->
+    <header class="hero about-hero">
+      <div class="w">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="sep">/</span>
+          <span class="current">About Us</span>
+        </nav>
+        <span class="ey">ABOUT US</span>
+        <h1>Advancing connected care for <em>neurological health</em>.</h1>
+        <p class="lead">Neuro Mates was founded to address the daily challenges faced by patients, families and healthcare providers living with neurological conditions.</p>
+
+        <!-- 3-Photo Subtle Cross-Fade Collage with Ken Burns zoom (8s cycle) -->
+        <div class="ken-burns-collage" aria-label="Caregiver and patient support photography collage">
+          <img class="kb-slide" src="../assets/images/page_5_Image-7572533686.jpg" alt="Patient and caregiver sitting together in outdoor park setting">
+          <img class="kb-slide" src="../assets/images/page_10_Image-7888911063.jpg" alt="Wearable location safety device on patient's arm">
+          <img class="kb-slide" src="../assets/images/page_15_Image-8784015711.jpg" alt="Continuous EEG sensing headband for neurological monitoring">
+          <div class="collage-overlay"></div>
+          <div class="collage-badge">Care Beyond The Clinic</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Alternating Text & Image Sections -->
+    <section class="alternating-wrap" style="background:#FFFFFF;border-top:1px solid rgba(14,59,67,0.06);">
+      <div class="w">
+        <!-- Section 1: The Challenge -->
+        <div class="alternating-row">
+          <div class="alternating-col-text">
+            <span class="ey">THE REALITY</span>
+            <h2>The challenge</h2>
+            <p class="body-text" style="font-size:1.18rem;line-height:1.75;margin-top:18px;">
+              Neurological conditions require continuous attention, yet most care happens during short clinic visits. Families often bear the burden of monitoring with limited tools.
+            </p>
+          </div>
+          <div class="alternating-col-media">
+            <div class="about-image-card">
+              <img src="../assets/images/the-challenge-reality.jpg" alt="The Reality: Neurological care challenges outside short clinic visits" loading="lazy" style="width:100%;height:auto;display:block;border-radius:24px;box-shadow:0 18px 48px rgba(14,59,67,0.12);">
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Our Solution -->
+        <div class="alternating-row reverse">
+          <div class="alternating-col-text">
+            <span class="ey">OUR APPROACH</span>
+            <h2>Our solution</h2>
+            <p class="body-text" style="font-size:1.18rem;line-height:1.75;margin-top:18px;">
+              Neuro Mates bridges this gap by combining wearable sensing, IoT connectivity and an intelligent platform to make monitoring continuous, accessible and collaborative.
+            </p>
+          </div>
+          <div class="alternating-col-media">
+            <div class="about-image-card">
+              <img src="../assets/images/page_10_Image-7888911063.jpg" alt="Intelligent connected wearable safety hardware" loading="lazy">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Self-Drawing 2D Canvas Relationship Diagram -->
+    <section style="background:var(--bg);padding:clamp(60px, 9vw, 100px) 0;">
+      <div class="w">
+        <span class="ey">ECOSYSTEM ARCHITECTURE</span>
+        <h2>How the care ecosystem connects.</h2>
+        <p class="lead">A collaborative relationship uniting Patient, Caretaker, Doctor, and Admin around the central Neuro Mates Care Platform.</p>
+
+        <div class="diagram-panel" id="diagram-trigger" style="padding:clamp(20px, 3.5vw, 36px);background:#FFFFFF;border-radius:32px;box-shadow:0 24px 64px rgba(14,59,67,0.08);border:1px solid rgba(14,59,67,0.06);">
+          <div class="eco-stage-container" style="position:relative;width:100%;max-width:980px;margin:0 auto;border-radius:24px;overflow:hidden;box-shadow:0 20px 50px rgba(14,59,67,0.12);background:#EBF5F9;">
+            <img src="../assets/images/ecosystem-architecture-live.jpg" alt="Neuro Mates Ecosystem Architecture: Patient, Caretaker, Doctor, and Admin around central Neuro Mates Platform" style="width:100%;height:auto;display:block;">
+            <canvas id="relationship-canvas" aria-label="Live animated data signals connecting Patient, Caretaker, Doctor, and Admin" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"></canvas>
+            <div class="eco-live-badge" style="position:absolute;left:20px;bottom:20px;background:rgba(14,59,67,0.92);backdrop-filter:blur(10px);color:#FFFFFF;font:600 0.82rem var(--fb);padding:8px 18px;border-radius:99px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 18px rgba(0,0,0,0.22);letter-spacing:0.02em;">
+              <span class="live-pulse-dot" style="width:9px;height:9px;border-radius:50%;background:#5BE7C4;box-shadow:0 0 10px #5BE7C4;display:inline-block;"></span>
+              <span id="eco-telemetry-text">Telemetry Streaming: Patient Wearable active · Continuous Monitoring</span>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;flex-wrap:wrap;gap:12px;">
+            <span class="demo-tag">Illustration, not real patient data</span>
+            <span style="font-size:0.85rem;color:var(--mu);">Dynamic role-based telemetry &amp; bi-directional communication</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Guided by Medical Professionals -->
+    <section style="background:#FFFFFF;border-top:1px solid rgba(14,59,67,0.06);padding:clamp(60px, 9vw, 100px) 0;">
+      <div class="w">
+        <span class="ey">CLINICAL INPUT</span>
+        <h2>Guided by medical professionals</h2>
+        <p class="lead">Neuro Mates is developed in ongoing consultation with experienced medical specialists to ensure scientific grounding, clinical relevance and responsible innovation.</p>
+
+        <div class="physician-grid">
+          <div class="physician-card">
+            <div class="physician-name">Dr. Kirit Shukla</div>
+            <div class="physician-role">Neuro Physician</div>
+          </div>
+          <div class="physician-card">
+            <div class="physician-name">Dr. Nishit Patel</div>
+            <div class="physician-role">Neuro Physician</div>
+          </div>
+          <div class="physician-card">
+            <div class="physician-name">Dr. G. B. Yadav</div>
+            <div class="physician-role">MS, PhD</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Four Focused Care Areas -->
+    <section style="padding:clamp(60px, 9vw, 100px) 0;">
+      <div class="w">
+        <span class="ey">CARE DOMAINS</span>
+        <h2>Four focused care areas</h2>
+        <p class="lead">Disease-specific technology designed around the unique demands of each neurological condition.</p>
+
+        <div class="care-areas-container">
+          <!-- Parkinson's -->
+          <div class="care-focus-card" style="--care-col:#2F7FE0;">
+            <div class="care-focus-title">Parkinson's Care</div>
+            <p class="body-text">Continuous movement and tremor monitoring, fall alerts, and guided motor rehabilitation activities.</p>
+          </div>
+
+          <!-- Alzheimer's -->
+          <div class="care-focus-card" style="--care-col:#7C6CFF;">
+            <div class="care-focus-title">Alzheimer's Care</div>
+            <p class="body-text">Continuous location tracking, 1 km safe-zone geofence alerts, daily routine reminders and cognitive memory quizzes.</p>
+          </div>
+
+          <!-- Epilepsy -->
+          <div class="care-focus-card" style="--care-col:#2BB58A;">
+            <div class="care-focus-title">Epilepsy Care</div>
+            <p class="body-text">Continuous brain-activity monitoring for abnormal EEG signals that may indicate a seizure, with emergency caregiver alerts.</p>
+          </div>
+
+          <!-- Paralysis -->
+          <div class="care-focus-card" style="--care-col:#F5A623;">
+            <div class="care-focus-title">Paralysis Care</div>
+            <p class="body-text">Muscle-signal sensors and facial-expression input powering interactive, game-based motor rehabilitation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page-Ending CTA -->
+    <section class="cta" id="global-cta"></section>
+  </main>
+
+  <footer id="global-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="../assets/js/shared.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('nav').innerHTML = window.NeuroShared.getNavHTML('about');
+      document.getElementById('global-cta').innerHTML = window.NeuroShared.getCTAHTML();
+      document.getElementById('global-footer').innerHTML = window.NeuroShared.getFooterHTML();
+
+      // Live Animated 2D Telemetry Overlay on Ecosystem Architecture
+      const cvs = document.getElementById('relationship-canvas');
+      const telemetryText = document.getElementById('eco-telemetry-text');
+      if (cvs) {
+        const ctx = cvs.getContext('2d');
+        let isRunning = true;
+        let t = 0;
+
+        // 4 Portal Telemetry status updates cycling every 2 seconds
+        const telemetryStates = [
+          "Patient Wearable Active · Continuous vitals & EEG telemetry streaming",
+          "Caretaker Synchronized · Automated safe-zone & medication alerts active",
+          "Doctor Clinical Telemetry · Long-term neurological trend reports accessible",
+          "Admin Portal Operational · Device network security & status 100%"
+        ];
+        let roleIdx = 0;
+        setInterval(() => {
+          roleIdx = (roleIdx + 1) % telemetryStates.length;
+          if (telemetryText) telemetryText.textContent = telemetryStates[roleIdx];
+        }, 2000);
+
+        function resize() {
+          cvs.width = cvs.offsetWidth;
+          cvs.height = cvs.offsetHeight;
+        }
+        window.addEventListener('resize', resize, { passive: true });
+        resize();
+
+        // 8 orbiting telemetry packets along circular connectome
+        const packets = Array.from({ length: 8 }, (_, i) => ({
+          phase: (i / 8),
+          speed: 0.11 + (i % 2) * 0.04,
+          color: i % 2 === 0 ? '#5BE7C4' : '#6EC1F0'
+        }));
+
+        function drawLiveEcosystem() {
+          if (!isRunning) return;
+          const w = cvs.width;
+          const h = cvs.height;
+          ctx.clearRect(0, 0, w, h);
+
+          const cx = w * 0.504;
+          const cy = h * 0.495;
+          const orbitR = Math.min(w * 0.355, h * 0.375);
+
+          t += 0.016;
+
+          // 1. Central Radar Pulse emanating from Neuro Mates Platform
+          const pulseR = ((t * 0.5) % 1) * orbitR * 1.15;
+          const pulseAlpha = Math.max(0, 1 - pulseR / (orbitR * 1.15)) * 0.4;
+          ctx.save();
+          ctx.strokeStyle = `rgba(91, 231, 196, ${pulseAlpha})`;
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.arc(cx, cy, pulseR, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.restore();
+
+          // 2. Glowing telemetry packets traveling along the circular orbit ring
+          packets.forEach(p => {
+            const angle = (t * p.speed + p.phase) * Math.PI * 2;
+            const px = cx + Math.cos(angle) * orbitR;
+            const py = cy + Math.sin(angle) * orbitR;
+
+            ctx.save();
+            ctx.shadowColor = p.color;
+            ctx.shadowBlur = 10;
+            ctx.fillStyle = '#FFFFFF';
+            ctx.beginPath();
+            ctx.arc(px, py, 3.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(px, py, 2.2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          });
+
+          // 3. Spoke signals pulsing between central platform and 4 portals
+          // Angles: Top (-90°), Right (0°), Bottom (90°), Left (180°)
+          const spokeAngles = [-Math.PI / 2, 0, Math.PI / 2, Math.PI];
+          spokeAngles.forEach((ang, i) => {
+            const spokeProgress = ((t * 0.8 + i * 0.25) % 1.0);
+            const rSpoke = orbitR * 0.86;
+            const sx = cx + Math.cos(ang) * (rSpoke * spokeProgress);
+            const sy = cy + Math.sin(ang) * (rSpoke * spokeProgress);
+
+            ctx.save();
+            ctx.fillStyle = i === roleIdx ? '#5BE7C4' : 'rgba(110, 193, 240, 0.85)';
+            ctx.shadowColor = ctx.fillStyle;
+            ctx.shadowBlur = 8;
+            ctx.beginPath();
+            ctx.arc(sx, sy, 3.2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          });
+
+          requestAnimationFrame(drawLiveEcosystem);
+        }
+
+        const io = new IntersectionObserver(entries => {
+          entries.forEach(e => {
+            isRunning = e.isIntersecting;
+            if (isRunning) requestAnimationFrame(drawLiveEcosystem);
+          });
+        }, { threshold: 0.1 });
+        io.observe(cvs);
+
+        requestAnimationFrame(drawLiveEcosystem);
+      }
+    });</script>
+</body>
+</html>

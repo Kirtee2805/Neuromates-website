@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Technology Overview | Neuro Mates — Connected Neurological Care</title>
+  <meta name="description" content="Neuro Mates combines hardware, IoT connectivity, AI and machine learning with a connected software platform to support neurological monitoring and rehabilitation.">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <style>
+    .tech-hero {
+      padding-top: clamp(110px, 15vw, 160px);
+      padding-bottom: clamp(40px, 6vw, 64px);
+    }
+
+    /* Clean, Premium Architecture Section (Zero GPU/CPU Lag) */
+    .arch-section {
+      padding: clamp(48px, 8vw, 84px) 0 clamp(64px, 10vw, 110px);
+    }
+    .arch-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: clamp(36px, 6vw, 64px);
+      align-items: start;
+    }
+
+    /* Technical Architecture Diagram Box */
+    .arch-diagram-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(14,59,67,0.08);
+      border-radius: 28px;
+      padding: clamp(28px, 4.5vw, 44px);
+      box-shadow: 0 16px 40px rgba(14,59,67,0.04);
+      position: sticky;
+      top: 100px;
+    }
+    .arch-diagram-title {
+      font-family: var(--fd);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .arch-diagram-desc {
+      font-size: 0.92rem;
+      color: var(--mu);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    /* Architectural Visual Stack */
+    .stack-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+    }
+    .stack-tier {
+      border-radius: 16px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1.5px solid transparent;
+      transition: transform var(--dur-micro) var(--e), box-shadow var(--dur-micro) var(--e), border-color var(--dur-micro);
+      position: relative;
+    }
+    .stack-tier:hover {
+      transform: translateX(4px);
+      box-shadow: 0 8px 22px rgba(14,59,67,0.08);
+    }
+    .tier-platform {
+      background: rgba(245, 166, 35, 0.08);
+      border-color: rgba(245, 166, 35, 0.35);
+    }
+    .tier-intel {
+      background: rgba(43, 181, 138, 0.08);
+      border-color: rgba(43, 181, 138, 0.35);
+    }
+    .tier-connect {
+      background: rgba(124, 108, 255, 0.08);
+      border-color: rgba(124, 108, 255, 0.35);
+    }
+    .tier-sensing {
+      background: rgba(110, 193, 240, 0.1);
+      border-color: rgba(110, 193, 240, 0.35);
+    }
+
+    .tier-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .tier-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      font-weight: 700;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(14,59,67,0.08);
+    }
+    .tier-label {
+      font-weight: 700;
+      font-size: 0.98rem;
+      color: var(--ink);
+    }
+    .tier-badge {
+      font-family: var(--fb);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: #FFFFFF;
+      color: var(--ink);
+      box-shadow: 0 2px 6px rgba(14,59,67,0.06);
+    }
+
+    /* Stack Data Flow Connectors */
+    .stack-flow-arrow {
+      display: flex;
+      justify-content: center;
+      color: var(--te);
+      opacity: 0.6;
+      margin: -4px 0;
+    }
+
+    /* Layer Breakdown Cards */
+    .layer-cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .layer-item-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(14,59,67,0.08);
+      border-radius: 22px;
+      padding: clamp(24px, 4vw, 32px);
+      box-shadow: 0 10px 28px rgba(14,59,67,0.03);
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--dur-micro) var(--e), box-shadow var(--dur-micro) var(--e), border-color var(--dur-micro);
+    }
+    .layer-item-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 34px rgba(14,59,67,0.07);
+      border-color: rgba(11,122,124,0.25);
+    }
+    .layer-item-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: var(--layer-accent, var(--te));
+    }
+    .layer-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .layer-card-title {
+      font-family: var(--fd);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0;
+    }
+    .layer-card-tag {
+      font-family: var(--fb);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 99px;
+      background: rgba(14,59,67,0.06);
+      color: var(--mu);
+    }
+    .layer-card-body {
+      font-size: 1.02rem;
+      line-height: 1.6;
+      color: var(--mu);
+      margin: 0;
+    }
+
+    /* Platform Statement Section */
+    .statement-section {
+      background: var(--dark-teal-grad);
+      color: #FFFFFF;
+      text-align: center;
+      padding: clamp(70px, 10vw, 110px) 0;
+      position: relative;
+    }
+    .statement-section h2 {
+      color: #FFFFFF;
+      max-width: 24ch;
+      margin: 0 auto;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+    }
+    .statement-section p {
+      color: rgba(255,255,255,0.88);
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      max-width: 50ch;
+      margin: 22px auto 0;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 900px) {
+      .arch-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+      .arch-diagram-card {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Care Line -->
+  <div id="care"></div>
+
+  <!-- Shared Navbar -->
+  <nav id="nav"></nav>
+
+  <main id="main-content">
+    <!-- Hero Section -->
+    <header class="hero tech-hero">
+      <div class="w">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="sep">/</span>
+          <span class="current">Technology</span>
+        </nav>
+        <span class="ey">TECHNOLOGY</span>
+        <h1>Connecting sensing, <em>intelligence and care</em>.</h1>
+        <p class="lead">Neuro Mates combines hardware, IoT connectivity, AI and machine learning with a connected software platform to support neurological monitoring and rehabilitation.</p>
+      </div>
+    </header>
+
+    <!-- Four Architectural Layers: Clean Technical Hierarchy -->
+    <section class="arch-section" id="tech-layers" aria-label="Four architectural layers of Neuro Mates">
+      <div class="w arch-grid">
+        <!-- Clean Technical Architecture Stack Diagram -->
+        <div class="arch-diagram-card">
+          <div class="arch-diagram-title">System Architecture</div>
+          <div class="arch-diagram-desc">The four interconnected layers powering the Neuro Mates ecosystem from physical sensing to clinical action.</div>
+
+          <div class="stack-visual">
+            <!-- Layer 4: Platform -->
+            <div class="stack-tier tier-platform">
+              <div class="tier-info">
+                <span class="tier-num" style="color:#F5A623;">4</span>
+                <span class="tier-label">Neuro Mates Care Platform</span>
+              </div>
+              <span class="tier-badge">Connecting Layer</span>
+            </div>
+
+            <div class="stack-flow-arrow">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="7 13 12 18 17 13"></polyline>
+                <polyline points="7 6 12 11 17 6"></polyline>
+              </svg>
+            </div>
+
+            <!-- Layer 3: Intelligence -->
+            <div class="stack-tier tier-intel">
+              <div class="tier-info">
+                <span class="tier-num" style="color:#2BB58A;">3</span>
+                <span class="tier-label">Intelligence</span>
+              </div>
+              <span class="tier-badge">AI / ML</span>
+            </div>
+
+            <div class="stack-flow-arrow">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="7 13 12 18 17 13"></polyline>
+                <polyline points="7 6 12 11 17 6"></polyline>
+              </svg>
+            </div>
+
+            <!-- Layer 2: Connectivity -->
+            <div class="stack-tier tier-connect">
+              <div class="tier-info">
+                <span class="tier-num" style="color:#7C6CFF;">2</span>
+                <span class="tier-label">Connectivity</span>
+              </div>
+              <span class="tier-badge">IoT Core</span>
+            </div>
+
+            <div class="stack-flow-arrow">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="7 13 12 18 17 13"></polyline>
+                <polyline points="7 6 12 11 17 6"></polyline>
+              </svg>
+            </div>
+
+            <!-- Layer 1: Sensing -->
+            <div class="stack-tier tier-sensing">
+              <div class="tier-info">
+                <span class="tier-num" style="color:#2F7FE0;">1</span>
+                <span class="tier-label">Sensing</span>
+              </div>
+              <span class="tier-badge">Hardware</span>
+            </div>
+          </div>
+
+          <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(14,59,67,0.08);display:flex;align-items:center;justify-content:space-between;">
+            <span class="demo-tag" style="margin:0;">Illustration, not real patient data</span>
+            <span style="font-size:0.8rem;color:var(--mu);font-weight:600;">Continuous Telemetry</span>
+          </div>
+        </div>
+
+        <!-- Layer Breakdown Cards -->
+        <div class="layer-cards-list">
+          <!-- Layer 4: Neuro Mates Care Platform -->
+          <div class="layer-item-card" style="--layer-accent:#F5A623;">
+            <div class="layer-card-header">
+              <h3 class="layer-card-title">Neuro Mates Care Platform</h3>
+              <span class="layer-card-tag">Connecting Layer</span>
+            </div>
+            <p class="layer-card-body">The software platform is the connecting layer between disease-specific devices, patient information, care interactions and role-based access (Patient, Caretaker, Doctor and Admin portals).</p>
+          </div>
+
+          <!-- Layer 3: Intelligence -->
+          <div class="layer-item-card" style="--layer-accent:#2BB58A;">
+            <div class="layer-card-header">
+              <h3 class="layer-card-title">Intelligence</h3>
+              <span class="layer-card-tag">AI / ML</span>
+            </div>
+            <p class="layer-card-body">AI and machine learning for patient-specific monitoring and analysis.</p>
+          </div>
+
+          <!-- Layer 2: Connectivity -->
+          <div class="layer-item-card" style="--layer-accent:#7C6CFF;">
+            <div class="layer-card-header">
+              <h3 class="layer-card-title">Connectivity</h3>
+              <span class="layer-card-tag">IoT Core</span>
+            </div>
+            <p class="layer-card-body">IoT-based communication between devices and the platform.</p>
+          </div>
+
+          <!-- Layer 1: Sensing -->
+          <div class="layer-item-card" style="--layer-accent:#2F7FE0;">
+            <div class="layer-card-header">
+              <h3 class="layer-card-title">Sensing</h3>
+              <span class="layer-card-tag">Wearable Hardware</span>
+            </div>
+            <p class="layer-card-body">GPS, movement sensors, EEG and other disease-specific sensing technologies.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Platform is the Point Statement Section -->
+    <section class="statement-section">
+      <div class="w">
+        <span class="ey" style="color:var(--aq);">CONNECTED CARE ARCHITECTURE</span>
+        <h2>The platform is the point.</h2>
+        <p>Hardware sensing is only one layer. The Neuro Mates Platform receives and organises relevant information and makes the appropriate information available to the correct role: Patient, Caretaker, Doctor or Admin.</p>
+        <div class="bt-group" style="justify-content:center;margin-top:36px;">
+          <a class="btn" href="connected-care-platform.html" style="background:#FFFFFF;color:var(--te);">Explore the Care Platform →</a>
+          <a class="b2" href="connected-devices.html" style="border-color:rgba(255,255,255,0.6);color:#FFFFFF;">View Connected Devices →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page-Ending Call to Action -->
+    <section class="cta" id="global-cta"></section>
+  </main>
+
+  <!-- Shared Footer -->
+  <footer id="global-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="../assets/js/shared.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Inject Navbar, CTA & Footer
+      const navEl = document.getElementById('nav');
+      if (navEl) navEl.innerHTML = window.NeuroShared.getNavHTML('technology');
+      
+      const ctaEl = document.getElementById('global-cta');
+      if (ctaEl) ctaEl.innerHTML = window.NeuroShared.getCTAHTML();
+
+      const footerEl = document.getElementById('global-footer');
+      if (footerEl) footerEl.innerHTML = window.NeuroShared.getFooterHTML();
+    });
+  </script>
+</body>
+</html>

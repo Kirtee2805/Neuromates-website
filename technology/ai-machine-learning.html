@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>AI &amp; Machine Learning | Neuro Mates</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <style>
+    .ai-hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 58vh;
+      display: flex;
+      align-items: center;
+    }
+
+    #hero-neural-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: auto;
+    }
+
+    .ai-hero .w {
+      position: relative;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .ai-hero a,
+    .ai-hero button {
+      pointer-events: auto;
+    }
+
+    /* Live Canvas Rows */
+    .ai-row {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: clamp(36px, 6vw, 64px);
+      align-items: center;
+      padding: clamp(48px, 7vw, 88px) 0;
+      border-bottom: 1px solid rgba(14, 59, 67, 0.08);
+    }
+
+    .ai-row:nth-child(even) {
+      grid-template-columns: 1fr 1.15fr;
+    }
+
+    .ai-row:nth-child(even) .ai-visual-col {
+      order: 2;
+    }
+
+    .ai-visual-col {
+      position: relative;
+    }
+
+    .ai-live-card {
+      width: 100%;
+      border-radius: 24px;
+      background: #FFFFFF;
+      border: 1px solid rgba(14, 59, 67, 0.08);
+      box-shadow: 0 18px 48px rgba(14, 59, 67, 0.08);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.4s var(--e), box-shadow 0.4s var(--e);
+    }
+
+    .ai-live-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 60px rgba(14, 59, 67, 0.12);
+    }
+
+    .ai-live-media {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      background: #F4F6F6;
+    }
+
+    .ai-live-media img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.6s var(--e);
+    }
+
+    .ai-live-card:hover .ai-live-media img {
+      transform: scale(1.02);
+    }
+
+    /* Live Telemetry Animated Badges */
+    .ai-live-pill {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(14, 59, 67, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 99px;
+      color: #FFFFFF;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+      z-index: 5;
+    }
+
+    .ai-live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+      animation: aiPulse 1.8s infinite ease-in-out;
+    }
+
+    @keyframes aiPulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.35;
+        transform: scale(1.35);
+      }
+    }
+
+    /* Animated Scan Line sweeping over live telemetry graphs */
+    .ai-scan-sweep {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      overflow: hidden;
+    }
+
+    .ai-scan-sweep::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent 5%, rgba(91, 231, 196, 0.85) 50%, transparent 95%);
+      box-shadow: 0 0 16px rgba(91, 231, 196, 0.7);
+      animation: aiScanMove 3.8s ease-in-out infinite;
+    }
+
+    @keyframes aiScanMove {
+      0% {
+        top: 0%;
+        opacity: 0;
+      }
+
+      15% {
+        opacity: 0.85;
+      }
+
+      85% {
+        opacity: 0.85;
+      }
+
+      100% {
+        top: 100%;
+        opacity: 0;
+      }
+    }
+
+    /* Live Telemetry Caption Bar */
+    .ai-card-footer {
+      padding: 14px 20px;
+      background: #FFFFFF;
+      border-top: 1px solid rgba(14, 59, 67, 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .ai-card-footer span {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: #0E3B43;
+    }
+
+    .ai-card-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: rgba(14, 59, 67, 0.06);
+      color: #0B7A7C;
+    }
+
+    /* Word-by-word scrub section */
+    .responsible-section {
+      background: linear-gradient(180deg, #EBF5F3, var(--bg));
+      padding: clamp(80px, 12vw, 140px) 0;
+      text-align: center;
+    }
+
+    .responsible-section .w-narrow {
+      max-width: 820px;
+    }
+
+    .scrub-target {
+      font-family: var(--fd);
+      font-size: clamp(1.8rem, 3.6vw, 2.9rem);
+      line-height: 1.45;
+      font-weight: 700;
+      margin-top: 24px;
+      word-spacing: 0.1em;
+    }
+
+    .scrub-word {
+      display: inline-block;
+      margin-right: 0.35em;
+      color: rgba(14, 59, 67, 0.28);
+      transition: color 0.15s ease-out;
+    }
+
+    @media(max-width: 900px) {
+
+      .ai-row,
+      .ai-row:nth-child(even) {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .ai-row:nth-child(even) .ai-visual-col {
+        order: 0;
+      }
+    }
+
+    @media(max-width: 600px) {
+      .ai-live-pill {
+        top: 10px;
+        left: 10px;
+        padding: 4px 10px;
+        font-size: 0.65rem;
+      }
+
+      .ai-card-footer {
+        padding: 12px 14px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .ai-card-footer span {
+        font-size: 0.78rem;
+        line-height: 1.35;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="care"></div>
+  <nav id="nav"></nav>
+
+  <main id="main-content">
+    <!-- Hero with Interactive Neural Canvas -->
+    <header class="hero ai-hero">
+      <canvas id="hero-neural-canvas" aria-label="Interactive neural network particle simulation"></canvas>
+      <div class="w">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="index.html">Technology</a>
+          <span class="sep">/</span>
+          <span class="current">AI &amp; Machine Learning</span>
+        </nav>
+        <span class="ey">AI &amp; MACHINE LEARNING</span>
+        <h1>Intelligence designed around <em>patient information</em>.</h1>
+      </div>
+    </header>
+
+    <!-- Four Live Mini-Visual Canvas Rows -->
+    <section class="ai-applications" style="padding-top:20px;">
+      <div class="w">
+        <!-- 1. Movement Monitoring (1st Photo) -->
+        <div class="ai-row">
+          <div class="ai-visual-col">
+            <div class="ai-live-card">
+              <div class="ai-live-media">
+                <span class="ai-live-pill"><span class="ai-live-dot"
+                    style="background:#2F7FE0;box-shadow:0 0 10px #2F7FE0;"></span>Live Motion Analysis</span>
+                <div class="ai-scan-sweep"></div>
+                <img src="../assets/images/ai-movement-monitoring.jpg"
+                  alt="Wearable motion sensor, abnormal movement detection and automatic WhatsApp family alert"
+                  loading="lazy">
+              </div>
+              <div class="ai-card-footer">
+                <span>Wearable motion sensor &bull; Abnormal movement detected &bull; Alert to family</span>
+                <span class="ai-card-badge" style="background:rgba(47,127,224,0.1);color:#2F7FE0;">Live Telemetry</span>
+              </div>
+            </div>
+          </div>
+          <div class="ai-info-col">
+            <span class="ey" style="color:var(--parkinsons-1);">MOVEMENT MONITORING</span>
+            <h2>Movement</h2>
+            <p class="body-text">Movement information can be analysed for abnormal activity such as tremors or falls.
+            </p>
+          </div>
+        </div>
+
+        <!-- 2. Brain Activity Monitoring (2nd Photo) -->
+        <div class="ai-row">
+          <div class="ai-visual-col">
+            <div class="ai-live-card">
+              <div class="ai-live-media">
+                <span class="ai-live-pill"><span class="ai-live-dot"
+                    style="background:#2BB58A;box-shadow:0 0 10px #2BB58A;"></span>Continuous EEG Telemetry</span>
+                <div class="ai-scan-sweep" style="animation-delay:1.2s;"></div>
+                <img src="../assets/images/ai-brain-monitoring.jpg"
+                  alt="Continuous brain-activity monitoring headband with five brain-wave bands: Delta, Theta, Alpha, Beta, Gamma"
+                  loading="lazy">
+              </div>
+              <div class="ai-card-footer">
+                <span>Brain-activity monitoring headband &bull; 5 brain-wave bands</span>
+                <span class="ai-card-badge" style="background:rgba(43,181,138,0.1);color:#2BB58A;">Continuous EEG</span>
+              </div>
+            </div>
+          </div>
+          <div class="ai-info-col">
+            <span class="ey" style="color:var(--epilepsy-1);">BRAIN ACTIVITY MONITORING</span>
+            <h2>Brain activity</h2>
+            <p class="body-text">Brain-activity information can be monitored for abnormal EEG signals that may indicate
+              a seizure.</p>
+          </div>
+        </div>
+
+        <!-- 3. Memory & Routine (3rd Photo) -->
+        <div class="ai-row">
+          <div class="ai-visual-col">
+            <div class="ai-live-card">
+              <div class="ai-live-media">
+                <span class="ai-live-pill"><span class="ai-live-dot"
+                    style="background:#7C6CFF;box-shadow:0 0 10px #7C6CFF;"></span>Routine &amp; Memory Generator</span>
+                <div class="ai-scan-sweep" style="animation-delay:2.4s;"></div>
+                <img src="../assets/images/ai-memory-routine.jpg"
+                  alt="Daily activity timeline and personalized memory recall questions generated from recorded activities"
+                  loading="lazy">
+              </div>
+              <div class="ai-card-footer">
+                <span>Daily activity timeline &bull; Memory recall questions created next day</span>
+                <span class="ai-card-badge" style="background:rgba(124,108,255,0.1);color:#7C6CFF;">Cognitive
+                  Support</span>
+              </div>
+            </div>
+          </div>
+          <div class="ai-info-col">
+            <span class="ey" style="color:var(--alzheimers-1);">MEMORY &amp; ROUTINE</span>
+            <h2>Daily activity</h2>
+            <p class="body-text">Daily activity information can support personalised memory-recall questions.</p>
+          </div>
+        </div>
+
+        <!-- 4. Interactive Rehabilitation (4th Photo) -->
+        <div class="ai-row">
+          <div class="ai-visual-col">
+            <div class="ai-live-card">
+              <div class="ai-live-media">
+                <span class="ai-live-pill"><span class="ai-live-dot"
+                    style="background:#F5A623;box-shadow:0 0 10px #F5A623;"></span>BioAmp EMG Active</span>
+                <div class="ai-scan-sweep" style="animation-delay:0.6s;"></div>
+                <img src="../assets/images/ai-interactive-rehab.jpg"
+                  alt="Interactive game-based physiotherapy rehabilitation with facial, hand and leg sensor feedback"
+                  loading="lazy">
+              </div>
+              <div class="ai-card-footer">
+                <span>Game-based rehabilitation &bull; Face, hand and leg exercise games</span>
+                <span class="ai-card-badge" style="background:rgba(245,166,35,0.1);color:#D48600;">Interactive
+                  Motor</span>
+              </div>
+            </div>
+          </div>
+          <div class="ai-info-col">
+            <span class="ey" style="color:var(--paralysis-1);">INTERACTIVE REHABILITATION</span>
+            <h2>Rehabilitation</h2>
+            <p class="body-text">Interactive rehabilitation can use patient movement and facial interaction.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Closing Section: Responsible Intelligence (Word-by-word scrub) -->
+    <section class="responsible-section" id="responsible-section">
+      <div class="w w-narrow">
+        <span class="ey">PATIENT SAFETY &amp; VALIDATION</span>
+        <h2>Responsible intelligence</h2>
+        <div class="scrub-target" id="scrub-text">
+          AI/ML performance can vary between patients. Patient-specific testing and improvement are important parts of
+          responsible development.
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="global-cta"></section>
+  </main>
+
+  <footer id="global-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <script src="../assets/js/shared.js"></script>
+  <script src="../assets/js/reveal.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('nav').innerHTML = window.NeuroShared.getNavHTML('technology');
+      document.getElementById('global-cta').innerHTML = window.NeuroShared.getCTAHTML();
+      document.getElementById('global-footer').innerHTML = window.NeuroShared.getFooterHTML();
+
+      // 1. Hero 2D Neural Particle Network reacting to cursor
+      const heroCvs = document.getElementById('hero-neural-canvas');
+      if (heroCvs) {
+        const ctx = heroCvs.getContext('2d');
+        let w = heroCvs.width = heroCvs.offsetWidth;
+        let h = heroCvs.height = heroCvs.offsetHeight;
+        let mouse = { x: w * 0.65, y: h * 0.45, active: false };
+
+        window.addEventListener('resize', () => {
+          w = heroCvs.width = heroCvs.offsetWidth;
+          h = heroCvs.height = heroCvs.offsetHeight;
+        });
+
+        heroCvs.addEventListener('mousemove', (e) => {
+          const rect = heroCvs.getBoundingClientRect();
+          mouse.x = e.clientX - rect.left;
+          mouse.y = e.clientY - rect.top;
+          mouse.active = true;
+        });
+        heroCvs.addEventListener('mouseleave', () => { mouse.active = false; });
+
+        const nodes = [];
+        const count = Math.min(48, Math.floor((w * h) / 16000));
+        for (let i = 0; i < count; i++) {
+          nodes.push({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            vx: (Math.random() - 0.5) * 0.6,
+            vy: (Math.random() - 0.5) * 0.6,
+            r: Math.random() * 2.5 + 2
+          });
+        }
+
+        function drawNeural() {
+          ctx.clearRect(0, 0, w, h);
+
+          // Update & draw links
+          for (let i = 0; i < nodes.length; i++) {
+            const p1 = nodes[i];
+            p1.x += p1.vx;
+            p1.y += p1.vy;
+            if (p1.x < 0 || p1.x > w) p1.vx *= -1;
+            if (p1.y < 0 || p1.y > h) p1.vy *= -1;
+
+            if (mouse.active) {
+              const dx = mouse.x - p1.x;
+              const dy = mouse.y - p1.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 140) {
+                p1.x += dx * 0.015;
+                p1.y += dy * 0.015;
+              }
+            }
+
+            for (let j = i + 1; j < nodes.length; j++) {
+              const p2 = nodes[j];
+              const dx = p1.x - p2.x;
+              const dy = p1.y - p2.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 120) {
+                const alpha = (1 - dist / 120) * 0.35;
+                ctx.strokeStyle = `rgba(11, 122, 124, ${alpha})`;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.stroke();
+              }
+            }
+
+            // Draw node
+            ctx.fillStyle = '#0B7A7C';
+            ctx.beginPath();
+            ctx.arc(p1.x, p1.y, p1.r, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          requestAnimationFrame(drawNeural);
+        }
+        drawNeural();
+      }
+
+      // 2. Live telemetry presentation active on official images
+      // 6. Responsible Intelligence: Word-by-word scroll-scrubbed text coloring
+      const scrubContainer = document.getElementById('scrub-text');
+      if (scrubContainer && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && !window.NeuroShared.isReducedMotion) {
+        const text = scrubContainer.textContent.trim();
+        const words = text.split(/\s+/);
+        scrubContainer.innerHTML = words.map(w => `<span class="scrub-word">${w}</span>`).join(' ');
+        const spans = scrubContainer.querySelectorAll('.scrub-word');
+
+        gsap.to(spans, {
+          color: '#0E3B43',
+          stagger: 0.08,
+          scrollTrigger: {
+            trigger: '#responsible-section',
+            start: 'top 75%',
+            end: 'bottom 45%',
+            scrub: 0.8
+          }
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>

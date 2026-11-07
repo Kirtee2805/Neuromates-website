@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Connected Care Platform | Neuro Mates</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <style>
+    .hub-section {
+      padding-top: clamp(120px, 14vw, 160px);
+      padding-bottom: clamp(64px, 10vw, 120px);
+      position: relative;
+      overflow: hidden;
+    }
+    .hub-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: clamp(36px, 6vw, 64px);
+      align-items: center;
+    }
+    .hub-canvas-wrapper {
+      position: relative;
+      width: 100%;
+      height: 480px;
+      border-radius: 32px;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.85) 0%, rgba(246,244,238,0.4) 75%);
+      box-shadow: 0 16px 40px rgba(14,59,67,0.06);
+      overflow: hidden;
+    }
+    #hub-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    /* HTML Projected Satellite Labels */
+    .satellite-label {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      font-family: var(--fb);
+      font-weight: 700;
+      font-size: 0.76rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: rgba(255,255,255,0.9);
+      color: var(--ink);
+      box-shadow: 0 4px 14px rgba(14,59,67,0.12);
+      pointer-events: none;
+      transition: transform 0.2s, background 0.2s, color 0.2s;
+      white-space: nowrap;
+      z-index: 10;
+    }
+    .satellite-label.highlight {
+      background: var(--te);
+      color: #FFFFFF;
+      transform: translate(-50%, -50%) scale(1.15);
+    }
+
+    /* Expanding Portal Accordion Panels */
+    .portals-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .portal-item {
+      background: #FFFFFF;
+      border: 1px solid rgba(14,59,67,0.08);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: border-color var(--dur-ui), box-shadow var(--dur-ui);
+    }
+    .portal-item.open {
+      border-color: var(--portal-color, var(--te));
+      box-shadow: 0 12px 30px rgba(14,59,67,0.08);
+    }
+    .portal-header {
+      width: 100%;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-align: left;
+      font-family: var(--fd);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--ink);
+      background: transparent;
+      transition: color 0.2s;
+    }
+    .portal-header:hover {
+      color: var(--te);
+    }
+    .portal-icon-indicator {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(14,59,67,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: var(--te);
+      transition: transform 0.3s;
+    }
+    .portal-item.open .portal-icon-indicator {
+      transform: rotate(180deg);
+      background: var(--portal-color, var(--te));
+      color: #FFFFFF;
+    }
+    .portal-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s var(--e), padding 0.3s;
+      padding: 0 24px;
+    }
+    .portal-item.open .portal-body {
+      max-height: 200px;
+      padding: 0 24px 24px;
+    }
+    .portal-body p {
+      margin: 0;
+      color: var(--mu);
+      font-size: 1.02rem;
+      line-height: 1.6;
+    }
+
+    /* Role-Based Access Section */
+    .role-access-section {
+      background: linear-gradient(180deg, var(--bg), #EDF7F5);
+      padding: clamp(70px, 10vw, 120px) 0;
+      text-align: center;
+    }
+    .role-access-section .w-narrow {
+      max-width: 780px;
+    }
+
+    @media(max-width: 960px) {
+      .hub-grid {
+        grid-template-columns: 1fr;
+      }
+      .hub-canvas-wrapper {
+        height: 380px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="care"></div>
+  <nav id="nav"></nav>
+
+  <main id="main-content">
+    <header class="hub-section">
+      <div class="w">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="index.html">Technology</a>
+          <span class="sep">/</span>
+          <span class="current">Connected Care Platform</span>
+        </nav>
+        <span class="ey">CONNECTED CARE PLATFORM</span>
+        <h1 style="max-width:20ch;">One connected platform for the <em>people involved in care</em>.</h1>
+
+        <div class="hub-grid" style="margin-top:48px;">
+          <!-- Clean Medical Architecture Diagram Container -->
+          <div class="hub-canvas-wrapper" id="hub-container" style="background:#FFFFFF;border:1px solid rgba(14,59,67,0.08);box-shadow:0 20px 50px rgba(14,59,67,0.08);padding:14px;display:flex;align-items:center;justify-content:center;position:relative;">
+            <img id="connected-platform-diagram" src="../assets/images/connected-care-diagram.svg" alt="Neuro Mates Connected Care Platform: Central Cloud Platform connecting Patient, Caretaker, Doctor, and Admin" style="width:100%;height:100%;max-height:460px;object-fit:contain;display:block;">
+            <div style="position:absolute;bottom:14px;left:18px;z-index:20;">
+              <span class="demo-tag">Illustration, not real patient data</span>
+            </div>
+          </div>
+
+          <!-- Expanding Portal Panels (Accordion) -->
+          <div class="portals-accordion" role="tablist">
+            <!-- Patient Portal -->
+            <div class="portal-item open" data-satellite="0" style="--portal-color:#6EC1F0;">
+              <button class="portal-header" role="tab" aria-expanded="true" aria-controls="panel-p">
+                Patient Portal
+                <span class="portal-icon-indicator">&darr;</span>
+              </button>
+              <div class="portal-body" id="panel-p" role="tabpanel">
+                <p>Disease-specific activities, monitoring, reminders and personalised support designed around the patient's care journey.</p>
+              </div>
+            </div>
+
+            <!-- Caretaker Portal -->
+            <div class="portal-item" data-satellite="1" style="--portal-color:#FF8F7E;">
+              <button class="portal-header" role="tab" aria-expanded="false" aria-controls="panel-c">
+                Caretaker Portal
+                <span class="portal-icon-indicator">&darr;</span>
+              </button>
+              <div class="portal-body" id="panel-c" role="tabpanel">
+                <p>Relevant alerts and information about the patient's activities, safety and care status.</p>
+              </div>
+            </div>
+
+            <!-- Doctor Portal -->
+            <div class="portal-item" data-satellite="2" style="--portal-color:#A99BFF;">
+              <button class="portal-header" role="tab" aria-expanded="false" aria-controls="panel-d">
+                Doctor Portal
+                <span class="portal-icon-indicator">&darr;</span>
+              </button>
+              <div class="portal-body" id="panel-d" role="tabpanel">
+                <p>Patient information and health reports to support ongoing monitoring and better-informed care.</p>
+              </div>
+            </div>
+
+            <!-- Admin Portal -->
+            <div class="portal-item" data-satellite="3" style="--portal-color:#2BB58A;">
+              <button class="portal-header" role="tab" aria-expanded="false" aria-controls="panel-a">
+                Admin Portal
+                <span class="portal-icon-indicator">&darr;</span>
+              </button>
+              <div class="portal-body" id="panel-a" role="tabpanel">
+                <p>Platform operational environment for relevant patient/user relationships, product/device configuration, safe-zone configuration for Alzheimer's, operational status and communication/alert environment.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Role-Based Access Section -->
+    <section class="role-access-section">
+      <div class="w w-narrow">
+        <span class="ey">ROLE-BASED ACCESS</span>
+        <h2>Role-based access</h2>
+        <p class="body-text" style="font-size:1.15rem;margin-top:20px;">The platform separates information and functions according to Patient, Caretaker, Doctor and Admin roles.</p>
+      </div>
+    </section>
+
+    <section class="cta" id="global-cta"></section>
+  </main>
+
+  <footer id="global-footer"></footer>
+
+  <!-- Scripts -->
+  <!-- Clean diagram presentation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  
+    <script src="../assets/js/shared.js"></script>
+  
+  <script src="../assets/js/reveal.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('nav').innerHTML = window.NeuroShared.getNavHTML('technology');
+      document.getElementById('global-cta').innerHTML = window.NeuroShared.getCTAHTML();
+      document.getElementById('global-footer').innerHTML = window.NeuroShared.getFooterHTML();
+
+      // 1. Accordion interaction
+      const items = document.querySelectorAll('.portal-item');
+
+      items.forEach((item, idx) => {
+        const btn = item.querySelector('.portal-header');
+        btn.addEventListener('click', () => {
+          items.forEach(other => {
+            if (other === item) {
+              const isOpen = other.classList.toggle('open');
+              btn.setAttribute('aria-expanded', String(isOpen));
+            } else {
+              other.classList.remove('open');
+              other.querySelector('.portal-header').setAttribute('aria-expanded', 'false');
+            }
+          });
+        });
+      });
+    });</script>
+</body>
+</html>
+

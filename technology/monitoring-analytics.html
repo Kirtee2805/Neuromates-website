@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Monitoring &amp; Analytics | Neuro Mates</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <style>
+    /* Flow Strip */
+    .flow-strip-section {
+      padding: clamp(32px, 5vw, 64px) 0;
+      background: #FFFFFF;
+      border-top: 1px solid rgba(14,59,67,0.06);
+      border-bottom: 1px solid rgba(14,59,67,0.06);
+    }
+    .flow-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+    .flow-line-svg {
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      width: 80%;
+      height: 4px;
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+    .flow-step {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      text-align: center;
+    }
+    .flow-dot {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 3px solid var(--te);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--te);
+      box-shadow: 0 6px 18px rgba(11,122,124,0.12);
+    }
+    .flow-label {
+      font-family: var(--fd);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--ink);
+    }
+
+    /* Editorial Chart Panels */
+    .charts-section {
+      padding: clamp(64px, 10vw, 110px) 0;
+    }
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(24px, 3.5vw, 36px);
+      margin-top: 48px;
+    }
+    .chart-panel {
+      background: #FFFFFF;
+      border: 1px solid rgba(14,59,67,0.08);
+      border-radius: 24px;
+      padding: 32px 28px;
+      box-shadow: 0 12px 34px rgba(14,59,67,0.04);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .chart-panel h3 {
+      font-size: 1.35rem;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .chart-panel p {
+      font-size: 0.95rem;
+      color: var(--mu);
+      margin: 0 0 20px;
+    }
+    .chart-canvas-box {
+      width: 100%;
+      height: 220px;
+      position: relative;
+    }
+    .chart-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .chart-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mu);
+      opacity: 0.75;
+      margin-top: 14px;
+    }
+
+    .considerations-box {
+      background: rgba(11, 122, 124, 0.05);
+      border-left: 4px solid var(--te);
+      border-radius: 0 16px 16px 0;
+      padding: 24px 30px;
+      margin-top: 60px;
+    }
+    .considerations-box p {
+      margin: 0;
+      font-size: 1.05rem;
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    @media(max-width: 960px) {
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media(max-width: 600px) {
+      .flow-strip {
+        flex-direction: column;
+        gap: 28px;
+      }
+      .flow-line-svg {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="care"></div>
+  <nav id="nav"></nav>
+
+  <main id="main-content">
+    <header class="hero">
+      <div class="w">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="index.html">Technology</a>
+          <span class="sep">/</span>
+          <span class="current">Monitoring &amp; Analytics</span>
+        </nav>
+        <span class="ey">MONITORING &amp; ANALYTICS</span>
+        <h1>Turning ongoing information into a <em>clearer view of care</em>.</h1>
+        <p class="lead">Neuro Mates can bring together relevant patient information from disease-specific sensing, activities, reminders and care interactions.</p>
+      </div>
+    </header>
+
+    <!-- Flow Strip: Sensing -> Information -> Reports -->
+    <section class="flow-strip-section" aria-label="Information flow from sensing to reports">
+      <div class="w">
+        <div class="flow-strip">
+          <svg class="flow-line-svg" aria-hidden="true">
+            <line x1="0" y1="2" x2="100%" y2="2" stroke="var(--te)" stroke-width="3" stroke-dasharray="8 6">
+              <animate attributeName="stroke-dashoffset" from="28" to="0" dur="2s" repeatCount="indefinite" />
+            </line>
+          </svg>
+          <div class="flow-step">
+            <div class="flow-dot">1</div>
+            <div class="flow-label">Sensing</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-dot">2</div>
+            <div class="flow-label">Information</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-dot">3</div>
+            <div class="flow-label">Reports</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Draw-in Editorial Charts Section -->
+    <section class="charts-section">
+      <div class="w">
+        <span class="ey">EDITORIAL REPORTING</span>
+        <h2>Structured views of patient care</h2>
+        <p class="body-text" style="max-width:44ch;">Daily, weekly and monthly reports can help families and doctors review relevant patient information.</p>
+
+        <div class="charts-grid">
+          <!-- Daily Panel -->
+          <div class="chart-panel" id="panel-daily">
+            <h3>Daily Report</h3>
+            <p>Activity &amp; medication routine continuity</p>
+            <div class="chart-canvas-box">
+              <canvas class="chart-canvas" id="canvas-daily" aria-label="Daily patient activity curve"></canvas>
+            </div>
+            <div class="chart-tag"><span class="demo-tag" style="background:rgba(14,59,67,0.06);margin-top:0;">Illustration: Illustrative example. Not real patient data.</span></div>
+          </div>
+
+          <!-- Weekly Panel -->
+          <div class="chart-panel" id="panel-weekly">
+            <h3>Weekly Report</h3>
+            <p>Movement &amp; exercise adherence progression</p>
+            <div class="chart-canvas-box">
+              <canvas class="chart-canvas" id="canvas-weekly" aria-label="Weekly patient progression curve"></canvas>
+            </div>
+            <div class="chart-tag"><span class="demo-tag" style="background:rgba(14,59,67,0.06);margin-top:0;">Illustration: Illustrative example. Not real patient data.</span></div>
+          </div>
+
+          <!-- Monthly Panel -->
+          <div class="chart-panel" id="panel-monthly">
+            <h3>Monthly Report</h3>
+            <p>Longitudinal care trends &amp; condition stability</p>
+            <div class="chart-canvas-box">
+              <canvas class="chart-canvas" id="canvas-monthly" aria-label="Monthly longitudinal care curve"></canvas>
+            </div>
+            <div class="chart-tag"><span class="demo-tag" style="background:rgba(14,59,67,0.06);margin-top:0;">Illustration: Illustrative example. Not real patient data.</span></div>
+          </div>
+        </div>
+
+        <!-- Technical & Clinical Considerations Footnote -->
+        <div class="considerations-box">
+          <p>Sensor errors, connectivity issues and patient-specific AI performance are important considerations.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page-Ending CTA -->
+    <section class="cta" id="global-cta"></section>
+  </main>
+
+  <footer id="global-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  
+    <script src="../assets/js/shared.js"></script>
+  <script src="../assets/js/reveal.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('nav').innerHTML = window.NeuroShared.getNavHTML('technology');
+      document.getElementById('global-cta').innerHTML = window.NeuroShared.getCTAHTML();
+      document.getElementById('global-footer').innerHTML = window.NeuroShared.getFooterHTML();
+
+      // Draw-in Canvas 2D Editorial Charts (Plain lines, NO numbers)
+      function initEditorialChart(canvasId, panelId, points, strokeColor, labels) {
+        const cvs = document.getElementById(canvasId);
+        const panel = document.getElementById(panelId);
+        if (!cvs || !panel) return;
+
+        const ctx = cvs.getContext('2d');
+        let drawProgress = 0; // 0 to 1
+
+        function render() {
+          const w = cvs.width = cvs.offsetWidth;
+          const h = cvs.height = cvs.offsetHeight;
+          ctx.clearRect(0, 0, w, h);
+
+          const padL = 20;
+          const padR = 20;
+          const padB = 30;
+          const padT = 20;
+          const chartW = w - padL - padR;
+          const chartH = h - padT - padB;
+
+          // Light horizontal baseline
+          ctx.strokeStyle = 'rgba(14, 59, 67, 0.1)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(padL, h - padB);
+          ctx.lineTo(w - padR, h - padB);
+          ctx.stroke();
+
+          // Draw Labels
+          ctx.fillStyle = 'rgba(79, 111, 115, 0.8)';
+          ctx.font = '500 11px system-ui';
+          ctx.textAlign = 'center';
+          labels.forEach((lbl, i) => {
+            const lx = padL + (chartW / (labels.length - 1)) * i;
+            ctx.fillText(lbl, lx, h - 8);
+          });
+
+          // Draw Curve
+          if (points.length < 2) return;
+          ctx.strokeStyle = strokeColor;
+          ctx.lineWidth = 2.8;
+          ctx.lineCap = 'round';
+          ctx.lineJoin = 'round';
+
+          ctx.beginPath();
+          const totalPoints = points.length;
+          const maxIndex = (totalPoints - 1) * drawProgress;
+
+          for (let i = 0; i <= maxIndex; i++) {
+            const x = padL + (chartW / (totalPoints - 1)) * i;
+            const y = h - padB - points[i] * chartH;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+
+          // Fractional point interpolation
+          if (maxIndex < totalPoints - 1 && maxIndex > Math.floor(maxIndex)) {
+            const i0 = Math.floor(maxIndex);
+            const i1 = i0 + 1;
+            const frac = maxIndex - i0;
+            const x0 = padL + (chartW / (totalPoints - 1)) * i0;
+            const y0 = h - padB - points[i0] * chartH;
+            const x1 = padL + (chartW / (totalPoints - 1)) * i1;
+            const y1 = h - padB - points[i1] * chartH;
+            ctx.lineTo(x0 + (x1 - x0) * frac, y0 + (y1 - y0) * frac);
+          }
+          ctx.stroke();
+        }
+
+        // Trigger draw-in on scroll
+        if (typeof ScrollTrigger !== 'undefined' && !window.NeuroShared.isReducedMotion) {
+          gsap.to({ p: 0 }, {
+            p: 1,
+            duration: 1.4,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: panel,
+              start: 'top 85%',
+              once: true
+            },
+            onUpdate: function () {
+              drawProgress = this.targets()[0].p;
+              render();
+            }
+          });
+        } else {
+          drawProgress = 1;
+          render();
+        }
+        window.addEventListener('resize', render);
+      }
+
+      // Daily: Morning, Afternoon, Evening, Night
+      initEditorialChart(
+        'canvas-daily', 
+        'panel-daily', 
+        [0.2, 0.65, 0.45, 0.8, 0.7, 0.88, 0.35], 
+        '#0B7A7C', 
+        ['Morning', 'Afternoon', 'Evening', 'Night']
+      );
+
+      // Weekly: Mon, Tue, Wed, Thu, Fri, Sat, Sun
+      initEditorialChart(
+        'canvas-weekly', 
+        'panel-weekly', 
+        [0.4, 0.5, 0.62, 0.58, 0.75, 0.82, 0.85], 
+        '#2BB58A', 
+        ['Mon', 'Wed', 'Fri', 'Sun']
+      );
+
+      // Monthly: Week 1, Week 2, Week 3, Week 4
+      initEditorialChart(
+        'canvas-monthly', 
+        'panel-monthly', 
+        [0.35, 0.48, 0.62, 0.78, 0.85], 
+        '#6EC1F0', 
+        ['W1', 'W2', 'W3', 'W4']
+      );
+    });
+  </script>
+</body>
+</html>

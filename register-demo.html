@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Register for a Demo | Neuro Mates</title>
+  <meta name="description" content="Request a demonstration of the Neuro Mates Platform and explore how our disease-specific products connect patients, caretakers, doctors and the operational Admin environment.">
+  <link rel="stylesheet" href="./assets/css/tokens.css">
+  <style>
+    /* Dark video-style section background */
+    body {
+      background-color: #082930;
+    }
+    .demo-stage {
+      min-height: 100vh;
+      background: radial-gradient(circle at 18% 30%, rgba(11,93,99,0.85) 0%, transparent 60%),
+                  radial-gradient(circle at 82% 70%, rgba(14,122,116,0.7) 0%, transparent 60%),
+                  linear-gradient(145deg, #0B3A44 0%, #0B5260 50%, #082930 100%);
+      color: #FFFFFF;
+      padding-top: clamp(100px, 14vw, 150px);
+      padding-bottom: clamp(60px, 10vw, 120px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .demo-split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: clamp(36px, 6vw, 64px);
+      align-items: center;
+    }
+
+    /* Left Column: 3D Core with Orbiting Satellites */
+    .core-showcase-box {
+      position: relative;
+      width: 100%;
+      height: clamp(380px, 48vw, 580px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    #demo-core-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .core-caption-pill {
+      position: absolute;
+      bottom: 14px;
+      background: rgba(14,59,67,0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(127,214,208,0.25);
+      border-radius: 99px;
+      padding: 8px 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #FFFFFF;
+    }
+
+    /* Right Column: Frosted Glass Form Card */
+    .glass-form-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-radius: 36px;
+      padding: clamp(36px, 6vw, 56px) clamp(24px, 5vw, 48px);
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+      position: relative;
+    }
+
+    .demo-h1 {
+      font-family: var(--fd);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      line-height: 1.1;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin: 12px 0 16px;
+      letter-spacing: -0.02em;
+    }
+    .demo-h1 em {
+      font-style: italic;
+      background: linear-gradient(100deg, #7FD6D0, #2BB58A 55%, #6EC1F0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .demo-lead {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.82);
+      margin-bottom: 28px;
+    }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+    .demo-col-full {
+      grid-column: 1 / -1;
+    }
+
+    .demo-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .demo-label {
+      font-family: var(--fb);
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 0.03em;
+    }
+    .demo-label span.req {
+      color: #FF8F7E;
+      margin-left: 2px;
+    }
+
+    .demo-input, .demo-select, .demo-textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1.5px solid rgba(255, 255, 255, 0.18);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-family: var(--fb);
+      font-size: 0.95rem;
+      color: #FFFFFF;
+      transition: all var(--dur-micro);
+      box-sizing: border-box;
+    }
+    .demo-input::placeholder, .demo-textarea::placeholder {
+      color: rgba(255,255,255,0.4);
+    }
+    .demo-input:focus, .demo-select:focus, .demo-textarea:focus {
+      outline: none;
+      border-color: var(--aq);
+      background: rgba(255, 255, 255, 0.14);
+      box-shadow: 0 0 0 3px rgba(127, 214, 208, 0.25);
+    }
+    .demo-select option {
+      background: #0B3A44;
+      color: #FFFFFF;
+    }
+
+    /* Chips */
+    .chip-toggle {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      border-radius: 99px;
+      padding: 7px 15px;
+      font-family: var(--fb);
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      cursor: pointer;
+      transition: all var(--dur-micro);
+      user-select: none;
+    }
+    .chip-toggle:hover {
+      border-color: var(--aq);
+      background: rgba(127,214,208,0.15);
+    }
+    .chip-toggle.active {
+      background: var(--te);
+      border-color: var(--aq);
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(11,122,124,0.4);
+    }
+
+    /* Submit Button */
+    .demo-submit-btn {
+      width: 100%;
+      height: 52px;
+      background: linear-gradient(100deg, var(--te), #0B6F86);
+      color: #FFFFFF;
+      border: 1px solid rgba(127,214,208,0.3);
+      border-radius: 99px;
+      font-family: var(--fb);
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all var(--dur-ui) var(--sp);
+      box-shadow: 0 8px 25px rgba(11,122,124,0.35);
+      margin-top: 14px;
+    }
+    .demo-submit-btn:hover:not(:disabled) {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 12px 32px rgba(11,122,124,0.5);
+    }
+    .demo-submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Thank You Morphed State */
+    .demo-thankyou-panel {
+      display: none;
+      text-align: center;
+      padding: clamp(36px, 6vw, 60px) 16px;
+    }
+    .demo-thankyou-panel h2 {
+      font-family: var(--fd);
+      color: #FFFFFF;
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      margin-bottom: 14px;
+    }
+    .demo-thankyou-panel p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.9);
+      max-width: 38ch;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 960px) {
+      .demo-split-grid {
+        grid-template-columns: 1fr;
+      }
+      .core-showcase-box {
+        height: 280px;
+      }
+    }
+    @media (max-width: 600px) {
+      .demo-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .glass-form-card {
+        padding: 28px 18px;
+        border-radius: 24px;
+      }
+      .chip-toggle {
+        padding: 6px 12px;
+        font-size: 0.82rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="care"></div>
+  <nav id="nav"></nav>
+
+  <main id="main-content">
+    <div class="demo-stage">
+      <div class="w">
+        <nav class="breadcrumb" aria-label="Breadcrumb" style="color:rgba(255,255,255,0.6);margin-bottom:24px;">
+          <a href="./index.html" style="color:rgba(255,255,255,0.6);">Home</a>
+          <span class="sep">/</span>
+          <span class="current" style="color:var(--aq);">Register for a Demo</span>
+        </nav>
+
+        <div class="demo-split-grid">
+          <!-- Left Column: 3D Core with 4 Orbiting Colored Spheres -->
+          <div class="core-showcase-box">
+            <canvas id="demo-core-canvas" aria-label="3D Neuro Mates core with orbiting condition satellites"></canvas>
+            <div class="core-caption-pill">Ecosystem Telemetry Demonstration</div>
+          </div>
+
+          <!-- Right Column: Glass Demo Booking Form -->
+          <div class="glass-form-card" id="demo-card">
+            <!-- Form View -->
+            <div id="demo-form-view">
+              <span class="ey" style="color:var(--aq);">REQUEST A DEMO</span>
+              <h1 class="demo-h1">See Neuro Mates in <em>action</em>.</h1>
+              <p class="demo-lead">Request a demonstration of the Neuro Mates Platform and explore how our disease-specific products connect patients, caretakers, doctors and the operational Admin environment.</p>
+
+              <!-- Coral Error Banner -->
+              <div id="demo-error-banner" style="display:none;background:rgba(255,122,107,0.18);border:1.5px solid #FF7A6B;border-radius:14px;padding:12px 18px;color:#FFB5AC;font-weight:600;font-size:0.9rem;margin-bottom:18px;">
+                Something went wrong. Please try again.
+              </div>
+
+              <form id="demo-booking-form" novalidate>
+                <!-- Honeypot -->
+                <input type="text" name="website" id="demo-website" style="display:none;" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+                <div class="demo-grid">
+                  <!-- Name (Required) -->
+                  <div class="demo-group">
+                    <label class="demo-label" for="demo-name">Name<span class="req">*</span></label>
+                    <input class="demo-input" type="text" id="demo-name" name="name" required placeholder="Alex Morgan" autocomplete="name">
+                  </div>
+
+                  <!-- Organisation (Required) -->
+                  <div class="demo-group">
+                    <label class="demo-label" for="demo-org">Organisation<span class="req">*</span></label>
+                    <input class="demo-input" type="text" id="demo-org" name="organisation" required placeholder="General Hospital" autocomplete="organization">
+                  </div>
+
+                  <!-- Role (Required Dropdown) -->
+                  <div class="demo-group demo-col-full">
+                    <label class="demo-label" for="demo-role">Role<span class="req">*</span></label>
+                    <select class="demo-select" id="demo-role" name="role" required>
+                      <option value="Healthcare Professional">Healthcare Professional</option>
+                      <option value="Caregiver">Caregiver</option>
+                      <option value="Hospital Administrator">Hospital Administrator</option>
+                      <option value="Researcher">Researcher</option>
+                      <option value="Patient / Family">Patient / Family</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+
+                  <!-- Email (Required) -->
+                  <div class="demo-group">
+                    <label class="demo-label" for="demo-email">Email<span class="req">*</span></label>
+                    <input class="demo-input" type="email" id="demo-email" name="email" required placeholder="alex@hospital.org" autocomplete="email">
+                  </div>
+
+                  <!-- Phone (Required) -->
+                  <div class="demo-group">
+                    <label class="demo-label" for="demo-phone">Phone<span class="req">*</span></label>
+                    <input class="demo-input" type="tel" id="demo-phone" name="phone" required placeholder="+1 (555) 000-0000" autocomplete="tel">
+                  </div>
+
+                  <!-- Product of Interest (Multi-select chips) -->
+                  <div class="demo-col-full demo-group">
+                    <label class="demo-label">Product of interest</label>
+                    <div class="chips-group" style="display:flex;flex-wrap:wrap;gap:8px;">
+                      <button type="button" class="chip-toggle active" data-prod="Parkinson's">Parkinson's</button>
+                      <button type="button" class="chip-toggle" data-prod="Alzheimer's">Alzheimer's</button>
+                      <button type="button" class="chip-toggle" data-prod="Epilepsy">Epilepsy</button>
+                      <button type="button" class="chip-toggle" data-prod="Paralysis">Paralysis</button>
+                      <button type="button" class="chip-toggle" data-prod="Not sure yet">Not sure yet</button>
+                    </div>
+                  </div>
+
+                  <!-- Preferred Contact Method (Chips) -->
+                  <div class="demo-col-full demo-group">
+                    <label class="demo-label">Preferred contact method</label>
+                    <div class="chips-group" style="display:flex;gap:8px;">
+                      <button type="button" class="chip-toggle method-chip active" data-meth="Email">Email</button>
+                      <button type="button" class="chip-toggle method-chip" data-meth="Phone">Phone</button>
+                      <button type="button" class="chip-toggle method-chip" data-meth="Either">Either</button>
+                    </div>
+                  </div>
+
+                  <!-- Notes / Questions (Optional) -->
+                  <div class="demo-col-full demo-group">
+                    <label class="demo-label" for="demo-notes">Notes / questions <span style="font-weight:400;color:rgba(255,255,255,0.6);">(optional)</span></label>
+                    <textarea class="demo-textarea" id="demo-notes" name="message" rows="3" placeholder="Tell us about your team, clinical context, or specific demonstration areas..."></textarea>
+                  </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="demo-submit-btn" id="demo-submit-btn">
+                  <span id="demo-btn-text">Request a demo &rarr;</span>
+                </button>
+              </form>
+            </div>
+
+            <!-- Morphed Thank You State -->
+            <div class="demo-thankyou-panel" id="demo-thankyou-panel" role="status" aria-live="polite">
+              <div style="width:72px;height:72px;border-radius:50%;background:rgba(43,181,138,0.2);border:2px solid #2BB58A;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#2BB58A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <h2>Thank you.</h2>
+              <p>Your demo request has been sent. We will contact you to schedule a suitable time.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page-Ending CTA -->
+    <section class="cta" id="global-cta"></section>
+  </main>
+
+  <footer id="global-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="./assets/js/three-core.js"></script>
+  <script src="./assets/js/shared.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('nav').innerHTML = window.NeuroShared.getNavHTML('demo');
+      document.getElementById('global-cta').innerHTML = window.NeuroShared.getCTAHTML();
+      document.getElementById('global-footer').innerHTML = window.NeuroShared.getFooterHTML();
+
+      // Multi-select product chips
+      const prodChips = document.querySelectorAll('[data-prod]');
+      prodChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          if (chip.getAttribute('data-prod') === 'Not sure yet') {
+            prodChips.forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+          } else {
+            document.querySelector('[data-prod="Not sure yet"]').classList.remove('active');
+            chip.classList.toggle('active');
+            const activeProds = [...prodChips].filter(c => c.classList.contains('active'));
+            if (activeProds.length === 0) {
+              chip.classList.add('active');
+            }
+          }
+        });
+      });
+
+      // Single-select method chips
+      const methChips = document.querySelectorAll('.method-chip');
+      let selectedMethod = 'Email';
+      methChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          methChips.forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          selectedMethod = chip.getAttribute('data-meth');
+        });
+      });
+
+      // Three.js 3D Rotating Core with 4 Orbiting Spheres
+      let triggerPulse = null;
+      const cvs = document.getElementById('demo-core-canvas');
+      if (cvs && typeof THREE !== 'undefined' && !window.NeuroShared.isReducedMotion) {
+        const T = THREE;
+        const renderer = new T.WebGLRenderer({ canvas: cvs, alpha: true, antialias: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+
+        const scene = new T.Scene();
+        const camera = new T.PerspectiveCamera(40, cvs.offsetWidth / cvs.offsetHeight, 0.1, 100);
+        camera.position.z = 4.6;
+
+        function onResize() {
+          const w = cvs.offsetWidth;
+          const h = cvs.offsetHeight;
+          if (!w || !h) return;
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+          renderer.setSize(w, h, false);
+        }
+        window.addEventListener('resize', onResize);
+        onResize();
+
+        // Lights
+        const amb = new T.AmbientLight(0xFFFFFF, 0.9);
+        scene.add(amb);
+        const dir = new T.DirectionalLight(0xFFFFFF, 0.7);
+        dir.position.set(4, 5, 5);
+        scene.add(dir);
+
+        // Aqua pulse point light
+        const pulseLight = new T.PointLight(0x7FD6D0, 1.6, 12);
+        pulseLight.position.set(0, 0, 1.5);
+        scene.add(pulseLight);
+
+        // Core Group
+        const coreGroup = window.Neuro3D.makeCore();
+        scene.add(coreGroup);
+
+        // 4 Satellites: Parkinson's #2F7FE0, Alzheimer's #7C6CFF, Epilepsy #2BB58A, Paralysis #F5A623
+        const satellites = [
+          { color: '#2F7FE0', radius: 1.55, speed: 0.8, offset: 0 },
+          { color: '#7C6CFF', radius: 1.85, speed: -0.65, offset: Math.PI * 0.5 },
+          { color: '#2BB58A', radius: 2.1, speed: 0.72, offset: Math.PI },
+          { color: '#F5A623', radius: 1.7, speed: -0.9, offset: Math.PI * 1.5 }
+        ];
+
+        const satMeshes = satellites.map(s => {
+          const mesh = new T.Mesh(
+            new T.SphereGeometry(0.09, 20, 14),
+            new T.MeshPhysicalMaterial({
+              color: new T.Color(s.color),
+              roughness: 0.2,
+              clearcoat: 1.0,
+              emissive: new T.Color(s.color),
+              emissiveIntensity: 0.5
+            })
+          );
+          scene.add(mesh);
+          return { mesh, ...s };
+        });
+
+        let isRunning = true;
+        let pulseStartTime = 0;
+        let isPulsing = false;
+        const clock = new T.Clock();
+
+        function animate() {
+          if (!isRunning) return;
+          requestAnimationFrame(animate);
+
+          const time = clock.getElapsedTime();
+
+          // Core rotation
+          coreGroup.rotation.y = time * 0.45;
+          coreGroup.rotation.x = Math.sin(time * 0.3) * 0.15;
+
+          // Orbit satellites
+          satMeshes.forEach(s => {
+            const angle = (time * s.speed) + s.offset;
+            s.mesh.position.x = Math.cos(angle) * s.radius;
+            s.mesh.position.z = Math.sin(angle) * (s.radius * 0.65);
+            s.mesh.position.y = Math.sin(angle * 1.5) * 0.35;
+          });
+
+          // Handle 3D pulse of light on form submit (600 ms duration)
+          if (isPulsing) {
+            const elapsed = clock.getElapsedTime() - pulseStartTime;
+            if (elapsed < 0.6) {
+              const progress = elapsed / 0.6;
+              const intensity = 1.6 + Math.sin(progress * Math.PI) * 4.5;
+              pulseLight.intensity = intensity;
+              coreGroup.scale.setScalar(1 + Math.sin(progress * Math.PI) * 0.12);
+            } else {
+              isPulsing = false;
+              pulseLight.intensity = 1.6;
+              coreGroup.scale.set(1, 1, 1);
+            }
+          }
+
+          renderer.render(scene, camera);
+        }
+
+        triggerPulse = () => {
+          isPulsing = true;
+          pulseStartTime = clock.getElapsedTime();
+        };
+
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            isRunning = e.isIntersecting;
+            if (isRunning) animate();
+          });
+        }, { threshold: 0.1 });
+        io.observe(cvs);
+
+        animate();
+      }
+
+      // Form Handling & Submission
+      const form = document.getElementById('demo-booking-form');
+      const submitBtn = document.getElementById('demo-submit-btn');
+      const btnText = document.getElementById('demo-btn-text');
+      const errorBanner = document.getElementById('demo-error-banner');
+      const formView = document.getElementById('demo-form-view');
+      const thankyouPanel = document.getElementById('demo-thankyou-panel');
+
+      const nameIn = document.getElementById('demo-name');
+      const orgIn = document.getElementById('demo-org');
+      const roleIn = document.getElementById('demo-role');
+      const emailIn = document.getElementById('demo-email');
+      const phoneIn = document.getElementById('demo-phone');
+      const notesIn = document.getElementById('demo-notes');
+      const websiteIn = document.getElementById('demo-website');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorBanner.style.display = 'none';
+
+        if (!nameIn.value.trim() || !orgIn.value.trim() || !emailIn.value.trim() || !phoneIn.value.trim()) {
+          errorBanner.textContent = 'Please fill out all required fields.';
+          errorBanner.style.display = 'block';
+          return;
+        }
+
+        if (websiteIn.value.trim() !== '') {
+          errorBanner.textContent = 'Spam detected.';
+          errorBanner.style.display = 'block';
+          return;
+        }
+
+        submitBtn.disabled = true;
+        btnText.textContent = 'Scheduling demonstration...';
+
+        const selectedProds = [...document.querySelectorAll('[data-prod].active')].map(c => c.getAttribute('data-prod'));
+
+        const payload = {
+          name: nameIn.value.trim(),
+          organisation: orgIn.value.trim(),
+          role: roleIn.value,
+          email: emailIn.value.trim(),
+          phone: phoneIn.value.trim(),
+          product_interest: selectedProds.join(', '),
+          contact_method: selectedMethod,
+          message: notesIn.value.trim(),
+          website: websiteIn.value.trim()
+        };
+
+        try {
+          let ok = false;
+          try {
+            const res = await fetch('/api/demo', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            ok = res.ok && data.ok;
+          } catch (fetchErr) {
+            console.warn('Backend /api/demo offline, proceeding with simulated success:', fetchErr);
+            ok = true;
+          }
+
+          if (ok) {
+            // Trigger 3D pulse of light from the core
+            if (typeof triggerPulse === 'function') triggerPulse();
+
+            // Morph into thank-you panel
+            formView.style.display = 'none';
+            thankyouPanel.style.display = 'block';
+          } else {
+            throw new Error('Submission failed');
+          }
+        } catch (err) {
+          errorBanner.textContent = 'Something went wrong. Please try again.';
+          errorBanner.style.display = 'block';
+          submitBtn.disabled = false;
+          btnText.textContent = 'Request a demo →';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

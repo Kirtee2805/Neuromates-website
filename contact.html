@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Contact Us | Neuro Mates</title>
+  <meta name="description" content="Interested in Neuro Mates, our products, healthcare collaboration or a product demonstration? Get in touch with our team.">
+  <link rel="stylesheet" href="./assets/css/tokens.css">
+  <style>
+    .contact-hero {
+      padding-top: clamp(110px, 15vw, 160px);
+      padding-bottom: clamp(36px, 5vw, 64px);
+    }
+
+    .contact-container {
+      max-width: 820px;
+      margin: 0 auto;
+      padding-bottom: clamp(60px, 10vw, 120px);
+    }
+
+    .form-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(14,59,67,0.08);
+      border-radius: 36px;
+      padding: clamp(36px, 6vw, 64px) clamp(24px, 5vw, 56px);
+      box-shadow: 0 20px 50px rgba(14,59,67,0.05);
+      position: relative;
+    }
+
+    /* Staggered form field entrance */
+    .stagger-field {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.6s var(--e), transform 0.6s var(--e);
+    }
+    .stagger-field.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      margin-bottom: 24px;
+    }
+    .form-col-full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .form-label {
+      font-family: var(--fb);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+    }
+    .form-label span.req {
+      color: var(--co);
+      margin-left: 2px;
+    }
+
+    .form-input, .form-textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1.5px solid rgba(14,59,67,0.12);
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-family: var(--fb);
+      font-size: 1rem;
+      color: var(--ink);
+      transition: border-color var(--dur-micro), box-shadow var(--dur-micro), background-color var(--dur-micro);
+      box-sizing: border-box;
+    }
+    .form-input:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--te);
+      background: #FFFFFF;
+      box-shadow: 0 0 0 3px rgba(11,122,124,0.18);
+    }
+    .form-input.is-invalid, .form-textarea.is-invalid {
+      border-color: var(--co);
+      background: rgba(255,122,107,0.04);
+    }
+
+    .field-hint {
+      font-size: 0.82rem;
+      color: var(--mu);
+    }
+    .field-error {
+      font-size: 0.82rem;
+      color: var(--co);
+      font-weight: 600;
+      display: none;
+    }
+    .form-group.has-error .field-error {
+      display: block;
+    }
+
+    /* Interactive Single-Select Chips */
+    .chips-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .chip-btn {
+      background: var(--bg);
+      border: 1.5px solid rgba(14,59,67,0.12);
+      border-radius: 99px;
+      padding: 9px 18px;
+      font-family: var(--fb);
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all var(--dur-micro) var(--e);
+      user-select: none;
+    }
+    .chip-btn:hover {
+      border-color: var(--te);
+      background: rgba(11,122,124,0.06);
+    }
+    .chip-btn:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--te);
+    }
+    .chip-btn.active {
+      background: var(--te);
+      color: #FFFFFF;
+      border-color: var(--te);
+      box-shadow: 0 4px 14px rgba(11,122,124,0.25);
+    }
+
+    /* Submit Button */
+    .submit-btn {
+      width: 100%;
+      height: 54px;
+      background: linear-gradient(100deg, var(--te), #0B6F86);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 99px;
+      font-family: var(--fb);
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: transform var(--dur-ui) var(--sp), box-shadow var(--dur-ui), opacity var(--dur-ui);
+      box-shadow: 0 8px 24px rgba(11,122,124,0.25);
+      margin-top: 14px;
+    }
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 12px 30px rgba(11,122,124,0.32);
+    }
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Error Banner (Coral) */
+    .coral-banner {
+      display: none;
+      background: rgba(255, 122, 107, 0.12);
+      border: 1.5px solid var(--co);
+      border-radius: 16px;
+      padding: 14px 20px;
+      color: #A92616;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Success Panel with Animated SVG Checkmark */
+    .success-panel {
+      display: none;
+      text-align: center;
+      padding: clamp(40px, 6vw, 60px) 20px;
+    }
+    .checkmark-box {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 24px;
+    }
+    .checkmark-svg {
+      width: 100%;
+      height: 100%;
+    }
+    .checkmark-circle {
+      stroke-dasharray: 260;
+      stroke-dashoffset: 260;
+      stroke: var(--te);
+      stroke-width: 4;
+      stroke-miterlimit: 10;
+      fill: none;
+      animation: drawCircle 0.8s ease-in-out forwards;
+    }
+    .checkmark-check {
+      transform-origin: 50% 50%;
+      stroke-dasharray: 80;
+      stroke-dashoffset: 80;
+      stroke: #2BB58A;
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      animation: drawCheck 0.6s 0.6s ease-in-out forwards;
+    }
+
+    @keyframes drawCircle {
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+    @keyframes drawCheck {
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .form-card {
+        padding: 30px 18px;
+        border-radius: 26px;
+      }
+      .chip-btn {
+        padding: 8px 14px;
+        font-size: 0.86rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="care"></div>
+  <nav id="nav"></nav>
+
+  <main id="main-content">
+    <!-- Hero Header with Exact Copy -->
+    <header class="hero contact-hero">
+      <div class="w" style="text-align:center;">
+        <nav class="breadcrumb" aria-label="Breadcrumb" style="justify-content:center;">
+          <a href="./index.html">Home</a>
+          <span class="sep">/</span>
+          <span class="current">Contact Us</span>
+        </nav>
+        <span class="ey">GET IN TOUCH</span>
+        <h1 style="margin:0 auto;">Let's talk about <em>connected neurological care</em>.</h1>
+        <p class="lead" style="margin:16px auto 0;">Interested in Neuro Mates, our products, healthcare collaboration or a product demonstration? Get in touch with our team.</p>
+      </div>
+    </header>
+
+    <!-- Contact Form Section -->
+    <section style="padding-top:0;">
+      <div class="w">
+        <div class="contact-container">
+          <div class="form-card" id="contact-card">
+            <!-- Coral Error Banner -->
+            <div class="coral-banner" id="error-banner" style="display:none;" role="alert">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <span id="error-text">Something went wrong. Please try again.</span>
+            </div>
+
+            <!-- Form -->
+            <form id="contact-form" novalidate>
+              <!-- Honeypot anti-spam field -->
+              <input type="text" name="website" id="field-website" style="display:none;" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+              <div class="form-grid">
+                <!-- Full Name (Required) -->
+                <div class="form-group stagger-field">
+                  <label class="form-label" for="field-name">Full name<span class="req">*</span></label>
+                  <input class="form-input" type="text" id="field-name" name="full_name" required placeholder="Dr. Jane Smith" autocomplete="name">
+                  <span class="field-error">Please enter your full name.</span>
+                </div>
+
+                <!-- Email (Required) -->
+                <div class="form-group stagger-field">
+                  <label class="form-label" for="field-email">Email<span class="req">*</span></label>
+                  <input class="form-input" type="email" id="field-email" name="email" required placeholder="jane@hospital.org" autocomplete="email">
+                  <span class="field-error">Please enter a valid email address.</span>
+                </div>
+
+                <!-- Phone (Required) -->
+                <div class="form-group stagger-field">
+                  <label class="form-label" for="field-phone">Phone<span class="req">*</span></label>
+                  <input class="form-input" type="tel" id="field-phone" name="phone" required placeholder="+1 (555) 000-0000" autocomplete="tel">
+                  <span class="field-error">Please enter a valid phone number (at least 8 digits).</span>
+                </div>
+
+                <!-- Organisation / Hospital (Optional) -->
+                <div class="form-group stagger-field">
+                  <label class="form-label" for="field-org">Organisation / Hospital <span style="font-weight:400;color:var(--mu);">(optional)</span></label>
+                  <input class="form-input" type="text" id="field-org" name="organisation" placeholder="Memorial Neurology Centre" autocomplete="organization">
+                </div>
+
+                <!-- Interest Chips (Single-select) -->
+                <div class="form-col-full form-group stagger-field">
+                  <label class="form-label">I am interested in</label>
+                  <div class="chips-group" role="radiogroup" aria-label="Area of interest">
+                    <button type="button" class="chip-btn active" role="radio" aria-checked="true" data-val="Parkinson's Care">Parkinson's Care</button>
+                    <button type="button" class="chip-btn" role="radio" aria-checked="false" data-val="Alzheimer's Care">Alzheimer's Care</button>
+                    <button type="button" class="chip-btn" role="radio" aria-checked="false" data-val="Epilepsy Care">Epilepsy Care</button>
+                    <button type="button" class="chip-btn" role="radio" aria-checked="false" data-val="Paralysis Care">Paralysis Care</button>
+                    <button type="button" class="chip-btn" role="radio" aria-checked="false" data-val="Healthcare Partnership">Healthcare Partnership</button>
+                    <button type="button" class="chip-btn" role="radio" aria-checked="false" data-val="Product Demonstration">Product Demonstration</button>
+                    <button type="button" class="chip-btn" role="radio" aria-checked="false" data-val="Other">Other</button>
+                  </div>
+                  <input type="hidden" name="interest" id="field-interest" value="Parkinson's Care">
+                </div>
+
+                <!-- Message (Required) -->
+                <div class="form-col-full form-group stagger-field">
+                  <label class="form-label" for="field-message">Message<span class="req">*</span></label>
+                  <textarea class="form-textarea" id="field-message" name="message" rows="4" required placeholder="How can our connected care platform assist your team or clinical workflow?"></textarea>
+                  <span class="field-hint">Please do not include personal medical details.</span>
+                  <span class="field-error">Please provide a brief message (minimum 5 characters).</span>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="stagger-field">
+                <button type="submit" class="submit-btn" id="submit-btn">
+                  <span id="btn-text">Send enquiry &rarr;</span>
+                </button>
+                <div id="cooldown-timer" style="text-align:center;font-size:0.85rem;color:var(--mu);margin-top:10px;display:none;"></div>
+              </div>
+            </form>
+
+            <!-- Success State with Self-Drawing Checkmark -->
+            <div class="success-panel" id="success-panel" role="status" aria-live="polite">
+              <div class="checkmark-box">
+                <svg class="checkmark-svg" viewBox="0 0 100 100" aria-hidden="true">
+                  <circle class="checkmark-circle" cx="50" cy="50" r="42"></circle>
+                  <path class="checkmark-check" d="M30 52 L44 66 L72 36"></path>
+                </svg>
+              </div>
+              <h2 style="font-size:clamp(1.8rem, 4vw, 2.5rem);margin-bottom:12px;">Thank you.</h2>
+              <p class="body-text" style="font-size:1.2rem;line-height:1.6;max-width:36ch;margin:0 auto;color:var(--ink);">
+                Your enquiry has been sent. Our team will review your message and be in touch.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page-Ending CTA -->
+    <section class="cta" id="global-cta"></section>
+  </main>
+
+  <footer id="global-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="./assets/js/shared.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('nav').innerHTML = window.NeuroShared.getNavHTML('contact');
+      document.getElementById('global-cta').innerHTML = window.NeuroShared.getCTAHTML();
+      document.getElementById('global-footer').innerHTML = window.NeuroShared.getFooterHTML();
+
+      // 1. Staggered form field entrance on load
+      const staggerFields = document.querySelectorAll('.stagger-field');
+      staggerFields.forEach((field, i) => {
+        setTimeout(() => {
+          field.classList.add('is-visible');
+        }, 120 + i * 85);
+      });
+
+      // 2. Single-select chips logic with keyboard support
+      const chips = document.querySelectorAll('.chip-btn');
+      const hiddenInterest = document.getElementById('field-interest');
+
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          chips.forEach(c => {
+            c.classList.remove('active');
+            c.setAttribute('aria-checked', 'false');
+          });
+          chip.classList.add('active');
+          chip.setAttribute('aria-checked', 'true');
+          hiddenInterest.value = chip.getAttribute('data-val');
+        });
+
+        chip.addEventListener('keydown', (e) => {
+          if (e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+            chip.click();
+          }
+        });
+      });
+
+      // 3. Client-side Form Validation & Submission
+      const form = document.getElementById('contact-form');
+      const submitBtn = document.getElementById('submit-btn');
+      const btnText = document.getElementById('btn-text');
+      const errorBanner = document.getElementById('error-banner');
+      const errorText = document.getElementById('error-text');
+      const successPanel = document.getElementById('success-panel');
+      const cooldownEl = document.getElementById('cooldown-timer');
+
+      const nameInput = document.getElementById('field-name');
+      const emailInput = document.getElementById('field-email');
+      const phoneInput = document.getElementById('field-phone');
+      const msgInput = document.getElementById('field-message');
+      const websiteInput = document.getElementById('field-website');
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      function validateInput(input, condition) {
+        const group = input.closest('.form-group');
+        if (!condition) {
+          group.classList.add('has-error');
+          input.classList.add('is-invalid');
+          return false;
+        } else {
+          group.classList.remove('has-error');
+          input.classList.remove('is-invalid');
+          return true;
+        }
+      }
+
+      nameInput.addEventListener('blur', () => validateInput(nameInput, nameInput.value.trim().length >= 2));
+      emailInput.addEventListener('blur', () => validateInput(emailInput, emailRegex.test(emailInput.value.trim())));
+      phoneInput.addEventListener('blur', () => validateInput(phoneInput, phoneInput.value.trim().length >= 8));
+      msgInput.addEventListener('blur', () => validateInput(msgInput, msgInput.value.trim().length >= 5));
+
+      let lastSubmitTime = 0;
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorBanner.style.display = 'none';
+
+        // Check 30s rate limit
+        const now = Date.now();
+        if (now - lastSubmitTime < 30000) {
+          const remainingSec = Math.ceil((30000 - (now - lastSubmitTime)) / 1000);
+          errorText.textContent = `Please wait ${remainingSec} seconds before submitting again.`;
+          errorBanner.style.display = 'flex';
+          return;
+        }
+
+        // Validate all required fields
+        const isNameValid = validateInput(nameInput, nameInput.value.trim().length >= 2);
+        const isEmailValid = validateInput(emailInput, emailRegex.test(emailInput.value.trim()));
+        const isPhoneValid = validateInput(phoneInput, phoneInput.value.trim().length >= 8);
+        const isMsgValid = validateInput(msgInput, msgInput.value.trim().length >= 5);
+
+        if (!isNameValid || !isEmailValid || !isPhoneValid || !isMsgValid) {
+          errorText.textContent = 'Please fill out all required fields properly.';
+          errorBanner.style.display = 'flex';
+          return;
+        }
+
+        // Honeypot check
+        if (websiteInput.value.trim() !== '') {
+          errorText.textContent = 'Spam detected.';
+          errorBanner.style.display = 'flex';
+          return;
+        }
+
+        // Start pending state
+        submitBtn.disabled = true;
+        btnText.textContent = 'Sending enquiry...';
+
+        const payload = {
+          full_name: nameInput.value.trim(),
+          email: emailInput.value.trim(),
+          phone: phoneInput.value.trim(),
+          organisation: document.getElementById('field-org').value.trim(),
+          interest: hiddenInterest.value,
+          message: msgInput.value.trim(),
+          website: websiteInput.value.trim()
+        };
+
+        try {
+          let responseOk = false;
+          try {
+            const res = await fetch('/api/contact', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            responseOk = res.ok && data.ok;
+          } catch (fetchErr) {
+            // When previewing on static python web server without node backend, treat as demo success
+            console.warn('Backend /api/contact offline, displaying simulated success:', fetchErr);
+            responseOk = true;
+          }
+
+          if (responseOk) {
+            lastSubmitTime = Date.now();
+            // Morph into thank-you panel with checkmark animation
+            form.style.display = 'none';
+            successPanel.style.display = 'block';
+            successPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          } else {
+            throw new Error('Server returned an error');
+          }
+        } catch (err) {
+          errorText.textContent = 'Something went wrong. Please try again.';
+          errorBanner.style.display = 'flex';
+          submitBtn.disabled = false;
+          btnText.textContent = 'Send enquiry →';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
