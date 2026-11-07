@@ -316,10 +316,10 @@
                     <input class="demo-input" type="email" id="demo-email" name="email" required placeholder="alex@hospital.org" autocomplete="email">
                   </div>
 
-                  <!-- Phone (Required) -->
+                  <!-- Phone (Required - Exactly 10 digits) -->
                   <div class="demo-group">
                     <label class="demo-label" for="demo-phone">Phone<span class="req">*</span></label>
-                    <input class="demo-input" type="tel" id="demo-phone" name="phone" required placeholder="+1 (555) 000-0000" autocomplete="tel">
+                    <input class="demo-input" type="tel" id="demo-phone" name="phone" required placeholder="10-digit mobile number" maxlength="10" pattern="[0-9]{10}" inputmode="numeric" autocomplete="tel">
                   </div>
 
                   <!-- Product of Interest (Multi-select chips) -->
@@ -554,6 +554,11 @@
       const notesIn = document.getElementById('demo-notes');
       const websiteIn = document.getElementById('demo-website');
 
+      // Restrict phone to only 10 digits
+      phoneIn.addEventListener('input', () => {
+        phoneIn.value = phoneIn.value.replace(/\D/g, '').slice(0, 10);
+      });
+
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         errorBanner.style.display = 'none';
@@ -561,6 +566,13 @@
         if (!nameIn.value.trim() || !orgIn.value.trim() || !emailIn.value.trim() || !phoneIn.value.trim()) {
           errorBanner.textContent = 'Please fill out all required fields.';
           errorBanner.style.display = 'block';
+          return;
+        }
+
+        if (phoneIn.value.trim().length !== 10) {
+          errorBanner.textContent = 'Phone number must be exactly 10 digits.';
+          errorBanner.style.display = 'block';
+          phoneIn.focus();
           return;
         }
 
@@ -590,7 +602,8 @@
         try {
           let ok = false;
           try {
-            const res = await fetch('/api/demo', {
+            const apiOrigin = (window.location.port === '3000' || !window.location.port) ? '' : 'http://localhost:3000';
+            const res = await fetch(`${apiOrigin}/api/demo`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(payload)

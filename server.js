@@ -87,13 +87,14 @@ pool.on('error', (err) => {
 // 3. Nodemailer Transporter
 let transporter = null;
 if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+  const cleanPass = (process.env.SMTP_PASS || '').replace(/\s+/g, '');
   transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: parseInt(process.env.SMTP_PORT || '587', 10),
     secure: process.env.SMTP_PORT === '465',
     auth: {
       user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS
+      pass: cleanPass
     }
   });
 }
@@ -104,12 +105,13 @@ async function sendNotificationEmail(subject, textContent) {
     return;
   }
   try {
-    await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: `"Neuro Mates Platform" <${process.env.SMTP_USER}>`,
       to: process.env.NOTIFICATION_EMAIL || process.env.SMTP_USER,
       subject: subject,
       text: textContent
     });
+    console.log('[Email Sent Successfully]', info.messageId);
   } catch (err) {
     console.warn('[Email Warning] Failed to send email notification:', err.message);
   }
@@ -155,8 +157,9 @@ app.post('/api/contact', rateLimiter, async (req, res) => {
     if (!cleanEmail || !EMAIL_REGEX.test(cleanEmail) || cleanEmail.length > 255) {
       return res.status(400).json({ ok: false, error: 'A valid email address is required.' });
     }
-    if (!cleanPhone || cleanPhone.length < 8 || cleanPhone.length > 50) {
-      return res.status(400).json({ ok: false, error: 'Phone number must be at least 8 digits.' });
+    const phoneDigits = cleanPhone.replace(/\D/g, '');
+    if (phoneDigits.length !== 10) {
+      return res.status(400).json({ ok: false, error: 'Phone number must be exactly 10 digits.' });
     }
     if (!cleanMessage || cleanMessage.length < 5 || cleanMessage.length > 2000) {
       return res.status(400).json({ ok: false, error: 'Message must be between 5 and 2000 characters.' });
@@ -225,8 +228,9 @@ app.post('/api/demo', rateLimiter, async (req, res) => {
     if (!cleanEmail || !EMAIL_REGEX.test(cleanEmail) || cleanEmail.length > 255) {
       return res.status(400).json({ ok: false, error: 'A valid email address is required.' });
     }
-    if (!cleanPhone || cleanPhone.length < 8 || cleanPhone.length > 50) {
-      return res.status(400).json({ ok: false, error: 'Phone number must be at least 8 digits.' });
+    const phoneDigits = cleanPhone.replace(/\D/g, '');
+    if (phoneDigits.length !== 10) {
+      return res.status(400).json({ ok: false, error: 'Phone number must be exactly 10 digits.' });
     }
     if (cleanMessage && cleanMessage.length > 2000) {
       return res.status(400).json({ ok: false, error: 'Notes must not exceed 2000 characters.' });
