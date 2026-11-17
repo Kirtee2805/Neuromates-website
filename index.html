@@ -815,129 +815,166 @@ function requestHomeScroll(){
     homeScrTicking=true;
   }
 }
-addEventListener('scroll',requestHomeScroll,{passive:true});onS();/* 3D: Pink Glowing Human Brain Animation covering hero background */
+addEventListener('scroll',requestHomeScroll,{passive:true});onS();/* 3D: Anatomical Interactive 3D Human Brain with Neural Synapses & Visitor Interaction */
 (()=>{
-  if(!window.THREE) return;
+  if (!window.THREE) return;
   try {
-    const T = THREE, c = $('#gl');
-    if(!c) return;
+    const T = THREE, canvas = $('#gl');
+    if (!canvas) return;
 
-    const Rn = new T.WebGLRenderer({ canvas: c, alpha: true, antialias: true, powerPreference: 'high-performance' });
-    Rn.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    const renderer = new T.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
-    const sc = new T.Scene();
-    const cam = new T.PerspectiveCamera(40, innerWidth / innerHeight, 0.1, 50);
-    cam.position.z = 7.0;
+    const scene = new T.Scene();
+    const camera = new T.PerspectiveCamera(42, innerWidth / innerHeight, 0.1, 50);
+    camera.position.set(0, 0, 7.2);
 
-    const root = new T.Group();
-    sc.add(root);
+    const worldGroup = new T.Group();
+    scene.add(worldGroup);
 
-    // Glowing pink radial sprite texture for neurons
-    function makeGlowSprite() {
+    const brainGroup = new T.Group();
+    worldGroup.add(brainGroup);
+
+    // Glowing round sprite texture for synaptic nodes
+    function createGlowTexture() {
       const cv = document.createElement('canvas');
       cv.width = 64; cv.height = 64;
       const ctx = cv.getContext('2d');
-      const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
-      g.addColorStop(0, 'rgba(255, 255, 255, 1)');
-      g.addColorStop(0.2, 'rgba(255, 215, 225, 0.95)');
-      g.addColorStop(0.5, 'rgba(244, 114, 182, 0.55)');
-      g.addColorStop(0.8, 'rgba(251, 113, 133, 0.2)');
-      g.addColorStop(1, 'rgba(244, 114, 182, 0)');
-      ctx.fillStyle = g;
+      const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+      grad.addColorStop(0.2, 'rgba(255, 130, 180, 0.95)');
+      grad.addColorStop(0.5, 'rgba(240, 98, 146, 0.55)');
+      grad.addColorStop(0.75, 'rgba(0, 229, 255, 0.25)');
+      grad.addColorStop(1, 'rgba(0, 229, 255, 0)');
+      ctx.fillStyle = grad;
       ctx.fillRect(0, 0, 64, 64);
       return new T.CanvasTexture(cv);
     }
-    const glowTex = makeGlowSprite();
+    const glowTex = createGlowTexture();
 
-    // 1. Generate Anatomical Brain Geometry (Left & Right Hemispheres)
-    const brainGroup = new T.Group();
-    root.add(brainGroup);
-
-    const NODE_COUNT = 2100;
+    // 1. Generate Realistic Anatomical Human Brain Coordinates
+    const NODE_COUNT = 2400;
     const positions = new Float32Array(NODE_COUNT * 3);
     const colors = new Float32Array(NODE_COUNT * 3);
     const baseCoords = [];
 
-    // Pink Color Palette
-    const cWhite = new T.Color('#FFFFFF');
-    const cLightPink = new T.Color('#FFB6C1'); // light pink
-    const cBlush = new T.Color('#FDA4AF');     // soft blush pink
-    const cRose = new T.Color('#F472B6');      // vibrant rose pink
-    const cDeepPink = new T.Color('#FB7185');  // deep pink
-    const cVioletPink = new T.Color('#E879F9');// soft violet-pink sulci
+    const colWhite = new T.Color('#FFFFFF');
+    const colCyan = new T.Color('#00E5FF');
+    const colTeal = new T.Color('#2BB58A');
+    const colPink = new T.Color('#FF4081');
+    const colRose = new T.Color('#FF80AB');
+    const colSoftPink = new T.Color('#FFD1DC');
 
-    for(let i = 0; i < NODE_COUNT; i++) {
-      const side = (i % 2 === 0) ? -1.0 : 1.0;
-      const u = Math.floor(i / 2) / (NODE_COUNT / 2);
-      const theta = Math.acos(Math.max(-1.0, Math.min(1.0, 1.0 - 2.0 * u)));
-      const phi = Math.sqrt((NODE_COUNT / 2) * Math.PI) * theta;
+    let idx = 0;
+    // Distribute nodes across: Left Hemisphere, Right Hemisphere, Cerebellum, Brainstem
+    for (let i = 0; i < NODE_COUNT; i++) {
+      let x, y, z;
+      const side = (i % 2 === 0) ? -1 : 1;
+      const section = Math.random();
 
-      const sinTheta = Math.sin(theta);
-      const cosPhi = Math.abs(Math.cos(phi));
+      if (section < 0.78) {
+        // CEREBRAL HEMISPHERES (Frontal, Parietal, Occipital, Temporal Lobes)
+        const u = Math.random();
+        const v = Math.random();
+        const theta = u * Math.PI; // 0 to PI
+        const phi = v * Math.PI;   // 0 to PI (one side)
 
-      // Anatomical proportions: X = width, Y = height, Z = length
-      let rx = 0.12 + 0.88 * sinTheta * cosPhi;
-      let ry = Math.cos(theta) * 0.95;
-      let rz = sinTheta * Math.sin(phi) * 1.35;
+        // Base ellipsoid: brain is longer front-to-back (z), slightly taller (y), wider (x)
+        let bx = 0.92 * Math.sin(theta) * Math.sin(phi);
+        let by = 0.96 * Math.cos(theta);
+        let bz = 1.35 * Math.sin(theta) * Math.cos(phi);
 
-      let x = side * rx;
-      let y = ry;
-      let z = rz;
+        // Anatomical shaping:
+        // Frontal lobe expansion (anterior: z > 0)
+        if (bz > 0.2) {
+          bx *= (1.0 + 0.12 * Math.sin((bz - 0.2) * 1.5));
+          by *= (1.0 + 0.08 * (bz - 0.2));
+        }
+        // Occipital lobe taper (posterior: z < -0.3)
+        if (bz < -0.3) {
+          bx *= (1.0 + 0.22 * (bz + 0.3));
+          by *= (1.0 + 0.15 * (bz + 0.3));
+        }
+        // Temporal lobe bulge (inferior lateral: y < 0, |z| < 0.4)
+        if (by < 0.1 && Math.abs(bz) < 0.6) {
+          bx *= 1.25;
+          by *= 0.92;
+        }
 
-      // Anatomic lobes tuning
-      if (y < -0.1 && z < -0.2) {
-        // Cerebellum & brainstem
-        x *= 0.72; y -= 0.14; z *= 0.86;
-      } else if (y < 0.05 && Math.abs(z) < 0.45) {
-        // Temporal lobes
-        x *= 1.18; y *= 0.95;
-      } else if (z > 0.35) {
-        // Frontal lobe
-        y *= 1.06; x *= 0.97;
+        // Cortical Convolutions (Gyri & Sulci folds)
+        const gyri = 
+          Math.sin(bx * 9.0 + bz * 4.0) * Math.cos(by * 8.0) * 0.075 +
+          Math.sin(by * 11.0 + bx * 6.0) * Math.cos(bz * 10.0) * 0.055 +
+          Math.sin(bz * 13.0) * Math.cos(bx * 12.0) * 0.035;
+
+        // Medial Longitudinal Fissure (clean separation between left and right hemispheres)
+        const hemisphereOffset = 0.14;
+        let fissureDepth = 0;
+        if (Math.abs(bx) < 0.35) {
+          fissureDepth = (0.35 - Math.abs(bx)) * 0.32;
+        }
+
+        x = side * (Math.abs(bx) + hemisphereOffset) + (bx / (Math.abs(bx) || 1)) * (gyri - fissureDepth);
+        y = by + gyri - fissureDepth * 0.4;
+        z = bz + gyri;
+
+      } else if (section < 0.93) {
+        // CEREBELLUM (Two posterior-inferior lobules with dense horizontal folia)
+        const u = Math.random();
+        const v = Math.random();
+        const th = u * Math.PI * 2;
+        const ph = (v - 0.5) * Math.PI;
+
+        const crx = 0.48 * Math.cos(th) * Math.cos(ph);
+        const cry = 0.35 * Math.sin(ph);
+        const crz = 0.45 * Math.sin(th) * Math.cos(ph);
+
+        // Horizontal cerebellar folia grooves
+        const folia = Math.sin(cry * 24.0) * 0.025;
+
+        x = side * (Math.abs(crx) + 0.18) + folia;
+        y = cry - 0.65 + folia;
+        z = crz - 0.72;
+
+      } else {
+        // BRAINSTEM (Pons & Medulla extending downwards)
+        const t = Math.random();
+        const rad = 0.16 * (1.0 - t * 0.35);
+        const ang = Math.random() * Math.PI * 2;
+
+        x = rad * Math.cos(ang);
+        y = -0.5 - t * 0.75;
+        z = -0.15 - t * 0.2 + rad * Math.sin(ang);
       }
-
-      // Cortical gyri and sulci folds
-      const fold = (
-        Math.sin(x * 8.5) * Math.cos(y * 7.5) * 0.055 +
-        Math.sin(y * 11.0) * Math.cos(z * 9.5) * 0.045 +
-        Math.sin(z * 13.0 + x * 6.0) * 0.035
-      );
-
-      // Deepen interhemispheric fissure
-      let pull = 0;
-      if (Math.abs(x) < 0.22) {
-        pull = (0.22 - Math.abs(x)) * 0.28;
-      }
-
-      const mag = Math.hypot(x, y, z) || 1;
-      x += (x / mag) * (fold - pull);
-      y += (y / mag) * (fold - pull);
-      z += (z / mag) * (fold - pull);
 
       positions[i * 3] = x;
       positions[i * 3 + 1] = y;
       positions[i * 3 + 2] = z;
-      baseCoords.push({ x, y, z, side });
+      baseCoords.push({ x, y, z, origX: x, origY: y, origZ: z, side });
 
-      // Color mapping: light pink hues with bright synaptic highlights
-      const normY = (y + 1.1) / 2.2;
-      const col = new T.Color();
-      if (Math.random() < 0.12) {
-        col.copy(cWhite); // firing synapse highlight
-      } else if (normY > 0.7) {
-        col.lerpColors(cLightPink, cBlush, Math.random());
-      } else if (normY > 0.35) {
-        col.lerpColors(cBlush, cRose, Math.random());
+      // Biotech Palette Color gradient:
+      // Frontal & parietal = vibrant rose-pink & neon cyan
+      // Depth = deep electric magenta
+      // Fissure & stem = bioluminescent teal
+      const c = new T.Color();
+      const normH = (y + 1.2) / 2.4;
+      if (Math.random() < 0.15) {
+        c.copy(colWhite); // active synapsing neurons
+      } else if (section >= 0.93) {
+        c.lerpColors(colTeal, colCyan, Math.random());
+      } else if (section >= 0.78) {
+        c.lerpColors(colPink, colTeal, Math.random() * 0.7);
+      } else if (normH > 0.65) {
+        c.lerpColors(colRose, colSoftPink, Math.random());
+      } else if (normH > 0.35) {
+        c.lerpColors(colPink, colRose, Math.random());
       } else {
-        col.lerpColors(cRose, cDeepPink, Math.random());
-      }
-      if (Math.abs(x) < 0.25) {
-        col.lerp(cVioletPink, 0.4); // fissure depth
+        c.lerpColors(colCyan, colPink, Math.random() * 0.8);
       }
 
-      colors[i * 3] = col.r;
-      colors[i * 3 + 1] = col.g;
-      colors[i * 3 + 2] = col.b;
+      colors[i * 3] = c.r;
+      colors[i * 3 + 1] = c.g;
+      colors[i * 3 + 2] = c.b;
     }
 
     const nodeGeometry = new T.BufferGeometry();
@@ -949,235 +986,265 @@ addEventListener('scroll',requestHomeScroll,{passive:true});onS();/* 3D: Pink Gl
       map: glowTex,
       vertexColors: true,
       transparent: true,
-      opacity: 0.92,
+      opacity: 0.95,
       blending: T.AdditiveBlending,
       depthWrite: false
     });
-
     const nodePoints = new T.Points(nodeGeometry, nodeMaterial);
     brainGroup.add(nodePoints);
 
-    // 2. Generate Synaptic Connectome Axon Lines
-    const lineCoords = [];
-    const edges = [];
-    const maxDist2 = 0.24 * 0.24;
-    const minDist2 = 0.04 * 0.04;
-
-    for (let i = 0; i < NODE_COUNT; i++) {
-      let connections = 0;
+    // 2. Axon Synaptic Connectome Fibers (Lines connecting neighboring neurons)
+    const MAX_EDGES = 1400;
+    const edgeIndices = [];
+    const edgeList = [];
+    for (let i = 0; i < NODE_COUNT && edgeList.length < MAX_EDGES; i += 2) {
       const p1 = baseCoords[i];
-      for (let j = i + 1; j < Math.min(i + 38, NODE_COUNT); j++) {
+      let nearestDist = 0.38;
+      let nearestIdx = -1;
+      // Search local neighborhood
+      for (let j = i + 1; j < Math.min(i + 50, NODE_COUNT); j++) {
         const p2 = baseCoords[j];
-        if (p1.side !== p2.side && Math.abs(p1.x) > 0.18) continue; // separate hemispheres
-        const dx = p1.x - p2.x, dy = p1.y - p2.y, dz = p1.z - p2.z;
-        const d2 = dx * dx + dy * dy + dz * dz;
-        if (d2 >= minDist2 && d2 <= maxDist2) {
-          lineCoords.push(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
-          edges.push({ p1, p2 });
-          connections++;
-          if (connections >= 3) break;
+        if (p1.side !== p2.side && Math.abs(p1.x) > 0.22) continue; // preserve longitudinal fissure separation
+        const d = Math.hypot(p1.x - p2.x, p1.y - p2.y, p1.z - p2.z);
+        if (d > 0.08 && d < nearestDist) {
+          nearestDist = d;
+          nearestIdx = j;
         }
+      }
+      if (nearestIdx !== -1) {
+        edgeIndices.push(i, nearestIdx);
+        edgeList.push({ p1: baseCoords[i], p2: baseCoords[nearestIdx] });
       }
     }
 
+    const edgePositions = new Float32Array(edgeIndices.length * 3);
+    const edgeColors = new Float32Array(edgeIndices.length * 3);
+    for (let k = 0; k < edgeIndices.length; k++) {
+      const pt = baseCoords[edgeIndices[k]];
+      edgePositions[k * 3] = pt.x;
+      edgePositions[k * 3 + 1] = pt.y;
+      edgePositions[k * 3 + 2] = pt.z;
+      // Soft rose & cyan line color
+      edgeColors[k * 3] = 0.95;
+      edgeColors[k * 3 + 1] = 0.45;
+      edgeColors[k * 3 + 2] = 0.72;
+    }
     const lineGeometry = new T.BufferGeometry();
-    lineGeometry.setAttribute('position', new T.BufferAttribute(new Float32Array(lineCoords), 3));
+    lineGeometry.setAttribute('position', new T.BufferAttribute(edgePositions, 3));
+    lineGeometry.setAttribute('color', new T.BufferAttribute(edgeColors, 3));
+
     const lineMaterial = new T.LineBasicMaterial({
-      color: 0xF472B6, // pink axon lines
+      vertexColors: true,
       transparent: true,
-      opacity: 0.26,
+      opacity: 0.28,
       blending: T.AdditiveBlending,
       depthWrite: false
     });
     const axonLines = new T.LineSegments(lineGeometry, lineMaterial);
     brainGroup.add(axonLines);
 
-    // 3. Firing Synaptic Action Potentials (Glowing moving impulses)
-    const PULSE_COUNT = 65;
+    // 3. Action Potential Synaptic Impulses (Traveling photon particles)
+    const PULSE_COUNT = 140;
     const pulsePositions = new Float32Array(PULSE_COUNT * 3);
-    const pulses = [];
+    const pulseColors = new Float32Array(PULSE_COUNT * 3);
+    const pulseData = [];
+
     for (let i = 0; i < PULSE_COUNT; i++) {
-      const edge = edges[Math.floor(Math.random() * edges.length)] || { p1: {x:0,y:0,z:0}, p2: {x:0,y:0,z:0} };
-      pulses.push({
+      const edge = edgeList[Math.floor(Math.random() * edgeList.length)] || { p1: {x:0,y:0,z:0}, p2: {x:0,y:0,z:0} };
+      pulseData.push({
         edge,
         progress: Math.random(),
-        speed: 0.006 + Math.random() * 0.012
+        speed: 0.008 + Math.random() * 0.016
       });
-    }
+      pulsePositions[i * 3] = edge.p1.x;
+      pulsePositions[i * 3 + 1] = edge.p1.y;
+      pulsePositions[i * 3 + 2] = edge.p1.z;
 
+      pulseColors[i * 3] = 1.0;
+      pulseColors[i * 3 + 1] = 0.92;
+      pulseColors[i * 3 + 2] = 0.98;
+    }
     const pulseGeometry = new T.BufferGeometry();
     pulseGeometry.setAttribute('position', new T.BufferAttribute(pulsePositions, 3));
+    pulseGeometry.setAttribute('color', new T.BufferAttribute(pulseColors, 3));
+
     const pulseMaterial = new T.PointsMaterial({
-      size: 0.24,
+      size: 0.22,
       map: glowTex,
-      color: 0xFFF1F2, // brilliant white-pink spark
+      vertexColors: true,
       transparent: true,
-      opacity: 0.98,
+      opacity: 1.0,
       blending: T.AdditiveBlending,
       depthWrite: false
     });
     const pulsePoints = new T.Points(pulseGeometry, pulseMaterial);
     brainGroup.add(pulsePoints);
 
-    // 4. Volumetric Hemisphere Inner Aura (Left & Right translucent glow)
-    const innerGeo = new T.SphereGeometry(0.72, 28, 20);
-    const innerMat = new T.MeshBasicMaterial({
-      color: 0xFB7185,
+    // 4. Volumetric Inner Glow Core
+    const coreMat = new T.MeshBasicMaterial({
+      color: 0xFF2A85,
       transparent: true,
-      opacity: 0.065,
-      wireframe: true,
-      blending: T.AdditiveBlending,
-      depthWrite: false
+      opacity: 0.08,
+      wireframe: true
     });
-    const leftHemi = new T.Mesh(innerGeo, innerMat);
-    leftHemi.position.set(-0.52, 0.04, 0);
-    leftHemi.scale.set(0.72, 0.88, 1.18);
-    const rightHemi = new T.Mesh(innerGeo, innerMat);
-    rightHemi.position.set(0.52, 0.04, 0);
-    rightHemi.scale.set(0.72, 0.88, 1.18);
-    brainGroup.add(leftHemi, rightHemi);
+    const coreMesh = new T.Mesh(new T.IcosahedronGeometry(0.85, 2), coreMat);
+    brainGroup.add(coreMesh);
 
-    // 5. Ambient Floating Neural Particle Field
-    const AMBIENT_COUNT = 75;
-    const ambPositions = new Float32Array(AMBIENT_COUNT * 3);
-    const ambData = [];
-    for (let i = 0; i < AMBIENT_COUNT; i++) {
-      const r = 1.6 + Math.random() * 2.2;
-      const th = Math.random() * Math.PI * 2;
-      const ph = (Math.random() - 0.5) * Math.PI;
-      const px = r * Math.cos(th) * Math.cos(ph);
-      const py = r * Math.sin(ph);
-      const pz = r * Math.sin(th) * Math.cos(ph);
-      ambPositions[i * 3] = px;
-      ambPositions[i * 3 + 1] = py;
-      ambPositions[i * 3 + 2] = pz;
-      ambData.push({ px, py, pz, speed: 0.2 + Math.random() * 0.4, phase: Math.random() * Math.PI * 2 });
+    // 5. Lighting
+    scene.add(new T.AmbientLight(0xFFE6EE, 0.9));
+    const dirLight = new T.DirectionalLight(0x00E5FF, 1.2);
+    dirLight.position.set(4, 5, 6);
+    scene.add(dirLight);
+
+    // 6. Interactive Visitor Controls: Drag, Orbit & Inertia
+    let isDragging = false;
+    let prevMouseX = 0, prevMouseY = 0;
+    let velX = 0, velY = 0;
+    let targetRotY = 0.3, targetRotX = 0.15;
+    let cursorX = 0, cursorY = 0;
+    let neuralExcite = 0;
+
+    // Hit area covering the hero
+    const interactionTarget = document.querySelector('header.h') || canvas;
+
+    function onPointerDown(e) {
+      isDragging = true;
+      prevMouseX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+      prevMouseY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+      neuralExcite = 1.0; // trigger neural burst
     }
-    const ambGeometry = new T.BufferGeometry();
-    ambGeometry.setAttribute('position', new T.BufferAttribute(ambPositions, 3));
-    const ambMaterial = new T.PointsMaterial({
-      size: 0.16,
-      map: glowTex,
-      color: 0xFBCFE8, // soft light pink dust
-      transparent: true,
-      opacity: 0.65,
-      blending: T.AdditiveBlending,
-      depthWrite: false
-    });
-    const ambPoints = new T.Points(ambGeometry, ambMaterial);
-    brainGroup.add(ambPoints);
 
-    // 6. Lights for depth and illumination
-    sc.add(new T.AmbientLight(0xFFE4E6, 0.85));
-    const pinkKey = new T.DirectionalLight(0xF472B6, 1.5);
-    pinkKey.position.set(3, 4, 5);
-    sc.add(pinkKey);
-    const rosePoint = new T.PointLight(0xFDA4AF, 1.4, 25);
-    rosePoint.position.set(-4, -2, 4);
-    sc.add(rosePoint);
-    const blushRim = new T.PointLight(0xFFB6C1, 1.2, 20);
-    blushRim.position.set(0, 5, -4);
-    sc.add(blushRim);
+    function onPointerMove(e) {
+      const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+      const clientY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
 
-    // Resize handling
-    const rs = () => {
-      Rn.setSize(innerWidth, innerHeight, false);
-      cam.aspect = innerWidth / innerHeight;
-      cam.updateProjectionMatrix();
-    };
-    rs();
-    addEventListener('resize', rs, { passive: true });
+      cursorX = (clientX / innerWidth - 0.5) * 2;
+      cursorY = (clientY / innerHeight - 0.5) * 2;
 
-    // Interactive cursor parallax
-    let mx = 0, my = 0;
-    addEventListener('pointermove', e => {
-      mx = e.clientX / innerWidth - 0.5;
-      my = e.clientY / innerHeight - 0.5;
-    }, { passive: true });
+      if (isDragging) {
+        const dx = clientX - prevMouseX;
+        const dy = clientY - prevMouseY;
+        velY = dx * 0.005;
+        velX = dy * 0.005;
+        targetRotY += velY;
+        targetRotX += velX;
+        prevMouseX = clientX;
+        prevMouseY = clientY;
+      }
+    }
 
-    // Visibility observer to avoid burning CPU when offscreen
+    function onPointerUp() {
+      isDragging = false;
+    }
+
+    interactionTarget.addEventListener('pointerdown', onPointerDown, { passive: true });
+    addEventListener('pointermove', onPointerMove, { passive: true });
+    addEventListener('pointerup', onPointerUp, { passive: true });
+    addEventListener('pointercancel', onPointerUp, { passive: true });
+
+    // Touch events fallback for mobile
+    interactionTarget.addEventListener('touchstart', onPointerDown, { passive: true });
+    addEventListener('touchmove', onPointerMove, { passive: true });
+    addEventListener('touchend', onPointerUp, { passive: true });
+
+    // Responsive Resize
+    function handleResize() {
+      renderer.setSize(innerWidth, innerHeight, false);
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+    }
+    handleResize();
+    addEventListener('resize', handleResize, { passive: true });
+
+    // Visibility Observer (pauses loop when scrolled offscreen)
     let isVisible = true;
-    const heroHeader = document.querySelector('header.h') || document.body;
+    let animId = null;
+    const heroElem = document.querySelector('header.h') || document.body;
     new IntersectionObserver(entries => {
       isVisible = entries[0].isIntersecting;
-      if (isVisible && !reqId) reqId = requestAnimationFrame(animateLoop);
-    }, { threshold: 0.05 }).observe(heroHeader);
+      if (isVisible && !animId) animId = requestAnimationFrame(renderLoop);
+    }, { threshold: 0.05 }).observe(heroElem);
 
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
-        if (reqId) { cancelAnimationFrame(reqId); reqId = null; }
-      } else if (isVisible && !reqId) {
-        reqId = requestAnimationFrame(animateLoop);
+        if (animId) { cancelAnimationFrame(animId); animId = null; }
+      } else if (isVisible && !animId) {
+        animId = requestAnimationFrame(renderLoop);
       }
     });
 
-    c.classList.add('on');
-    const t0 = performance.now();
-    let curX = innerWidth > 900 ? 0.35 : 0;
-    let reqId = null;
+    canvas.classList.add('on');
+    const startTime = performance.now();
+    let currentX = innerWidth > 900 ? 0.38 : 0;
 
-    function animateLoop() {
+    function renderLoop() {
       if (document.hidden || !isVisible) {
-        reqId = null;
+        animId = null;
         return;
       }
-      reqId = requestAnimationFrame(animateLoop);
+      animId = requestAnimationFrame(renderLoop);
 
-      const t = RM ? 0 : (performance.now() - t0) * 0.001;
+      const t = RM ? 0 : (performance.now() - startTime) * 0.001;
 
-      // Base scale: covers the background behind the hero heading
+      // Scaling & Positioning: nicely framing the hero heading
       const isDesktop = innerWidth > 900;
-      const targetBaseScale = isDesktop ? 2.4 : 1.7;
-      const targetX = isDesktop ? (tx !== 0 ? tx * 0.25 + 0.35 : 0.35) : 0;
-      curX += (targetX - curX) * 0.05;
+      const baseScale = isDesktop ? 2.35 : 1.65;
+      const targetPosX = isDesktop ? 0.38 : 0;
+      currentX += (targetPosX - currentX) * 0.05;
 
-      // Breathing rhythm: gentle expansion and contraction of living brain
-      const breath = 1.0 + Math.sin(t * 1.6) * 0.022 + Math.sin(t * 3.4) * 0.01;
-      brainGroup.scale.setScalar(targetBaseScale * breath);
+      // Breathing rhythm
+      const breath = 1.0 + Math.sin(t * 1.5) * 0.025 + Math.sin(t * 3.2) * 0.012;
+      brainGroup.scale.setScalar(baseScale * breath);
 
-      // Position: centered behind "Advancing connected care..."
-      const scrollDrift = (window.scrollY || 0) * 0.0008;
-      brainGroup.position.set(curX, 0.12 - scrollDrift, 0);
+      // Parallax scroll drift
+      const scrollDrift = (window.scrollY || 0) * 0.0007;
+      brainGroup.position.set(currentX, 0.1 - scrollDrift, 0);
 
-      // Organic rotation & cursor tilt
-      brainGroup.rotation.y = t * 0.16 + (mx * 0.45);
-      brainGroup.rotation.x = 0.22 + Math.sin(t * 0.3) * 0.06 - (my * 0.35);
-      brainGroup.rotation.z = Math.sin(t * 0.2) * 0.035;
+      // Inertia & Continuous Orbit
+      if (!isDragging) {
+        velX *= 0.92;
+        velY *= 0.92;
+        targetRotY += 0.0035 + velY; // gentle natural spin
+        targetRotX += velX;
+      }
 
-      // Update firing action potential pulses
-      const pulsePos = pulsePoints.geometry.attributes.position.array;
+      // Tilt slightly toward cursor when not violently dragged
+      const tiltX = targetRotX - (cursorY * 0.25);
+      const tiltY = targetRotY + (cursorX * 0.35);
+
+      brainGroup.rotation.x += (tiltX - brainGroup.rotation.x) * 0.08;
+      brainGroup.rotation.y += (tiltY - brainGroup.rotation.y) * 0.08;
+      brainGroup.rotation.z = Math.sin(t * 0.4) * 0.03;
+
+      // Neural excitation fade
+      neuralExcite *= 0.96;
+
+      // Animate Action Potential Synapses
+      const pPos = pulsePoints.geometry.attributes.position.array;
       for (let i = 0; i < PULSE_COUNT; i++) {
-        const p = pulses[i];
-        p.progress += p.speed;
+        const p = pulseData[i];
+        p.progress += p.speed * (1.0 + neuralExcite * 2.5);
         if (p.progress >= 1.0) {
           p.progress = 0;
-          p.edge = edges[Math.floor(Math.random() * edges.length)] || p.edge;
+          p.edge = edgeList[Math.floor(Math.random() * edgeList.length)] || p.edge;
         }
-        const p1 = p.edge.p1, p2 = p.edge.p2;
-        const prog = p.progress;
-        pulsePos[i * 3] = p1.x + (p2.x - p1.x) * prog;
-        pulsePos[i * 3 + 1] = p1.y + (p2.y - p1.y) * prog;
-        pulsePos[i * 3 + 2] = p1.z + (p2.z - p1.z) * prog;
+        const p1 = p.edge.p1;
+        const p2 = p.edge.p2;
+        const pr = p.progress;
+        pPos[i * 3] = p1.x + (p2.x - p1.x) * pr;
+        pPos[i * 3 + 1] = p1.y + (p2.y - p1.y) * pr;
+        pPos[i * 3 + 2] = p1.z + (p2.z - p1.z) * pr;
       }
       pulsePoints.geometry.attributes.position.needsUpdate = true;
 
-      // Subtle ambient particle movement
-      const ambPos = ambPoints.geometry.attributes.position.array;
-      for (let i = 0; i < AMBIENT_COUNT; i++) {
-        const a = ambData[i];
-        ambPos[i * 3 + 1] = a.py + Math.sin(t * a.speed + a.phase) * 0.12;
-      }
-      ambPoints.geometry.attributes.position.needsUpdate = true;
-
-      Rn.render(sc, cam);
+      renderer.render(scene, camera);
     }
 
-    reqId = requestAnimationFrame(animateLoop);
-  } catch(e) {
-    console.warn('3D Brain initialization error:', e);
+    animId = requestAnimationFrame(renderLoop);
+  } catch (err) {
+    console.warn('3D Brain initialization error:', err);
   }
 })();
-
 </script><script src="assets/js/chat-widget.js" async></script>
 
 <script>
