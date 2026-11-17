@@ -137,3 +137,4 @@ for fname in standalone_files:
     print(f"Updated navbar logo in standalone page: {fname}")
 
 print("All tasks completed successfully!")
+

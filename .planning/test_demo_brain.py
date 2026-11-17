@@ -374,3 +374,4 @@ demo_brain_js = '''
       }
 '''
 print("Animation script parsed, character length:", len(demo_brain_js))
+
