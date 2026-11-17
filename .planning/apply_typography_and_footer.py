@@ -713,3 +713,4 @@ for root_dir, dirs, files in os.walk('.'):
             print(f"Updated {filepath}")
 
 print(f"All {html_count} HTML files processed!")
+

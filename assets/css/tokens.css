@@ -297,7 +297,10 @@ nav#nav.s {
 nav .lg {
   display: inline-flex;
   align-items: center;
-  padding: 4px 0;
+  justify-content: center;
+  height: 100%;
+  padding: 0;
+  margin: 0;
 }
 nav .lg img,
 nav .lo img,
@@ -307,6 +310,7 @@ nav .lo img,
   width: auto;
   display: block;
   background: transparent;
+  object-fit: contain;
 }
 
 nav ul {
