@@ -223,7 +223,25 @@
         align-self: flex-end;
       }
     }
-  </style>
+  
+    .insights-hero {
+      position: relative;
+      padding: clamp(120px, 14vw, 165px) 0 clamp(48px, 6vw, 72px) !important;
+      overflow: hidden;
+    }
+    .insights-hero .w {
+      position: relative;
+      z-index: 2;
+    }
+    .insights-hero .ey {
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+    .insights-hero h1 {
+      margin: 0 0 16px;
+    }
+    
+</style>
 </head>
 <body>
   <div id="care"></div>
@@ -234,11 +252,7 @@
     <header class="hero insights-hero">
       <canvas id="hero-wave-canvas" aria-hidden="true"></canvas>
       <div class="w">
-        <nav class="breadcrumb" aria-label="Breadcrumb">
-          <a href="../index.html">Home</a>
-          <span class="sep">/</span>
-          <span class="current">Insights</span>
-        </nav>
+        <span class="ey">INSIGHTS</span>
         <h1>Research, technology and perspectives on <em>neurological care</em>.</h1>
         <p class="lead">Explore the research and ideas informing Neuro Mates and the broader development of connected neurological care.</p>
       </div>

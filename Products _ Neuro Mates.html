@@ -652,6 +652,31 @@ footer button:focus-visible,
 .mem-preview-foot { display: flex; justify-content: space-between; font-size: .72rem; color: var(--mu, #4F6F73); border-top: 1px solid rgba(14,59,67,.06); padding-top: 8px; margin-top: 4px; }
 .mem-stats { font-weight: 700; color: #0B7A7C; }
 
+
+/* Fix hero text overlap with .orb */
+#v-overview .ph { position: relative; overflow: visible; padding-top: clamp(120px, 14vw, 160px); padding-bottom: clamp(60px, 8vw, 90px); }
+#v-overview .ph .w { max-width: 58%; position: relative; z-index: 3; }
+#v-overview .ph h1 { max-width: 14em; }
+.orb { position: absolute; right: 2%; top: 18%; width: 38%; height: 64%; pointer-events: none; z-index: 1; }
+.orb img { position: absolute; width: clamp(110px, 14vw, 175px); aspect-ratio: 1; object-fit: cover; border-radius: 50%; border: 6px solid #fff; box-shadow: 0 20px 50px rgba(14,59,67,.2); animation: bob 5s ease-in-out infinite; }
+.orb img:nth-child(1) { left: 16%; top: 0; }
+.orb img:nth-child(2) { right: 0; top: 8%; animation-delay: -1.2s; }
+.orb img:nth-child(3) { left: 26%; bottom: 0; animation-delay: -2.4s; }
+.orb img:nth-child(4) { right: 4%; bottom: 8%; animation-delay: -3.4s; }
+
+/* Everyday Support 3-Card Balanced Alignment */
+.support-grid { display: grid; grid-template-columns: 1fr 1fr 1.15fr; gap: 20px; align-items: stretch; margin-top: 10px; }
+.support-card { display: flex; flex-direction: column; justify-content: flex-start; padding: 28px; border-radius: 24px; border: 1px solid rgba(14, 59, 67, 0.08); box-shadow: 0 10px 30px rgba(14, 59, 67, 0.05); }
+.support-card-tag { display: inline-block; align-self: flex-start; font-family: var(--font-heading, sans-serif); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0B7A7C; background: #EAF6F5; padding: 4px 10px; border-radius: 99px; margin-bottom: 14px; }
+.support-card h3 { margin: 0 0 10px !important; font-size: 1.18rem; }
+.support-card p { margin: 0; color: var(--mu); line-height: 1.55; font-size: 0.94rem; }
+.support-card-wb { border-color: rgba(43, 181, 138, 0.35); background: linear-gradient(160deg, #ffffff, #F0FAF7) !important; }
+@media (max-width: 900px) {
+  #v-overview .ph .w { max-width: 100%; }
+  .orb { display: none; }
+  .support-grid { grid-template-columns: 1fr; }
+}
+
 </style>
 <style>
 body[data-v=overview]{--a:#0B7A7C;--ad:#0B6F6F;--a2:#2BB58A;--t:#E3F5F1}
@@ -722,7 +747,7 @@ h1.wp{clip-path:inset(0 100% 0 0);transition:clip-path 1.6s var(--e)}h1.wp.go{cl
 
 <!-- OVERVIEW -->
 <div class="pv on" id="v-overview">
-<header class="ph"><div class="w"><p class="crumb">NEURO MATES / PRODUCTS</p><p class="ey">PRODUCTS</p><h1 class="hl" data-h="rise" style="max-width:11em">Neurological care, designed around the condition.</h1><p class="bl" style="margin-top:20px">Neuro Mates brings together disease-specific products for Parkinson’s, Alzheimer’s, Epilepsy and Paralysis. Each product combines appropriate monitoring, connected technology and personalised care support for the needs of the condition.</p></div>
+<header class="ph"><div class="w"><p class="ey">PRODUCTS</p><h1 class="hl" data-h="rise" style="max-width:11em">Neurological care, designed around the condition.</h1><p class="bl" style="margin-top:20px">Neuro Mates brings together disease-specific products for Parkinson’s, Alzheimer’s, Epilepsy and Paralysis. Each product combines appropriate monitoring, connected technology and personalised care support for the needs of the condition.</p></div>
 <div class="orb" aria-hidden="true"><img data-k="p_person" alt=""><img data-k="a_person" alt=""><img data-k="e_person" alt=""><img data-k="pa_face" alt=""></div></header>
 <section class="bg stk z"><div class="w">
 <article class="sc r" style="--g:linear-gradient(150deg,#D6EEFF,#7FD6D0)"><div><small>PARKINSON’S CARE</small><h2>Movement monitoring and interactive rehabilitation</h2><p>Designed to support movement monitoring and interactive rehabilitation through movement-based activities and exercise.</p><div class="fl">SENSE → ANALYZE → ALERT → RECOVER → EXERCISE</div><a class="btn" href="#parkinsons-care">View Parkinson’s Care →</a></div><img data-k="p_person" alt="Older woman wearing the Neuro Mates movement-monitoring wearable"></article>
@@ -820,7 +845,31 @@ h1.wp{clip-path:inset(0 100% 0 0);transition:clip-path 1.6s var(--e)}h1.wp.go{cl
 <section class="sec z"><div class="w two"><div class="r"><p class="ey">CONTINUOUS MONITORING</p><h2>Continuous monitoring</h2><p style="margin-top:18px">A lightweight headband with a brain-signal sensor continuously monitors the patient’s brain activity. A reference electrode sits behind the ear. The EEG view can show Alpha, Beta, Gamma, Delta and Theta waves.</p><div class="chs"><span>EEG monitoring</span><span>Real-time alerts</span><span>Lightweight design</span><span>Safe and comfortable</span></div><div class="bds"><span>Alpha</span><span>Beta</span><span>Gamma</span><span>Delta</span><span>Theta</span></div></div><figure class="fm r" style="margin:0"><img data-k="e_person" alt="Woman wearing the Neuro Mates headband with a reference electrode behind the ear"></figure></div>
 <div class="w" style="margin-top:48px"><figure class="fm r" style="margin:0"><img data-k="e_detail" alt="Headband detail: comfortable headband and EEG electrode behind the ear"></figure></div></section>
 <div class="pin" id="e-story"><div><div class="w eg"><div class="el"><span class="il">ILLUSTRATION</span><p class="ey" style="color:#9AF2DB;margin-bottom:14px">HOW IT RESPONDS</p><div class="dots" id="ed"><span>Monitor</span><span>Detect</span><span>Alert</span><span>Respond</span><span>Recover</span></div><div class="cp2" aria-live="polite"><h3 id="eh"></h3><p id="ep"></p></div><div class="alc" id="ea"><small id="eas"></small><b id="eat"></b><span>ILLUSTRATION</span></div></div><div class="er"><div class="chn"><span>Channel 1</span><span>Channel 2</span><span>Channel 3</span></div><canvas id="ec" height="300" aria-label="Brain-wave illustration"></canvas></div></div></div></div>
-<section class="sec t z"><div class="w two"><div class="r"><p class="ey">EVERYDAY SUPPORT</p><h2>Support beyond the alert.</h2><div class="rm"><div class="cardx" style="background:#fff"><h3>Medication Reminder</h3><p>Supports awareness of scheduled medication.</p></div><div class="cardx" style="background:#fff"><h3>Appointment Reminder</h3><p>Helps patients keep track of scheduled clinical appointments.</p></div></div></div><div class="wb r"><b>Responsible wording.</b> Neuro Mates monitors for abnormal EEG signals that may indicate a seizure. It does not diagnose, predict or prevent seizures, and detection cannot be guaranteed.</div></div></section>
+<section class="sec t z">
+  <div class="w">
+    <div class="r" style="margin-bottom:28px">
+      <p class="ey">EVERYDAY SUPPORT</p>
+      <h2>Support beyond the alert.</h2>
+    </div>
+    <div class="support-grid r">
+      <div class="cardx support-card" style="background:#fff">
+        <span class="support-card-tag">Routine Care</span>
+        <h3>Medication Reminder</h3>
+        <p>Supports awareness of scheduled medication.</p>
+      </div>
+      <div class="cardx support-card" style="background:#fff">
+        <span class="support-card-tag">Clinical Follow-up</span>
+        <h3>Appointment Reminder</h3>
+        <p>Helps patients keep track of scheduled clinical appointments.</p>
+      </div>
+      <div class="cardx support-card support-card-wb" style="background:#fff">
+        <span class="support-card-tag" style="color:#0E7A5A;background:#E8F8F2;">Clinical Protocol</span>
+        <h3>Responsible Wording</h3>
+        <p>Neuro Mates monitors for abnormal EEG signals that may indicate a seizure. It does not diagnose, predict or prevent seizures, and detection cannot be guaranteed.</p>
+      </div>
+    </div>
+  </div>
+</section>
 <section class="sec z"><div class="w"><p class="ey r">WHO SEES WHAT</p><h2 class="r">Four portals, one product.</h2><div class="rt r" data-p="e"></div><p class="r" style="margin-top:36px"><b>Technology:</b> EEG monitoring, connected communication, WhatsApp alerts, emergency speaker/siren and continuous monitoring.</p><div class="fr r" data-f="Monitor,Detect,Alert,Respond,Recover,Resume"></div></div></section>
 <section class="sec t z"><div class="w"><a class="nxt r" href="#paralysis-care"><div><span>NEXT PRODUCT</span><br><b>Paralysis Care →</b></div></a></div></section>
 <section class="cta z" data-cta></section></div>

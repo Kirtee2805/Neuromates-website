@@ -267,7 +267,31 @@
         line-height: 1.35;
       }
     }
-  </style>
+  
+    .ai-hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 48vh;
+      padding: clamp(120px, 14vw, 165px) 0 clamp(48px, 6vw, 72px) !important;
+      display: flex;
+      align-items: center;
+    }
+    .ai-hero .w {
+      position: relative;
+      z-index: 2;
+      pointer-events: auto;
+    }
+    .ai-hero .ey {
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+    .ai-hero h1 {
+      margin: 0;
+      position: relative;
+      z-index: 2;
+    }
+    
+</style>
 </head>
 
 <body>
@@ -279,13 +303,6 @@
     <header class="hero ai-hero">
       <canvas id="hero-neural-canvas" aria-label="Interactive neural network particle simulation"></canvas>
       <div class="w">
-        <nav class="breadcrumb" aria-label="Breadcrumb">
-          <a href="../index.html">Home</a>
-          <span class="sep">/</span>
-          <a href="index.html">Technology</a>
-          <span class="sep">/</span>
-          <span class="current">AI &amp; Machine Learning</span>
-        </nav>
         <span class="ey">AI &amp; MACHINE LEARNING</span>
         <h1>Intelligence designed around <em>patient information</em>.</h1>
       </div>
