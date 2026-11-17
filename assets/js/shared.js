@@ -223,12 +223,12 @@
         </ul>
       `;
     },
-        getFooterHTML: function () {
+    getFooterHTML: function () {
       setTimeout(initFooterObserver, 0);
       return `<div class="nm-footer-top-line"></div>
   <div class="nm-footer-wrap">
     
-    <!-- Row 1: 4-Column Grid -->
+    <!-- Row 1: 3-Column Grid (Brand, Our Vision, Contact Us) -->
     <div class="nm-footer-grid">
       <!-- Col 1: Brand -->
       <div class="nm-footer-col nm-footer-brand">
@@ -246,20 +246,7 @@
         <p class="nm-footer-vision-body">Our vision is to make continuous neurological care more accessible, connected and personalised by bringing patients, families, healthcare professionals and technology into one care ecosystem.</p>
       </div>
 
-      <!-- Col 3: Explore -->
-      <div class="nm-footer-col nm-footer-explore">
-        <span class="nm-footer-label">EXPLORE</span>
-        <nav class="nm-footer-nav" aria-label="Footer Explore Navigation">
-          <a href="${root}neuromates-products.html#overview">Products</a>
-          <a href="${root}technology/index.html">Technology</a>
-          <a href="${root}insights/index.html">Insights</a>
-          <a href="${root}about/index.html">About Us</a>
-          <a href="${root}contact.html">Contact Us</a>
-          <a href="${root}register-demo.html">Register for a Demo</a>
-        </nav>
-      </div>
-
-      <!-- Col 4: Contact Us -->
+      <!-- Col 3: Contact Us -->
       <div class="nm-footer-col nm-footer-contact">
         <span class="nm-footer-label">CONTACT US</span>
         <p class="nm-footer-contact-body">Interested in Neuro Mates, our products, healthcare collaboration or a product demonstration? Get in touch with our team.</p>
@@ -339,7 +326,7 @@
     initBackToTop();
     initFooterObserver();
     initSmoothScroll();
-    
+
     // Automatically load Frontend AI Chat Widget
     if (!document.getElementById('neuro-chat-launcher') && !window.NeuroChatInitialized) {
       const chatScript = document.createElement('script');

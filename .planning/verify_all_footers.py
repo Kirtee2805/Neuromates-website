@@ -27,3 +27,4 @@ for f in sorted(files):
         print(f"[WARN] {f} footer check unclear")
 
 print(f"Verification complete: {success_count}/{len(files)} pages verified.")
+

@@ -1,7 +1,9 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Products | Neuro Mates</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#F6F4EE;--ink:#0E3B43;--mu:#4F6F73;--te:#0B7A7C;--gr:#2BB58A;--aq:#7FD6D0;--sk:#6EC1F0;--co:#FF7A6B;--su:#FFC857;--e:cubic-bezier(.22,1,.36,1);--sp:cubic-bezier(.34,1.56,.64,1);--fd:Fraunces,Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{--bg:#F6F4EE;--ink:#0E3B43;--mu:#4F6F73;--te:#0B7A7C;--gr:#2BB58A;--aq:#7FD6D0;--sk:#6EC1F0;--co:#FF7A6B;--su:#FFC857;--e:cubic-bezier(.22,1,.36,1);--sp:cubic-bezier(.34,1.56,.64,1);--fd:var(--font-heading);--fb:var(--font-body);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *,*::before,*::after{box-sizing:inherit}html{scroll-behavior:auto}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.65 var(--fb);overflow-x:hidden}
 a{color:inherit;text-decoration:none}a:focus-visible,button:focus-visible,.pr:focus-visible{outline:3px solid var(--te);outline-offset:3px}
@@ -100,10 +102,181 @@ footer{background:linear-gradient(180deg,#E3F5F1,#fff 70%);padding:0}footer::bef
 @media(max-width:900px){.fg{grid-template-columns:1fr;gap:28px}.stage{height:430px}}
 
 
+
+
 /* ==========================================================================
-   NEURO MATES — PRODUCTION FOOTER STYLES
+   NEURO MATES — TYPOGRAPHY & DESIGN TOKENS
+   Fonts: Sora (Headings: 600, 700) & Figtree (Body & UI: 400, 500, 600, 700)
    ========================================================================== */
 
+:root {
+  --font-heading: 'Sora', "Segoe UI", system-ui, sans-serif;
+  --font-body: 'Figtree', "Segoe UI", system-ui, sans-serif;
+  --fd: var(--font-heading);
+  --fb: var(--font-body);
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.65;
+  font-weight: 400;
+  color: var(--ink, #0E3B43);
+}
+
+p {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.65;
+  max-width: 68ch;
+  font-weight: 400;
+}
+
+/* Headings: Sora (600 and 700 only) */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  margin: 0;
+  letter-spacing: -0.015em;
+  color: var(--ink, #0E3B43);
+  overflow-wrap: anywhere;
+}
+
+header.h h1,
+.hero h1,
+.hero-h1 {
+  font-size: clamp(2.1rem, 4.2vw, 3.6rem);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+  max-width: 16em;
+}
+
+h1 {
+  font-size: clamp(1.9rem, 3.6vw, 3.1rem);
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: clamp(1.55rem, 2.7vw, 2.3rem);
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: clamp(1.15rem, 1.7vw, 1.4rem);
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+h4 {
+  font-size: 1.05rem;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+/* Headline accent phrase: gradient color only, NO italic */
+h1 em,
+h2 em,
+h3 em,
+.hero em,
+em {
+  font-family: inherit;
+  font-style: normal !important;
+  font-weight: 600;
+  background: linear-gradient(100deg, #0B7A7C, #2BB58A 55%, #3B6CF6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Large statements (impact words, mission and vision) */
+.large-statement,
+.im b,
+.vision-stmt,
+.nm-footer-vision-stmt {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3.4vw, 2.9rem);
+  line-height: 1.2;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* Lead paragraph (hero body) */
+.bl,
+p.lead,
+.hero-lead {
+  font-family: var(--font-body);
+  font-size: 1.075rem;
+  line-height: 1.6;
+  max-width: 34em;
+}
+
+/* Small text and captions */
+small, .caption, .subtext {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Eyebrows and labels */
+.ey,
+.nm-footer-label,
+.eyebrow,
+label {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Navbar items */
+nav ul,
+nav li > a,
+.navbar-item {
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Buttons */
+.btn,
+.b2,
+button,
+.nm-btn-contact,
+.nm-btn-demo {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Numbers in steps, charts, timelines: Tabular Numbers */
+.cd .n,
+.nd,
+#steps,
+.tabular-nums,
+.metric-num,
+.stat-number,
+.timeline {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-body);
+}
+
+/* Site Navigation (Pinned at top, does not scroll down over content) */
+nav#nav,
+nav {
+  position: absolute !important;
+  top: calc(16px + env(safe-area-inset-top, 0px)) !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: min(1240px, calc(100% - 24px));
+  z-index: 500;
+}
+
+/* Footer: 3-column layout without Explore */
 footer.nm-footer,
 footer {
   position: relative;
@@ -112,7 +285,7 @@ footer {
   color: rgba(232, 244, 242, 0.86);
   padding: 64px 0 0;
   overflow: hidden;
-  font-family: var(--fb, 'Plus Jakarta Sans', system-ui, sans-serif);
+  font-family: var(--font-body);
 }
 
 .nm-footer-top-line {
@@ -131,11 +304,10 @@ footer {
   box-sizing: border-box;
 }
 
-/* Row 1: 4-Column Grid */
 .nm-footer-grid {
   display: grid;
-  grid-template-columns: 1.1fr 1.3fr 0.8fr 1.1fr;
-  gap: 44px;
+  grid-template-columns: 1.15fr 1.45fr 1.1fr;
+  gap: 48px;
   align-items: start;
 }
 
@@ -144,7 +316,6 @@ footer {
   flex-direction: column;
 }
 
-/* Col 1: Brand */
 .nm-footer-logo-tile {
   display: inline-block;
   background: #FFFFFF;
@@ -179,22 +350,20 @@ footer {
   margin: 0;
 }
 
-/* Labels across columns */
 .nm-footer-label {
   font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #7FD6D0;
   display: block;
   margin-bottom: 12px;
 }
 
-/* Col 2: Vision */
 .nm-footer-vision-stmt {
-  font-family: var(--fd, 'Sora', sans-serif);
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: clamp(1.25rem, 2vw, 1.45rem);
+  font-weight: 600;
   color: #FFFFFF;
   line-height: 1.35;
   margin: 0 0 12px;
@@ -214,29 +383,6 @@ footer {
   margin: 0;
 }
 
-/* Col 3: Explore */
-.nm-footer-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.nm-footer-nav a {
-  display: inline-block;
-  color: rgba(232, 244, 242, 0.86);
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-decoration: none;
-  background: linear-gradient(#9AF2DB, #9AF2DB) 0 100% / 0 2px no-repeat;
-  transition: background-size 0.35s cubic-bezier(.22, 1, .36, 1), color 0.25s;
-  padding: 3px 0;
-  align-self: flex-start;
-}
-.nm-footer-nav a:hover {
-  color: #9AF2DB;
-  background-size: 100% 2px;
-}
-
-/* Col 4: Contact Us */
 .nm-footer-contact-body {
   font-size: 0.92rem;
   line-height: 1.55;
@@ -255,8 +401,8 @@ footer {
   color: #0B6F6F !important;
   border-radius: 99px;
   padding: 10px 22px;
-  font-weight: 700;
-  font-size: 0.88rem;
+  font-weight: 600;
+  font-size: 0.9rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -276,8 +422,8 @@ footer {
   color: #7FD6D0 !important;
   border-radius: 99px;
   padding: 9px 20px;
-  font-weight: 700;
-  font-size: 0.88rem;
+  font-weight: 600;
+  font-size: 0.9rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -291,7 +437,6 @@ footer {
   transform: translateY(-2px);
 }
 
-/* Row 2: Team Strip */
 .nm-footer-team-strip {
   margin-top: 44px;
   border-top: 1px solid rgba(255, 255, 255, 0.16);
@@ -330,7 +475,7 @@ footer {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 0.82rem;
   color: #04161C;
   letter-spacing: -0.02em;
@@ -343,7 +488,6 @@ footer {
   white-space: nowrap;
 }
 
-/* Row 2 Animation: Staggered Rise */
 .footer-in-view .nm-team-pill {
   animation: nmPillRise 0.5s cubic-bezier(.22, 1, .36, 1) forwards;
 }
@@ -355,17 +499,10 @@ footer {
 .footer-in-view .nm-team-pill:nth-child(6) { animation-delay: 300ms; }
 
 @keyframes nmPillRise {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Row 3: Bottom Bar */
 .nm-footer-bottom-bar {
   border-top: 1px solid rgba(255, 255, 255, 0.16);
   margin-top: 36px;
@@ -414,7 +551,6 @@ footer {
   transform: translateY(-2px);
 }
 
-/* Accessibility: Focus Rings */
 footer a:focus-visible,
 footer button:focus-visible,
 .nm-footer a:focus-visible,
@@ -423,7 +559,7 @@ footer button:focus-visible,
   outline-offset: 3px !important;
 }
 
-/* Mobile Responsive (under 900px) */
+/* Mobile Adjustments (under 640px and 900px) */
 @media (max-width: 900px) {
   footer.nm-footer,
   footer {
@@ -455,7 +591,30 @@ footer button:focus-visible,
   }
 }
 
-/* Respect prefers-reduced-motion */
+@media (max-width: 640px) {
+  header.h h1,
+  .hero h1,
+  .hero-h1,
+  h1 {
+    font-size: 2.1rem !important;
+    line-height: 1.15;
+  }
+  h2 {
+    font-size: 1.55rem !important;
+    line-height: 1.22;
+  }
+  .large-statement,
+  .im b,
+  .vision-stmt,
+  .nm-footer-vision-stmt {
+    font-size: 1.7rem !important;
+    line-height: 1.25;
+  }
+  * {
+    overflow-wrap: anywhere;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nm-team-pill,
   .nm-footer-vision-stmt {
@@ -603,7 +762,7 @@ h1.wp{clip-path:inset(0 100% 0 0);transition:clip-path 1.6s var(--e)}h1.wp.go{cl
   <div class="nm-footer-top-line"></div>
   <div class="nm-footer-wrap">
     
-    <!-- Row 1: 4-Column Grid -->
+    <!-- Row 1: 3-Column Grid (Brand, Our Vision, Contact Us) -->
     <div class="nm-footer-grid">
       <!-- Col 1: Brand -->
       <div class="nm-footer-col nm-footer-brand">
@@ -621,20 +780,7 @@ h1.wp{clip-path:inset(0 100% 0 0);transition:clip-path 1.6s var(--e)}h1.wp.go{cl
         <p class="nm-footer-vision-body">Our vision is to make continuous neurological care more accessible, connected and personalised by bringing patients, families, healthcare professionals and technology into one care ecosystem.</p>
       </div>
 
-      <!-- Col 3: Explore -->
-      <div class="nm-footer-col nm-footer-explore">
-        <span class="nm-footer-label">EXPLORE</span>
-        <nav class="nm-footer-nav" aria-label="Footer Explore Navigation">
-          <a href="neuromates-products.html#overview">Products</a>
-          <a href="technology/index.html">Technology</a>
-          <a href="insights/index.html">Insights</a>
-          <a href="about/index.html">About Us</a>
-          <a href="contact.html">Contact Us</a>
-          <a href="register-demo.html">Register for a Demo</a>
-        </nav>
-      </div>
-
-      <!-- Col 4: Contact Us -->
+      <!-- Col 3: Contact Us -->
       <div class="nm-footer-col nm-footer-contact">
         <span class="nm-footer-label">CONTACT US</span>
         <p class="nm-footer-contact-body">Interested in Neuro Mates, our products, healthcare collaboration or a product demonstration? Get in touch with our team.</p>

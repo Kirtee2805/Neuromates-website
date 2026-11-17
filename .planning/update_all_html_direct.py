@@ -121,3 +121,4 @@ for root_dir, dirs, files in os.walk('.'):
                 print(f"No footer change needed in: {filepath}")
 
 print(f"Updated {updated} files directly.")
+

@@ -539,3 +539,4 @@ with open('assets/js/shared.js', 'w', encoding='utf-8') as f:
     f.write(shared)
 
 print("assets/js/shared.js successfully updated!")
+

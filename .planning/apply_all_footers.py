@@ -588,3 +588,4 @@ for fname in standalone_files:
     print(f"Updated standalone page: {fname}")
 
 print("All files updated successfully!")
+
