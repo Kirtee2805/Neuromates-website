@@ -37,8 +37,9 @@ header.h p.bl{max-width:30em}
 .chips span:nth-child(1){background:#CBEAFF}.chips span:nth-child(2){background:#E4DAFF}.chips span:nth-child(3){background:#C9F5DF}.chips span:nth-child(4){background:#FFE9A8}
 .sc{font:700 .7rem var(--fb);letter-spacing:.2em;color:var(--mu);margin-top:36px}
 .intro{background:#fff}.words{display:flex;flex-wrap:wrap;gap:14px 14px;margin-top:48px}
-.words span{font:700 clamp(1.2rem,2.6vw,2rem)/1 var(--fd);padding:16px 30px;border-radius:99px;opacity:0;transform:scale(.3) rotate(-10deg);transition:opacity .4s,transform .8s var(--sp)}
-.words span.in{opacity:1;transform:none;animation:bob 4s ease-in-out infinite}.words span:nth-child(2n).in{animation-delay:-1.3s}.words span:nth-child(3n).in{animation-delay:-2.4s}
+.words span{font:700 clamp(1.2rem,2.6vw,2rem)/1 var(--fd);padding:16px 30px;border-radius:99px;opacity:1;transform:none;animation:bob 4s ease-in-out infinite;transition:transform .4s var(--sp),box-shadow .3s;cursor:default}
+.words span:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 12px 28px rgba(14,59,67,.12)}
+.words span:nth-child(2n){animation-delay:-1.3s}.words span:nth-child(3n){animation-delay:-2.4s}
 @keyframes bob{50%{transform:translateY(-8px)}}
 .words span:nth-child(1){background:#CBEAFF}.words span:nth-child(2){background:#FFD6CF}.words span:nth-child(3){background:#E4DAFF}.words span:nth-child(4){background:#FFE9A8}.words span:nth-child(5){background:#C9F5DF}.words span:nth-child(6){background:#FFD1E3}
 .prod{background:linear-gradient(180deg,#fff,#E8F6F3)}
@@ -762,7 +763,7 @@ const h1=$('h1');h1.innerHTML=h1.innerHTML.replace(/(^|>)([^<]+)/g,(m,a,t)=>a+t.
 $$('.w1>span').forEach((s,i)=>s.style.transitionDelay=i*80+'ms');setTimeout(()=>h1.classList.add('in'),150);
 const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.25});
 $$('.r,.vd').forEach(e=>io.observe(e));
-$$('.words span').forEach((w,i)=>new IntersectionObserver(es=>es[0].isIntersecting&&setTimeout(()=>w.classList.add('in'),i*160),{threshold:1}).observe(w));
+$$('.words span').forEach((w,i)=>{w.classList.add('in');new IntersectionObserver(es=>{if(es[0].isIntersecting){setTimeout(()=>w.classList.add('in'),i*100)}}, {threshold:0.1}).observe(w);});
 $$('.tk li').forEach(l=>l.insertAdjacentHTML('afterbegin','<svg width="30" height="30" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5"/><path pathLength="1" d="M7 12.5l3.2 3.2L17 9"/></svg>'));
 $('#pl').onclick=()=>{const v=$('#vd');v.style.aspectRatio='16/9';v.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/eN_GKuE5eUw?autoplay=1&rel=0" title="Neuro Mates project video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>'};
 $('#mb').onclick=()=>$('#nav').classList.toggle('o');
