@@ -91,11 +91,52 @@
       });
     }
 
-    // Keyboard support for dropdowns
+    // Dropdown toggle buttons, keyboard support & accordion support for mobile
     $$('.dd', nav).forEach(dd => {
       const trigger = dd.querySelector(':scope > a');
       const menu = dd.querySelector(':scope > div');
       if (!trigger || !menu) return;
+
+      let toggle = dd.querySelector('.dd-toggle');
+      if (!toggle) {
+        toggle = document.createElement('button');
+        toggle.className = 'dd-toggle';
+        toggle.type = 'button';
+        const label = trigger.textContent.trim();
+        toggle.setAttribute('aria-label', `Toggle ${label} menu`);
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.innerHTML = '<svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg>';
+        trigger.after(toggle);
+      }
+
+      toggle.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const isOpen = dd.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', String(isOpen));
+      };
+
+      trigger.addEventListener('click', (e) => {
+        if (window.innerWidth <= 960) {
+          const href = trigger.getAttribute('href');
+          if (!href || href === '#' || href === '#overview' || href.startsWith('javascript:')) {
+            e.preventDefault();
+            const isOpen = dd.classList.toggle('open');
+            toggle.setAttribute('aria-expanded', String(isOpen));
+          }
+        }
+      });
+
+      menu.querySelectorAll('a').forEach(subLink => {
+        subLink.addEventListener('click', () => {
+          nav.classList.remove('o');
+          const mb = $('#mb');
+          if (mb) {
+            mb.setAttribute('aria-expanded', 'false');
+            mb.textContent = 'Menu';
+          }
+        });
+      });
 
       trigger.setAttribute('aria-haspopup', 'true');
       trigger.setAttribute('aria-expanded', 'false');
@@ -110,6 +151,7 @@
       dd.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           trigger.setAttribute('aria-expanded', 'false');
+          dd.classList.remove('open');
           trigger.focus();
         }
       });
@@ -179,6 +221,7 @@
         <ul>
           <li class="dd ${activeGroup === 'products' ? 'active' : ''}">
             <a href="${root}neuromates-products.html#overview">Products</a>
+            <button class="dd-toggle" type="button" aria-label="Toggle submenu" aria-expanded="false"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button>
             <div>
               <a href="${root}neuromates-products.html#overview">Products Overview</a>
               <a href="${root}neuromates-products.html#parkinsons-care">Parkinson’s Care</a>
@@ -189,6 +232,7 @@
           </li>
           <li class="dd ${activeGroup === 'technology' ? 'active' : ''}">
             <a href="${root}technology/index.html">Technology</a>
+            <button class="dd-toggle" type="button" aria-label="Toggle submenu" aria-expanded="false"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button>
             <div>
               <a href="${root}technology/index.html">Technology Overview</a>
               <a href="${root}technology/connected-devices.html">Connected Devices</a>
@@ -199,6 +243,7 @@
           </li>
           <li class="dd ${activeGroup === 'insights' ? 'active' : ''}">
             <a href="${root}insights/index.html">Insights</a>
+            <button class="dd-toggle" type="button" aria-label="Toggle submenu" aria-expanded="false"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button>
             <div>
               <a href="${root}insights/index.html">Insights Overview</a>
               <a href="${root}insights/research.html">Research</a>
@@ -207,6 +252,7 @@
           </li>
           <li class="dd ${activeGroup === 'about' ? 'active' : ''}">
             <a href="${root}about/index.html">About Us</a>
+            <button class="dd-toggle" type="button" aria-label="Toggle submenu" aria-expanded="false"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button>
             <div>
               <a href="${root}about/index.html">About Neuro Mates</a>
               <a href="${root}about/vision-mission.html">Vision &amp; Mission</a>

@@ -26,7 +26,11 @@ nav .lg{display:inline-flex;align-items:center;justify-content:center;height:100
 nav.s{background:rgba(255,255,255,.94);box-shadow:0 10px 40px rgba(14,59,67,.14)}
 .lg img{height:40px;display:block;mix-blend-mode:multiply}
 nav ul{display:flex;gap:22px;align-items:center;list-style:none;margin:0;padding:0;font:700 .74rem var(--fb);letter-spacing:.07em;text-transform:uppercase}
-nav li{position:relative}nav li>a:not(.btn){padding:22px 0;display:block}nav li>a:not(.btn):hover{color:var(--te)}nav .btn{min-height:44px;padding:0 20px;font:700 .74rem var(--fb);color:#fff;letter-spacing:.06em}
+nav li{position:relative}
+nav .dd{position:relative;display:inline-flex;align-items:center}
+.dd-toggle{display:inline-flex;align-items:center;justify-content:center;background:transparent;border:none;padding:0 0 0 4px;margin:0;color:var(--ink);cursor:pointer;transition:transform .25s var(--sp),color .2s ease}
+.dd:hover .dd-toggle,.dd:focus-within .dd-toggle{transform:rotate(180deg);color:var(--te)}
+nav li>a:not(.btn){padding:22px 0;display:block}nav li>a:not(.btn):hover{color:var(--te)}nav .btn{min-height:44px;padding:0 20px;font:700 .74rem var(--fb);color:#fff;letter-spacing:.06em}
 .dd>div{display:none;position:absolute;top:58px;left:-16px;min-width:250px;padding:10px;border-radius:20px;background:#fff;box-shadow:0 20px 60px rgba(14,59,67,.18)}
 .dd:hover>div,.dd:focus-within>div{display:block;animation:pop .35s var(--sp)}.dd>div a{display:block;padding:10px 14px;border-radius:12px;text-transform:none;letter-spacing:0;font:500 .92rem var(--fb)}.dd>div a:hover{background:#E6F6F3;color:var(--te)}
 #mb{display:none;background:#fff;border:1px solid #cfe3e0;color:var(--ink);border-radius:99px;padding:10px 18px;font:700 .75rem var(--fb)}
@@ -83,7 +87,15 @@ header.h p.bl{max-width:30em}
 .cta h2{margin:0 auto}.cta .bl{margin:24px auto 0}.cta .bt{justify-content:center}.cta .btn{animation:pl 3s infinite}@keyframes pl{0%,70%,100%{box-shadow:0 10px 28px rgba(11,122,124,.28)}85%{box-shadow:0 0 0 14px rgba(11,122,124,.15)}}
 
 .r{opacity:0;transform:translateY(24px);transition:opacity .8s var(--e),transform .8s var(--e)}.r.in{opacity:1;transform:none}
-@media(max-width:900px){#mb{display:block}nav ul{display:none;position:absolute;top:72px;left:0;right:0;flex-direction:column;align-items:flex-start;padding:16px 24px 24px;background:#fff;border-radius:24px;box-shadow:0 20px 50px rgba(14,59,67,.15);gap:0}nav.o ul{display:flex}nav li{width:100%}nav li>a:not(.btn){padding:14px 0}.dd>div{display:none!important}.pw{flex-direction:column;height:auto}.pr>div{opacity:1;max-height:none;transform:none}.pr{gap:16px}.rl,.two,.cd{grid-template-columns:1fr}#gl.on{--o:.5}.st div.r,.st div.r:nth-child(even){transform:translateY(24px)}}
+@media(max-width:900px){#mb{display:block}nav ul{display:none;position:absolute;top:72px;left:0;right:0;flex-direction:column;align-items:flex-start;padding:16px 24px 24px;background:#fff;border-radius:24px;box-shadow:0 20px 50px rgba(14,59,67,.15);gap:0}nav.o ul{display:flex}nav li{width:100%}nav li>a:not(.btn){padding:14px 0}nav li.dd{display:flex!important;flex-wrap:wrap!important;align-items:center!important;justify-content:space-between!important;width:100%!important;border-bottom:1px solid rgba(14,59,67,.06)}
+nav li>a:not(.btn){display:flex!important;align-items:center!important;min-height:48px!important;padding:12px 0!important;font-size:.95rem!important;font-weight:700!important;color:var(--ink)!important;flex:1!important}
+.dd-toggle{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:40px!important;height:40px!important;background:rgba(11,122,124,.08)!important;border:1px solid rgba(11,122,124,.16)!important;border-radius:50%!important;color:var(--te)!important;cursor:pointer!important;transition:transform .3s ease,background .2s ease,color .2s ease!important;margin-left:8px!important;-webkit-tap-highlight-color:transparent!important}
+.dd.open .dd-toggle{transform:rotate(180deg)!important;background:var(--te)!important;color:#fff!important;border-color:var(--te)!important}
+.dd>div{display:none!important;width:100%!important;position:static!important;box-shadow:none!important;border:1px solid rgba(11,122,124,.12)!important;background:#F3F9F8!important;border-radius:16px!important;padding:6px 6px 8px!important;margin:2px 0 12px!important}
+.dd.open>div{display:block!important;animation:ddSlide .25s ease-out forwards}
+@keyframes ddSlide{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.dd>div a{display:flex!important;align-items:center!important;min-height:42px!important;padding:8px 14px!important;border-radius:10px!important;font-size:.88rem!important;font-weight:600!important;color:var(--ink)!important;text-transform:none!important;letter-spacing:0!important;transition:background .15s ease,color .15s ease!important}
+.dd>div a:hover,.dd>div a:active{background:#E0F2EE!important;color:var(--te)!important}.pw{flex-direction:column;height:auto}.pr>div{opacity:1;max-height:none;transform:none}.pr{gap:16px}.rl,.two,.cd{grid-template-columns:1fr}#gl.on{--o:.5}.st div.r,.st div.r:nth-child(even){transform:translateY(24px)}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.r,.im,.words span,.st div.r{opacity:1;transform:none}.w1>span{transform:none}.vd{clip-path:none}.tk path{stroke-dashoffset:0}html{scroll-behavior:auto}}
 
 .vs{background:radial-gradient(45% 55% at 12% 18%,rgba(43,181,138,.55),transparent),radial-gradient(40% 50% at 90% 12%,rgba(110,193,240,.5),transparent),radial-gradient(45% 55% at 85% 95%,rgba(169,155,255,.45),transparent),radial-gradient(35% 45% at 8% 95%,rgba(255,200,87,.3),transparent),linear-gradient(135deg,#0B5D63,#0E7A74 55%,#0B6F86);overflow:hidden}
@@ -1020,10 +1032,10 @@ h1.wp{clip-path:inset(0 100% 0 0);transition:clip-path 1.6s var(--e)}h1.wp.go{cl
 </style></head><body data-v="overview">
 <div id="care"></div>
 <nav id="nav"><a class="lg" href="index.html" aria-label="Neuro Mates Home"><img src="assets/images/logo.png" alt="Neuro Mates"></a><button id="mb" aria-label="Open menu">Menu</button><ul>
-<li class="dd"><a href="#overview">Products</a><div><a href="#overview">Products Overview</a><a href="#parkinsons-care">Parkinson’s Care</a><a href="#alzheimers-care">Alzheimer’s Care</a><a href="#epilepsy-care">Epilepsy Care</a><a href="#paralysis-care">Paralysis Care</a></div></li>
-<li class="dd"><a href="#">Technology</a><div><a href="#">Technology Overview</a><a href="#">Connected Devices</a><a href="#">AI &amp; Machine Learning</a><a href="#">Monitoring &amp; Analytics</a><a href="#">Connected Care Platform</a></div></li>
-<li class="dd"><a href="#">Insights</a><div><a href="#">Insights Overview</a><a href="#">Research</a><a href="#">Articles</a><a href="#">Case Studies</a><a href="#">Resources</a></div></li>
-<li class="dd"><a href="#">About Us</a><div><a href="#">About Neuro Mates</a><a href="#">Vision &amp; Mission</a><a href="#">Our Approach</a><a href="#">Impact</a></div></li>
+<li class="dd"><a href="#overview">Products</a><button class="dd-toggle" type="button" aria-label="Toggle submenu" aria-expanded="false"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button><div><a href="#overview">Products Overview</a><a href="#parkinsons-care">Parkinson’s Care</a><a href="#alzheimers-care">Alzheimer’s Care</a><a href="#epilepsy-care">Epilepsy Care</a><a href="#paralysis-care">Paralysis Care</a></div></li>
+<li class="dd"><a href="#">Technology</a><button class="dd-toggle" type="button" aria-label="Toggle submenu" aria-expanded="false"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button><div><a href="#">Technology Overview</a><a href="#">Connected Devices</a><a href="#">AI &amp; Machine Learning</a><a href="#">Monitoring &amp; Analytics</a><a href="#">Connected Care Platform</a></div></li>
+<li class="dd"><a href="#">Insights</a><button class="dd-toggle" type="button" aria-label="Toggle submenu" aria-expanded="false"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button><div><a href="#">Insights Overview</a><a href="#">Research</a><a href="#">Articles</a><a href="#">Case Studies</a><a href="#">Resources</a></div></li>
+<li class="dd"><a href="#">About Us</a><button class="dd-toggle" type="button" aria-label="Toggle submenu" aria-expanded="false"><svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button><div><a href="#">About Neuro Mates</a><a href="#">Vision &amp; Mission</a><a href="#">Our Approach</a><a href="#">Impact</a></div></li>
 <li><a href="#">Contact Us</a></li><li><a class="btn" href="#">Register for a Demo</a></li></ul></nav>
 <main>
 
@@ -1392,6 +1404,61 @@ for(let i=0;i<6;i++){const q=((i/6+t*.12)%1),yy=h*(.56+.24*q),ww=w*(.012+.03*q);
 const ry=h*(.76-.17*g.p),rr=h*(.07-.03*g.p);x.fillStyle='#F5A623';x.beginPath();x.arc(w/2,ry-rr,rr,0,6.3);x.fill();x.fillStyle='#fff';x.beginPath();x.arc(w/2,ry-rr*1.05,rr*.35,0,6.3);x.fill();
 x.strokeStyle='#FFE9A8';x.lineWidth=2;x.beginPath();g.hist.forEach((s,i)=>{const X=i/160*w,Y=h-8-s*h*.18;i?x.lineTo(X,Y):x.moveTo(X,Y)});x.stroke();x.strokeStyle='rgba(255,255,255,.5)';x.setLineDash([6,6]);x.beginPath();x.moveTo(0,h-8-.6*h*.18);x.lineTo(w,h-8-.6*h*.18);x.stroke();x.setLineDash([]);if(g.reps>=15&&g.p>=1){g.p=0;g.reps=0}}}
 document.addEventListener('click',e=>{const a=e.target.closest('a[href="#"]');if(a){e.preventDefault();if(a.classList.contains('top'))scrollTo({top:0,behavior:'smooth'})}});addEventListener('hashchange',route);route();requestAnimationFrame(tick);
+
+/* Mobile Nav Dropdown Accordion */
+(function(){
+  function initMobileMenu(){
+    const n = document.querySelector('#nav');
+    if (!n) return;
+    n.querySelectorAll('.dd').forEach(dd => {
+      const t = dd.querySelector(':scope > a');
+      const m = dd.querySelector(':scope > div');
+      if (!t || !m) return;
+      let b = dd.querySelector('.dd-toggle');
+      if (!b) {
+        b = document.createElement('button');
+        b.className = 'dd-toggle';
+        b.type = 'button';
+        b.setAttribute('aria-label', 'Toggle submenu');
+        b.setAttribute('aria-expanded', 'false');
+        b.innerHTML = '<svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg>';
+        t.after(b);
+      }
+      b.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const isOpen = dd.classList.toggle('open');
+        b.setAttribute('aria-expanded', String(isOpen));
+      };
+      t.onclick = (e) => {
+        if (window.innerWidth <= 900) {
+          const href = t.getAttribute('href');
+          if (!href || href === '#' || href === '#overview' || href.startsWith('javascript:')) {
+            e.preventDefault();
+            const isOpen = dd.classList.toggle('open');
+            b.setAttribute('aria-expanded', String(isOpen));
+          }
+        }
+      };
+      m.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          n.classList.remove('o');
+          const mb = document.querySelector('#mb');
+          if (mb) {
+            mb.textContent = 'Menu';
+            mb.setAttribute('aria-expanded', 'false');
+          }
+        });
+      });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobileMenu);
+  } else {
+    initMobileMenu();
+  }
+})();
+
 </script><script src="assets/js/chat-widget.js" async></script>
 
 <script>

@@ -348,7 +348,32 @@ nav .btn {
   letter-spacing: 0.06em;
 }
 
-/* Dropdown Cards */
+/* Dropdown Cards & Toggle */
+nav .dd {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.dd-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0 0 0 4px;
+  margin: 0;
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform 0.25s var(--sp), color 0.2s ease;
+}
+
+.dd:hover .dd-toggle,
+.dd:focus-within .dd-toggle {
+  transform: rotate(180deg);
+  color: var(--te);
+}
+
 .dd > div {
   display: none;
   position: absolute;
@@ -362,6 +387,7 @@ nav .btn {
   border: 1px solid rgba(14, 59, 67, 0.06);
   z-index: 600;
 }
+
 
 .dd:hover > div,
 .dd:focus-within > div {
@@ -452,29 +478,91 @@ nav .btn {
   }
   nav li {
     width: 100%;
+    border-bottom: 1px solid rgba(14, 59, 67, 0.06);
+  }
+  nav li:last-child {
+    border-bottom: none;
+  }
+  nav li.dd {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
   }
   nav li > a:not(.btn) {
-    min-height: 44px;
+    min-height: 48px;
     display: flex;
     align-items: center;
-    padding: 10px 0;
+    padding: 12px 0;
     font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--ink);
+    flex: 1;
+  }
+  .dd-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 40px !important;
+    height: 40px !important;
+    background: rgba(11, 122, 124, 0.08) !important;
+    border: 1px solid rgba(11, 122, 124, 0.16) !important;
+    border-radius: 50% !important;
+    color: var(--te) !important;
+    cursor: pointer !important;
+    transition: transform 0.3s ease, background 0.2s ease, color 0.2s ease !important;
+    margin-left: 8px !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  .dd.open .dd-toggle {
+    transform: rotate(180deg) !important;
+    background: var(--te) !important;
+    color: #FFFFFF !important;
+    border-color: var(--te) !important;
   }
   .dd > div {
+    display: none !important;
+    width: 100% !important;
+    position: static !important;
+    box-shadow: none !important;
+    border: 1px solid rgba(11, 122, 124, 0.12) !important;
+    background: #F3F9F8 !important;
+    border-radius: 16px !important;
+    padding: 6px 6px 8px !important;
+    margin: 2px 0 12px !important;
+  }
+  .dd.open > div {
     display: block !important;
-    position: static;
-    box-shadow: none;
-    border: none;
-    padding: 0 0 10px 16px;
-    background: transparent;
+    animation: ddSlide 0.25s ease-out forwards;
+  }
+  @keyframes ddSlide {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   .dd > div a {
-    min-height: 44px;
-    display: flex;
+    min-height: 42px;
+    display: flex !important;
     align-items: center;
-    padding: 8px 10px;
-    font-size: 0.88rem;
-    color: var(--mu);
+    padding: 8px 14px !important;
+    border-radius: 10px;
+    font-size: 0.88rem !important;
+    font-weight: 600 !important;
+    color: var(--ink) !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    transition: background 0.15s ease, color 0.15s ease !important;
+  }
+  .dd > div a:hover,
+  .dd > div a:active {
+    background: #E0F2EE !important;
+    color: var(--te) !important;
   }
   nav .btn {
     width: 100%;
