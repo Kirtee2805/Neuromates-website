@@ -39,3 +39,4 @@ for hfile in home_files:
     print(f"Updated {hfile}")
 
 print("All home files updated!")
+

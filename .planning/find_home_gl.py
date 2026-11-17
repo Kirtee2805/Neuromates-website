@@ -13,3 +13,4 @@ end_idx = text.find(end_marker, idx)
 
 print(f"Old script block: start={idx}, end={end_idx}, length={end_idx - idx}")
 print("Tail of old script:", text[end_idx-100:end_idx])
+

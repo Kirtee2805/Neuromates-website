@@ -507,3 +507,4 @@ test_code = '''
 })();
 '''
 print("Parsed test code, length:", len(test_code))
+

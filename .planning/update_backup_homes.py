@@ -24,3 +24,4 @@ for hfile in home_files:
         print(f"Updated 3D brain in {hfile}")
         with open(hfile, 'w', encoding='utf-8') as f:
             f.write(html)
+

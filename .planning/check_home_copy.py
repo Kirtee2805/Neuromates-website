@@ -5,3 +5,4 @@ import re
 for m in re.finditer(r'WebGLRenderer', text):
     print(text[m.start()-50:m.start()+200])
     print('---')
+
