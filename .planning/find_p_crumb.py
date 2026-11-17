@@ -9,3 +9,4 @@ for html_file in glob.glob('**/*.html', recursive=True):
         print(f'=== {html_file} ===')
         for m in matches:
             print('  ', m)
+

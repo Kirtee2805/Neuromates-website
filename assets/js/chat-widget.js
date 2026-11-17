@@ -59,9 +59,10 @@
       width: 40px;
       height: 40px;
       object-fit: contain;
-      border-radius: 50%;
+      border-radius: 0 !important;
       transition: transform 0.3s ease, opacity 0.2s ease;
       pointer-events: none;
+      display: block;
     }
     #neuro-chat-launcher.open .icon-launcher-logo {
       display: none;

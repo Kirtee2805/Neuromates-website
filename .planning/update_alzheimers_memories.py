@@ -113,3 +113,4 @@ for fn in product_files:
         f.write(content)
 
 print('Done updating products files.')
+

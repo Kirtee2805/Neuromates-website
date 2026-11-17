@@ -36,3 +36,4 @@ for fn in home_files:
         f.write(content)
 
 print('Done updating home files.')
+

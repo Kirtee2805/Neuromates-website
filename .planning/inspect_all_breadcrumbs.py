@@ -31,3 +31,4 @@ for fn in files_with_breadcrumb:
             print(m.group(0)[:150].strip())
     except Exception as e:
         print(f'Error reading {fn}: {e}')
+
