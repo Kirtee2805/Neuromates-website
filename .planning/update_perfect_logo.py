@@ -11,3 +11,4 @@ print("Copied logo-icon-perfect.png to logo-icon.png successfully.")
 # Verify bbox and dimensions
 im = Image.open(dst)
 print("logo-icon.png size:", im.size, "bbox:", im.getbbox())
+

@@ -379,3 +379,4 @@ for fn in prod_files:
         f.write(content)
 
 print("Done updating products files.")
+
