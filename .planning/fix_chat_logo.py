@@ -61,3 +61,4 @@ with open(chat_js_path, 'w', encoding='utf-8') as f:
     f.write(chat_js)
 
 print("Done updating chat-widget.js")
+

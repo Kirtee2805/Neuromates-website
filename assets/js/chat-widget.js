@@ -17,7 +17,7 @@
   const isSubdir = path.includes('/technology/') || path.includes('/insights/') || path.includes('/about/') || path.includes('/products/');
   const root = isSubdir ? '../' : './';
   const logoUrl = `${root}assets/images/logo.png`;
-  const logoIconUrl = `${root}assets/images/logo-icon.png`;
+  const logoIconUrl = `${root}assets/images/logo-icon.png?v=3`;
 
   // Global RAG API Hook for custom backend connection
   // User can define: window.NeuroChatAPI = async function(userMessage) { return "RAG response..."; }
@@ -56,13 +56,15 @@
       border-color: #0E3B43;
     }
     #neuro-chat-launcher .icon-launcher-logo {
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       object-fit: contain;
       border-radius: 0 !important;
       transition: transform 0.3s ease, opacity 0.2s ease;
       pointer-events: none;
       display: block;
+      margin: 0 auto;
+      filter: drop-shadow(0 2px 4px rgba(11, 122, 124, 0.18));
     }
     #neuro-chat-launcher.open .icon-launcher-logo {
       display: none;
@@ -425,9 +427,16 @@
         height: 58px;
       }
       #neuro-chat-launcher .icon-launcher-logo {
-        width: 36px;
-        height: 36px;
-      }
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      border-radius: 0 !important;
+      transition: transform 0.3s ease, opacity 0.2s ease;
+      pointer-events: none;
+      display: block;
+      margin: 0 auto;
+      filter: drop-shadow(0 2px 4px rgba(11, 122, 124, 0.18));
+    }
       #neuro-chat-window {
         bottom: 84px;
         right: 12px;
