@@ -125,9 +125,33 @@
     });
   }
 
-  // 3. Back to Top
+  // 3. Back to Top & Footer Observer
+  function initFooterObserver() {
+    const footer = document.querySelector('footer');
+    if (!footer) return;
+    footer.classList.add('nm-footer');
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      footer.classList.add('footer-in-view');
+    } else {
+      const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          footer.classList.add('footer-in-view');
+          observer.disconnect();
+        }
+      }, { threshold: 0.1 });
+      observer.observe(footer);
+    }
+    footer.addEventListener('click', (e) => {
+      const topBtn = e.target.closest('.nm-footer-back-to-top');
+      if (topBtn) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  }
+
   function initBackToTop() {
-    const topBtn = $('footer a.top');
+    const topBtn = $('footer a.top, footer .nm-footer-back-to-top');
     if (topBtn) {
       topBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -199,53 +223,97 @@
         </ul>
       `;
     },
-    getFooterHTML: function () {
-      return `
-        <div class="w fg">
-          <div class="fb">
-            <a class="lg" href="${root}index.html" aria-label="Neuro Mates Home">
-              <img src="${root}assets/images/logo.png" alt="Neuro Mates">
-            </a>
-            <p>MONITOR · DETECT · ALERT · CARE</p>
-            <p class="desc">Continuous, connected neurological intelligence empowering patients, caregivers, and clinicians with proactive care.</p>
-            <a class="btn" href="${root}register-demo.html">Register for a demo →</a>
-          </div>
+        getFooterHTML: function () {
+      setTimeout(initFooterObserver, 0);
+      return `<div class="nm-footer-top-line"></div>
+  <div class="nm-footer-wrap">
+    
+    <!-- Row 1: 4-Column Grid -->
+    <div class="nm-footer-grid">
+      <!-- Col 1: Brand -->
+      <div class="nm-footer-col nm-footer-brand">
+        <a class="nm-footer-logo-tile" href="${root}index.html" aria-label="Neuro Mates Home">
+          <img src="${root}assets/images/logo.png" alt="Neuro Mates">
+        </a>
+        <p class="nm-footer-tagline">MONITOR · DETECT · ALERT · CARE</p>
+        <p class="nm-footer-brand-desc">An AI and IoT-based smart care system for Parkinson's, Alzheimer's, Epilepsy and Paralysis.</p>
+      </div>
 
-          <div class="fc">
-            <h4>About Us</h4>
-            <a href="${root}about/index.html">Who We Are</a>
-            <a href="${root}about/our-approach.html">Our Approach</a>
-            <a href="${root}technology/index.html">Technology &amp; R&amp;D</a>
-            <a href="${root}insights/index.html">Clinical Insights</a>
-            <a href="${root}neuromates-products.html#overview">Products &amp; Ecosystem</a>
-          </div>
+      <!-- Col 2: Our Vision -->
+      <div class="nm-footer-col nm-footer-vision">
+        <span class="nm-footer-label">Our vision</span>
+        <p class="nm-footer-vision-stmt">A future where neurological care stays connected.</p>
+        <p class="nm-footer-vision-body">Our vision is to make continuous neurological care more accessible, connected and personalised by bringing patients, families, healthcare professionals and technology into one care ecosystem.</p>
+      </div>
 
-          <div class="fc">
-            <h4>Our Vision</h4>
-            <p>Pioneering proactive neurological intervention—transforming periodic clinic visits into continuous 24/7 protection and peace of mind.</p>
-            <a href="${root}about/vision-mission.html">Vision &amp; Mission →</a>
-            <a href="${root}contact.html">Get in Touch →</a>
-          </div>
+      <!-- Col 3: Explore -->
+      <div class="nm-footer-col nm-footer-explore">
+        <span class="nm-footer-label">EXPLORE</span>
+        <nav class="nm-footer-nav" aria-label="Footer Explore Navigation">
+          <a href="${root}neuromates-products.html#overview">Products</a>
+          <a href="${root}technology/index.html">Technology</a>
+          <a href="${root}insights/index.html">Insights</a>
+          <a href="${root}about/index.html">About Us</a>
+          <a href="${root}contact.html">Contact Us</a>
+          <a href="${root}register-demo.html">Register for a Demo</a>
+        </nav>
+      </div>
 
-          <div class="fc">
-            <h4>Our Team</h4>
-            <div class="team-list">
-              <span class="team-member"><span class="dot"></span>Bhavik Solanki</span>
-              <span class="team-member"><span class="dot"></span>Anandi Bhayani</span>
-              <span class="team-member"><span class="dot"></span>Kirtee Pitroda</span>
-              <span class="team-member"><span class="dot"></span>Maulik Mehta</span>
-              <span class="team-member"><span class="dot"></span>Vasu Janjrukiya</span>
-              <span class="team-member"><span class="dot"></span>Darshil Vashnani</span>
-            </div>
-          </div>
-
-          <a class="top" href="#" aria-label="Back to top">↑ Top</a>
+      <!-- Col 4: Contact Us -->
+      <div class="nm-footer-col nm-footer-contact">
+        <span class="nm-footer-label">CONTACT US</span>
+        <p class="nm-footer-contact-body">Interested in Neuro Mates, our products, healthcare collaboration or a product demonstration? Get in touch with our team.</p>
+        <div class="nm-footer-buttons">
+          <a class="nm-btn-contact" href="${root}contact.html">Contact us →</a>
+          <a class="nm-btn-demo" href="${root}register-demo.html">Register for a demo →</a>
         </div>
-        <div class="w fl">
-          <span>&copy; ${new Date().getFullYear()} Neuro Mates. All rights reserved.</span>
-          <span>Connected Neurological Care</span>
+        <!-- SLOT: Address, phone, email, legal and social links can be placed here in future updates -->
+      </div>
+    </div>
+
+    <!-- Row 2: Team Strip -->
+    <div class="nm-footer-team-strip">
+      <span class="nm-footer-label">Our team</span>
+      <div class="nm-footer-team-pills">
+        <div class="nm-team-pill">
+          <span class="nm-team-avatar" style="background:#6EC1F0;">BS</span>
+          <span class="nm-team-name">Bhavik Solanki</span>
         </div>
-      `;
+        <div class="nm-team-pill">
+          <span class="nm-team-avatar" style="background:#9B8CFF;">AB</span>
+          <span class="nm-team-name">Anandi Bhayani</span>
+        </div>
+        <div class="nm-team-pill">
+          <span class="nm-team-avatar" style="background:#5BE7C4;">KP</span>
+          <span class="nm-team-name">Kirtee Pitroda</span>
+        </div>
+        <div class="nm-team-pill">
+          <span class="nm-team-avatar" style="background:#F5B14C;">MM</span>
+          <span class="nm-team-name">Maulik Mehta</span>
+        </div>
+        <div class="nm-team-pill">
+          <span class="nm-team-avatar" style="background:#FF9AD0;">VJ</span>
+          <span class="nm-team-name">Vasu Janjrukiya</span>
+        </div>
+        <div class="nm-team-pill">
+          <span class="nm-team-avatar" style="background:#7FD6D0;">DV</span>
+          <span class="nm-team-name">Darshil Vashnani</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: Bottom Bar -->
+    <div class="nm-footer-bottom-bar">
+      <div class="nm-footer-bottom-left">
+        <span>&copy; Neuro Mates &middot; Connected neurological care</span>
+      </div>
+      <div class="nm-footer-bottom-right">
+        <span class="nm-footer-disclaimer">Not a substitute for professional medical advice</span>
+        <a class="nm-footer-back-to-top" href="#" aria-label="Back to top">&uarr; Back to top</a>
+      </div>
+    </div>
+
+  </div>`;
     },
     getCTAHTML: function () {
       return `
@@ -269,6 +337,7 @@
     initCareLine();
     initNav();
     initBackToTop();
+    initFooterObserver();
     initSmoothScroll();
     
     // Automatically load Frontend AI Chat Widget
